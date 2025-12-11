@@ -1,0 +1,7 @@
+{
+  "name": "class-manager",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
