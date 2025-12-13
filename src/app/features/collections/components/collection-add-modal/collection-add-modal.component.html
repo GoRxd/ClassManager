@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>New Collection</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancel()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="form-inputs">
+    
+    <ion-input 
+      label="Title"
+      labelPlacement="floating"
+      fill="outline"
+      [(ngModel)]="title" 
+      placeholder="e.g. Class Trip">
+    </ion-input>
+
+    <ion-textarea 
+      label="Description"
+      labelPlacement="floating"
+      fill="outline"
+      [(ngModel)]="description" 
+      placeholder="Optional details..."
+      rows="3">
+    </ion-textarea>
+
+    <ion-input 
+      label="Target Amount (PLN)"
+      labelPlacement="floating"
+      fill="outline"
+      type="number"
+      inputmode="decimal"
+      [(ngModel)]="amount" 
+      placeholder="0.00">
+    </ion-input>
+
+    <ion-input 
+      label="Deadline (Optional)"
+      labelPlacement="floating"
+      fill="outline"
+      type="date"
+      [(ngModel)]="deadline">
+    </ion-input>
+
+    <ion-button expand="block" size="large" (click)="confirm()" [disabled]="!canSave" class="save-btn">
+      <ion-icon slot="start" name="save-outline"></ion-icon>
+      Create Collection
+    </ion-button>
+    
+  </div>
+</ion-content>

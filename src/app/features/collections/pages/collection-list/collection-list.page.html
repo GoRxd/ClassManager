@@ -1,0 +1,51 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Collections</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="presentAddModal()">
+        <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  @if (service.collections().length === 0) {
+    <div class="empty-state">
+      <ion-icon name="wallet-outline" size="large"></ion-icon>
+      <p>No active collections</p>
+      <small>Create a new collection to start tracking payments.</small>
+    </div>
+  } @else {
+    <ion-list lines="none" style="background: transparent;">
+      @for (col of service.collections(); track col.id) {
+        <ion-card class="collection-card" [class.is-overdue]="isOverdue(col)" [routerLink]="['/collections', col.id]">
+          <ion-card-header>
+            <ion-card-title>{{ col.title }}</ion-card-title>
+             <ion-card-subtitle>
+                <span class="deadline" *ngIf="col.deadline">
+                    <ion-icon name="time-outline"></ion-icon>
+                    {{ col.deadline * 1000 | date:'mediumDate' }}
+                </span>
+                <span class="deadline" *ngIf="!col.deadline">No deadline</span>
+
+                <span class="amount">{{ (col.targetAmount / 100) | currency:'PLN ':'symbol':'1.0-0' }}</span>
+             </ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <p>{{ col.description || 'No description' }}</p>
+            <!-- Placeholder for progress, logic to calculate collected vs target needed later -->
+            <!-- <ion-progress-bar value="0.5" color="primary"></ion-progress-bar> -->
+          </ion-card-content>
+        </ion-card>
+      }
+    </ion-list>
+  }
+</ion-content>

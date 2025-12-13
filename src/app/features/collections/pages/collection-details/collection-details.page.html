@@ -1,0 +1,103 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/collections"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  @if (collection) {
+    <div class="header-section">
+        <h1>{{ collection.title }}</h1>
+        <p>{{ collection.description || 'No description' }}</p>
+        <div class="meta">
+            <span class="target">Target: {{ (collection.targetAmount / 100) | currency:'PLN ':'symbol':'1.0-0' }}</span>
+            <span class="per-student" *ngIf="suggestedAmount > 0">
+                (~{{ suggestedAmount | number:'1.2-2' }} / person)
+            </span>
+        </div>
+    </div>
+
+    <div class="ion-padding-bottom">
+        <ion-segment [(ngModel)]="segment">
+            <ion-segment-button value="pending">
+                <ion-label>Pending ({{ pendingStudents.length }})</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="paid">
+                <ion-label>Paid ({{ paidStudents.length }})</ion-label>
+            </ion-segment-button>
+        </ion-segment>
+    </div>
+
+    <ion-list>
+        @if (segment === 'pending') {
+            @for (student of pendingStudents; track student.studentId) {
+                <ion-item-sliding>
+                    <ion-item-options side="start" (ionSwipe)="quickPay(student, $event)">
+                        <ion-item-option color="success" expandable (click)="quickPay(student, $event)" [disabled]="suggestedAmount <= 0">
+                            <ion-icon slot="icon-only" name="checkmark-circle-outline"></ion-icon>
+                        </ion-item-option>
+                    </ion-item-options>
+                    
+                    <ion-item button (click)="openPayment(student)" class="student-item">
+                        <div class="student-info">
+                            <h3>{{ student.lastName }} {{ student.firstName }}</h3>
+                        </div>
+                        
+                        <div slot="end" class="payment-status">
+                            @if (student.status === 'PENDING') {
+                                <ion-button fill="clear" (click)="quickPay(student, $event)" [disabled]="suggestedAmount <= 0">
+                                    <ion-icon slot="icon-only" name="checkmark-circle-outline" color="medium"></ion-icon>
+                                </ion-button>
+                                <ion-badge color="medium">PENDING</ion-badge>
+                            } @else {
+                                <ion-badge color="warning">PARTIAL</ion-badge>
+                            }
+                        </div>
+                    </ion-item>
+                </ion-item-sliding>
+            }
+            @if (pendingStudents.length === 0) {
+                <div class="ion-padding ion-text-center">
+                    <ion-note>Everyone paid! 🎉</ion-note>
+                </div>
+            }
+        } @else {
+            @for (student of paidStudents; track student.studentId) {
+                <ion-item-sliding>
+                    <ion-item button (click)="openPayment(student)" class="student-item">
+                        <div class="student-info">
+                            <h3>{{ student.lastName }} {{ student.firstName }}</h3>
+                        </div>
+                        
+                        <div slot="end" class="payment-status">
+                             <ion-button fill="clear" (click)="markUnpaid(student, $event)" color="danger">
+                                <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
+                            </ion-button>
+                            <ion-badge color="success">PAID</ion-badge>
+                            <ion-note color="success">{{ (student.paidAmount / 100) | number:'1.2-2' }} zł</ion-note>
+                        </div>
+                    </ion-item>
+
+                    <ion-item-options side="end" (ionSwipe)="markUnpaid(student, $event)">
+                        <ion-item-option color="danger" expandable (click)="markUnpaid(student, $event)">
+                             <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
+                        </ion-item-option>
+                    </ion-item-options>
+                </ion-item-sliding>
+            }
+            @if (paidStudents.length === 0) {
+                <div class="ion-padding ion-text-center">
+                    <ion-note>No payments yet.</ion-note>
+                </div>
+            }
+        }
+    </ion-list>
+  } @else {
+    <div class="ion-padding">
+        <ion-note>Loading...</ion-note>
+    </div>
+  }
+</ion-content>

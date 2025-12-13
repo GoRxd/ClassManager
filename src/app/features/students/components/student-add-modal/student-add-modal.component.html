@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>New Student</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancel()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="form-inputs">
+    <ion-input 
+      label="First name" 
+      labelPlacement="floating" 
+      fill="outline" 
+      [(ngModel)]="newName"
+      placeholder="e.g. Jan">
+    </ion-input>
+
+    <ion-input 
+      label="Last name" 
+      labelPlacement="floating" 
+      fill="outline" 
+      [(ngModel)]="newLastname"
+      placeholder="e.g. Kowalski">
+    </ion-input>
+
+    <ion-input 
+      label="Student's phone" 
+      labelPlacement="floating" 
+      fill="outline" 
+      type="tel"
+      inputmode="tel" 
+      [(ngModel)]="newPhone"
+      placeholder="e.g. 500 123 456"
+      helperText="Format: 9 digits"
+      [color]="isPhoneValid ? 'success' : (newPhone ? 'danger' : 'medium')">
+      <ion-icon slot="start" name="call-outline" aria-hidden="true"></ion-icon>
+    </ion-input>
+
+    <ion-button expand="block" size="large" (click)="confirm()" [disabled]="!canSave" class="save-btn">
+      <ion-icon slot="start" name="person-add-outline"></ion-icon>
+      Add Student
+    </ion-button>
+  </div>
+</ion-content>

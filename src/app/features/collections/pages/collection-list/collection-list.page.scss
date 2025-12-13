@@ -1,0 +1,53 @@
+
+ion-fab-button {
+  --color: white;
+}
+
+.collection-card {
+  margin-bottom: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+
+  &.is-overdue {
+    border-left: 4px solid var(--ion-color-danger);
+  }
+
+  ion-card-subtitle {
+     margin-top: 10px;
+     display: flex;
+     justify-content: space-between;
+     font-size: 13px;
+     
+     .amount {
+        color: var(--ion-color-primary);
+        font-weight: 700;
+        font-size: 15px;
+     }
+
+     .deadline {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        color: var(--ion-color-medium);
+     }
+  }
+
+  ion-progress-bar {
+    margin-top: 12px;
+    height: 6px;
+    border-radius: 3px;
+  }
+}
+
+.empty-state {
+    text-align: center;
+    margin-top: 60px;
+    color: var(--ion-color-medium);
+    padding: 0 20px;
+
+    p {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+}

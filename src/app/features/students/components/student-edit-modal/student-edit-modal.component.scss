@@ -1,0 +1,17 @@
+ion-content {
+  // Use a step color to get a slight contrast in both light and dark modes
+  --background: var(--ion-color-step-50, #f4f5f8);
+}
+
+.form-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; 
+  padding-top: 10px;
+}
+
+.save-btn {
+  margin-top: 20px;
+  --border-radius: 12px;
+  font-weight: 600;
+}

@@ -1,0 +1,54 @@
+
+.header-section {
+    padding: 16px;
+    // background: #f9f9f9; // Removed to respect theme
+    border-bottom: 1px solid var(--ion-border-color, #eee);
+
+    h1 {
+        margin: 0 0 8px;
+        font-size: 22px;
+        // color: var(--ion-color-dark); // Removed to respect theme
+    }
+    
+    p {
+        margin: 0 0 12px;
+        color: var(--ion-color-medium);
+    }
+
+    .meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        font-weight: 500;
+        
+        .target {
+            color: var(--ion-color-primary);
+        }
+    }
+}
+
+ion-list {
+    background: transparent;
+}
+
+.student-item {
+    --padding-start: 16px;
+    --inner-padding-end: 16px;
+    
+    .student-info {
+        display: flex;
+        flex-direction: column;
+        
+        h3 {
+            margin: 0 0 4px;
+            font-weight: 500;
+        }
+    }
+
+    .payment-status {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 4px;
+    }
+}
