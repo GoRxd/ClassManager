@@ -1,0 +1,24 @@
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px; // Standard margin for list inset
+
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--ion-text-color);
+  }
+
+  ion-button {
+    margin: 0;
+    font-size: 0.9rem;
+    --padding-end: 0;
+  }
+}
+ion-button {
+  margin: 0;
+  font-size: 0.9rem;
+  --padding-end: 0;
+}

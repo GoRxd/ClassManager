@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { IonApp, IonRouterOutlet, IonMenu, IonContent, IonList, IonItem, IonIcon, IonLabel, IonMenuToggle } from '@ionic/angular/standalone';
 import { DatabaseService } from './core/database/database.service';
 import { addIcons } from 'ionicons';
-import { homeOutline, peopleOutline, walletOutline, statsChartOutline, settingsOutline } from 'ionicons/icons';
+import { homeOutline, peopleOutline, walletOutline, statsChartOutline, settingsOutline, receiptOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +16,7 @@ export class AppComponent {
   private dbService = inject(DatabaseService);
 
   constructor() {
-    addIcons({ homeOutline, peopleOutline, walletOutline, statsChartOutline, settingsOutline });
+    addIcons({ homeOutline, peopleOutline, walletOutline, statsChartOutline, settingsOutline, receiptOutline });
     
     // HACK DO DEBUGOWANIA: (USUNAC W WERSJI FINALNEJ)
     // Przypisujemy serwis do obiektu window, żeby był dostępny w konsoli F12

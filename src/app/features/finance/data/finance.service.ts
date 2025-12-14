@@ -1,6 +1,6 @@
-import { Injectable, inject, signal, WritableSignal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { TreasuryRepository, TreasuryStatus } from './treasury.repository';
-import { ExpenseRepository, Expense } from './expense.repository';
+import { ExpenseRepository, Expense } from '../../expenses/data/expense.repository';
 
 @Injectable({ providedIn: 'root' })
 export class FinanceService {

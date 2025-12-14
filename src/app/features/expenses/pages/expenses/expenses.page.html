@@ -1,0 +1,81 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Expenses</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Expenses</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  @if (viewMode() === 'recent') {
+    <div class="section-header ion-margin-bottom">
+      <h2>Recent Expenses</h2>
+      <ion-button fill="clear" (click)="showHistory()">
+        View History
+      </ion-button>
+    </div>
+
+    <ion-list [inset]="true">
+      @for (expense of recentExpenses(); track expense.id) {
+        <ion-item>
+          <ion-icon name="wallet-outline" slot="start" color="medium"></ion-icon>
+          <ion-label>
+            <h2>{{ expense.title }}</h2>
+            <p>{{ expense.created_at * 1000 | date:'mediumDate' }} {{ expense.created_at * 1000 | date:'shortTime' }}</p>
+          </ion-label>
+          <ion-note slot="end" color="danger">
+            -{{ (expense.amount_gr / 100) | number:'1.2-2' }} zł
+          </ion-note>
+        </ion-item>
+      } @empty {
+        <ion-item>
+          <ion-label class="ion-text-center">
+            <p>No recent expenses found.</p>
+          </ion-label>
+        </ion-item>
+      }
+    </ion-list>
+  } @else {
+    <div class="section-header ion-margin-bottom">
+      <ion-button fill="clear" (click)="showRecent()">
+        <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+        Back
+      </ion-button>
+      <h2>Full History</h2>
+    </div>
+
+    <ion-list [inset]="true">
+      @for (expense of allExpenses(); track expense.id) {
+        <ion-item>
+          <ion-icon name="wallet-outline" slot="start" color="medium"></ion-icon>
+          <ion-label>
+            <h2>{{ expense.title }}</h2>
+            <p>{{ expense.created_at * 1000 | date:'mediumDate' }} {{ expense.created_at * 1000 | date:'shortTime' }}</p>
+          </ion-label>
+          <ion-note slot="end" color="danger">
+            -{{ (expense.amount_gr / 100) | number:'1.2-2' }} zł
+          </ion-note>
+        </ion-item>
+      } @empty {
+        <ion-item>
+          <ion-label class="ion-text-center">
+            <p>No expense history found.</p>
+          </ion-label>
+        </ion-item>
+      }
+    </ion-list>
+  }
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="openAddExpenseModal()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

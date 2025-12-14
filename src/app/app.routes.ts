@@ -22,4 +22,8 @@ export const routes: Routes = [
     path: 'collections/:id',
     loadComponent: () => import('./features/collections/pages/collection-details/collection-details.page').then( m => m.CollectionDetailsPage)
   },
+  {
+    path: 'expenses',
+    loadComponent: () => import('./features/expenses/pages/expenses/expenses.page').then(m => m.ExpensesPage)
+  },
 ];
