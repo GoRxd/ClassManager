@@ -14,6 +14,8 @@ import { CollectionService } from '../../data/collection.service';
 import { Collection } from '../../data/collection.model';
 import { CollectionAddModalComponent } from '../../components/collection-add-modal/collection-add-modal.component';
 
+import { UiService } from '../../../../core/services/ui.service';
+
 @Component({
   selector: 'app-collection-list',
   standalone: true,
@@ -31,6 +33,7 @@ import { CollectionAddModalComponent } from '../../components/collection-add-mod
 export class CollectionListPage {
   service = inject(CollectionService);
   modalCtrl = inject(ModalController);
+  uiService = inject(UiService);
 
   constructor() {
     addIcons({ walletOutline, addOutline, timeOutline, add });
@@ -56,9 +59,9 @@ export class CollectionListPage {
         try {
             const d = res.data;
             await this.service.addDetailed(d.title, d.description, d.amount, d.deadline);
+            this.uiService.showToast('Collection added successfully', 'success');
         } catch (error) {
-            // Error handling usually in service or global, but here we can toggle loading or show toast if we had uiService injected
-            console.error('Failed to add collection', error);
+            this.uiService.showToast('Failed to add collection', 'danger');
         }
       }
     });

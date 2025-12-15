@@ -1,7 +1,9 @@
 import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ModalController, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonList, IonItem, IonSelect, IonSelectOption, IonInput } from '@ionic/angular/standalone';
+import { ModalController, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonList, IonItem, IonSelect, IonSelectOption, IonInput, IonIcon, IonLabel, IonGrid, IonRow, IonCol } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { add, trashOutline } from 'ionicons/icons';
 import { CollectionService } from '../../../collections/data/collection.service';
 import { Expense } from '../../data/expense.repository';
 
@@ -12,7 +14,8 @@ import { Expense } from '../../data/expense.repository';
     CommonModule,
     FormsModule,
     IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, 
-    IonContent, IonList, IonItem, IonSelect, IonSelectOption, IonInput
+    IonContent, IonList, IonItem, IonSelect, IonSelectOption, IonInput,
+    IonIcon, IonLabel, IonGrid, IonRow, IonCol
   ],
   templateUrl: './add-expense-modal.component.html',
   styleUrls: ['./add-expense-modal.component.scss']
@@ -28,15 +31,46 @@ export class AddExpenseModalComponent {
   title: string = '';
   amount: number | null = null;
   
-  constructor() {}
+  products: { name: string; quantity: number; unitPrice: number }[] = [];
+
+  constructor() {
+    addIcons({ add, trashOutline });
+  }
 
   ionViewWillEnter() {
     if (this.expense) {
       this.selectedCollectionId = this.expense.collection_id;
       this.title = this.expense.title;
       this.amount = this.expense.amount_gr / 100;
+      
+      if (this.expense.products) {
+        this.products = this.expense.products.map(p => ({
+          name: p.name,
+          quantity: p.quantity,
+          unitPrice: p.unit_price_gr / 100
+        }));
+      }
     } else if (this.preselectedCollectionId) {
       this.selectedCollectionId = this.preselectedCollectionId;
+    }
+  }
+
+  addProduct() {
+    this.products.push({ name: '', quantity: 1, unitPrice: 0 });
+    // Update total to ensure consistency (even if 0 difference, it resets manual override which is likely desired when modifying list)
+    this.updateTotal();
+  }
+
+  removeProduct(index: number) {
+    this.products.splice(index, 1);
+    this.updateTotal();
+  }
+
+  updateTotal() {
+    // Always calculate sum if products exist
+    if (this.products.length > 0) {
+      const sum = this.products.reduce((acc, p) => acc + (p.quantity * p.unitPrice), 0);
+      this.amount = parseFloat(sum.toFixed(2));
     }
   }
 
@@ -45,14 +79,19 @@ export class AddExpenseModalComponent {
   }
 
   confirm() {
-    if (!this.selectedCollectionId || !this.title || !this.amount) {
+    if (!this.selectedCollectionId || !this.title || (!this.amount && this.amount !== 0)) {
       return; 
     }
 
     this.modalCtrl.dismiss({
       collectionId: this.selectedCollectionId,
       title: this.title,
-      amount: this.amount
+      amount: this.amount,
+      products: this.products.map(p => ({
+        name: p.name,
+        quantity: p.quantity,
+        unitPricePLN: p.unitPrice
+      }))
     }, 'confirm');
   }
 }

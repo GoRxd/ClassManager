@@ -65,7 +65,12 @@ export class ExpensesPage implements OnInit {
     modal.onWillDismiss().then(async (res) => {
       if (res.role === 'confirm' && res.data) {
         // Service handles conversion
-        await this.expenseService.addExpense(res.data.title, res.data.amount, res.data.collectionId);
+        await this.expenseService.addExpense(
+          res.data.title, 
+          res.data.amount, 
+          res.data.collectionId,
+          res.data.products || []
+        );
         
         await this.uiService.showToast('Expense added successfully', 'success');
         await this.refreshList();
@@ -89,7 +94,8 @@ export class ExpensesPage implements OnInit {
           expense.id,
           res.data.title,
           res.data.amount,
-          res.data.collectionId
+          res.data.collectionId,
+          res.data.products || []
         );
         
         await this.uiService.showToast('Expense updated successfully', 'success');

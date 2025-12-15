@@ -39,6 +39,15 @@ export const CREATE_TABLES_SQL = `
         FOREIGN KEY (collection_id) REFERENCES collections(id) ON DELETE SET NULL
     );
 
+    CREATE TABLE IF NOT EXISTS expense_products (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        expense_id INTEGER NOT NULL,
+        name TEXT NOT NULL,
+        quantity REAL DEFAULT 1,
+        unit_price_gr INTEGER DEFAULT 0,
+        FOREIGN KEY (expense_id) REFERENCES expenses(id) ON DELETE CASCADE
+    );
+
     DROP VIEW IF EXISTS v_treasury_status;
     CREATE VIEW v_treasury_status AS
     SELECT 
@@ -52,4 +61,5 @@ export const CREATE_TABLES_SQL = `
     CREATE INDEX IF NOT EXISTS idx_payments_collection ON payments(collection_id);
     CREATE INDEX IF NOT EXISTS idx_payments_student ON payments(student_id);
     CREATE INDEX IF NOT EXISTS idx_expenses_collection ON expenses(collection_id);
+    CREATE INDEX IF NOT EXISTS idx_expense_products_expense ON expense_products(expense_id);
 `;

@@ -16,6 +16,7 @@ import { StudentAddModalComponent } from '../../components/student-add-modal/stu
 import { Student } from '../../data/student.model';
 import { StudentService } from '../../data/student.service';
 import { UiService } from '../../../../core/services/ui.service';
+import { FormatService } from '../../../../core/services/format.service';
 
 @Component({
   selector: 'app-student-list',
@@ -33,6 +34,7 @@ import { UiService } from '../../../../core/services/ui.service';
 export class StudentListPage {
   service = inject(StudentService);
   uiService = inject(UiService);
+  formatService = inject(FormatService);
   modalCtrl = inject(ModalController);
   router = inject(Router);
   
@@ -107,7 +109,6 @@ export class StudentListPage {
   }
 
   formatPhone(phone: string): string {
-    if (!phone) return '';
-    return phone.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3');
+    return this.formatService.formatPhone(phone);
   }
 }

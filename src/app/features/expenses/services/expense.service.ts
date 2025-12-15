@@ -14,14 +14,24 @@ export class ExpenseService {
   }
 
   // Accepts amount in PLN and converts to grosze
-  addExpense(title: string, amountPLN: number, collectionId: number): Promise<void> {
+  addExpense(title: string, amountPLN: number, collectionId: number, products: {name: string, quantity: number, unitPricePLN: number}[] = []): Promise<void> {
     const amountGr = Math.round(amountPLN * 100);
-    return this.repository.addExpense(title, amountGr, collectionId);
+    const productsGr = products.map(p => ({
+      name: p.name,
+      quantity: p.quantity,
+      unit_price_gr: Math.round(p.unitPricePLN * 100)
+    }));
+    return this.repository.addExpense(title, amountGr, collectionId, productsGr);
   }
 
-  updateExpense(id: number, title: string, amountPLN: number, collectionId: number): Promise<void> {
+  updateExpense(id: number, title: string, amountPLN: number, collectionId: number, products: {name: string, quantity: number, unitPricePLN: number}[] = []): Promise<void> {
     const amountGr = Math.round(amountPLN * 100);
-    return this.repository.updateExpense(id, title, amountGr, collectionId);
+    const productsGr = products.map(p => ({
+      name: p.name,
+      quantity: p.quantity,
+      unit_price_gr: Math.round(p.unitPricePLN * 100)
+    }));
+    return this.repository.updateExpense(id, title, amountGr, collectionId, productsGr);
   }
 
   removeExpense(expenseId: number): Promise<void> {
