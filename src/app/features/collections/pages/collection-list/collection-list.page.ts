@@ -53,8 +53,13 @@ export class CollectionListPage {
 
     modal.onWillDismiss().then(async (res) => {
       if (res.role === 'confirm' && res.data) {
-        const d = res.data;
-        await this.service.addDetailed(d.title, d.description, d.amount, d.deadline);
+        try {
+            const d = res.data;
+            await this.service.addDetailed(d.title, d.description, d.amount, d.deadline);
+        } catch (error) {
+            // Error handling usually in service or global, but here we can toggle loading or show toast if we had uiService injected
+            console.error('Failed to add collection', error);
+        }
       }
     });
 

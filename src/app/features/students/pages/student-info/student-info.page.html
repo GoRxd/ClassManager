@@ -27,7 +27,7 @@
         <div class="meta">
             @if (totalDebt() > 0) {
                <span class="debt-warning">
-                 To pay: <strong>{{ formatMoney(totalDebt()) }} PLN</strong>
+                 To pay: <strong>{{ formatService.formatMoney(totalDebt()) }} PLN</strong>
                </span>
                <span class="unpaid-count">
                  ({{ unpaidCount() }} pending collections)
@@ -57,21 +57,21 @@
                 <h2>{{ col.title }}</h2>
                 <ion-note>
                     <ion-icon name="time-outline" style="font-size: 12px; vertical-align: middle"></ion-icon> 
-                    {{ formatDate(col.deadline) }}
+                    {{ formatService.formatDate(col.deadline) }}
                 </ion-note>
               </ion-label>
     
               <div slot="end" class="payment-action">
                  @if (col.status !== 'PAID') {
                     <div class="cost">
-                        {{ formatMoney(col.perStudentCost) }} PLN
+                        {{ formatService.formatMoney(col.perStudentCost!) }} PLN
                     </div>
                     <ion-button size="small" color="primary">
                         Pay
                     </ion-button>
                  } @else {
                      <ion-note color="success" class="paid-amount">
-                         {{ formatMoney(col.paidAmount) }} PLN
+                         {{ formatService.formatMoney(col.paidAmount) }} PLN
                      </ion-note>
                      <ion-badge color="success">PAID</ion-badge>
                  }

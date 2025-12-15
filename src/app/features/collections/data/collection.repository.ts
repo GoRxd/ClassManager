@@ -2,6 +2,47 @@ import { Injectable, inject } from '@angular/core';
 import { DatabaseService } from '../../../core/database/database.service';
 
 import { Collection } from './collection.model';
+import { StudentPaymentStatus } from './payment-status.model';
+
+export interface CollectionRow {
+  id: number;
+  title: string;
+  description: string;
+  target_amount_gr: number;
+  deadline_at: number | null;
+  is_archived: number;
+  created_at: number;
+}
+
+export interface PaymentRow {
+  student_id: number;
+  first_name: string;
+  last_name: string;
+  paid_amount_gr: number | null;
+  paid_at: number | null;
+  status: string | null;
+}
+
+export interface StudentCollectionRow {
+  collection_id: number;
+  title: string;
+  target_amount_gr: number;
+  deadline_at: number | null;
+  paid_amount_gr: number | null;
+  status: string | null;
+  paid_at: number | null;
+}
+
+export interface StudentCollectionSummary {
+    collectionId: number;
+    title: string;
+    targetAmount: number;
+    deadline: number | null;
+    paidAmount: number;
+    status: 'PENDING' | 'PAID';
+    paidAt: number | null;
+    perStudentCost?: number; // Calculated field
+}
 
 @Injectable({ providedIn: 'root' })
 export class CollectionRepository {
@@ -14,7 +55,7 @@ export class CollectionRepository {
 
   async getAll(): Promise<Collection[]> {
     const sql = `SELECT * FROM collections WHERE is_archived = 0 ORDER BY CASE WHEN deadline_at IS NULL THEN 1 ELSE 0 END, deadline_at ASC, created_at DESC`;
-    const res = await this.db.query<any>(sql);
+    const res = await this.db.query<CollectionRow>(sql);
     
     return res.map(row => ({
       id: row.id,
@@ -39,7 +80,7 @@ export class CollectionRepository {
 
   async getById(id: number): Promise<Collection | undefined> {
     const sql = `SELECT * FROM collections WHERE id = ?`;
-    const res = await this.db.query<any>(sql, [id]);
+    const res = await this.db.query<CollectionRow>(sql, [id]);
     if (!res.length) return undefined;
     
     const row = res[0];
@@ -64,7 +105,7 @@ export class CollectionRepository {
         WHERE s.is_active = 1
         ORDER BY s.last_name ASC
     `;
-    const res = await this.db.query<any>(sql, [collectionId]);
+    const res = await this.db.query<PaymentRow>(sql, [collectionId]);
     return res.map(row => ({
         studentId: row.student_id,
         firstName: row.first_name,
@@ -94,7 +135,7 @@ export class CollectionRepository {
     }
   }
 
-  async getStudentCollections(studentId: number): Promise<any[]> {
+  async getStudentCollections(studentId: number): Promise<StudentCollectionSummary[]> {
     const sql = `
         SELECT 
             c.id as collection_id, c.title, c.target_amount_gr, c.deadline_at,
@@ -104,7 +145,7 @@ export class CollectionRepository {
         WHERE c.is_archived = 0
         ORDER BY CASE WHEN p.status = 'PAID' THEN 1 ELSE 0 END, c.deadline_at ASC
     `;
-    const res = await this.db.query<any>(sql, [studentId]);
+    const res = await this.db.query<StudentCollectionRow>(sql, [studentId]);
     return res.map(row => ({
         collectionId: row.collection_id,
         title: row.title,

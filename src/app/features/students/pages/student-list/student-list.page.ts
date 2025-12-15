@@ -57,8 +57,12 @@ export class StudentListPage {
   }
   
   async delete(id: number) {
-      await this.service.remove(id);
-      this.uiService.showToast('Student deleted', 'medium');
+      try {
+        await this.service.remove(id);
+        this.uiService.showToast('Student deleted', 'medium');
+      } catch (error) {
+        this.uiService.showToast('Failed to delete student', 'danger');
+      }
   }
 
   async openAddModal() {
@@ -68,8 +72,12 @@ export class StudentListPage {
 
     modal.onWillDismiss().then(async (res) => {
       if (res.role === 'confirm' && res.data) {
-        await this.service.add(res.data.firstName, res.data.lastName, res.data.phone);
-        this.uiService.showToast('Student added successfully!', 'success');
+        try {
+            await this.service.add(res.data.firstName, res.data.lastName, res.data.phone);
+            this.uiService.showToast('Student added successfully!', 'success');
+        } catch (error) {
+            this.uiService.showToast('Failed to add student', 'danger');
+        }
       }
     });
 
@@ -86,8 +94,12 @@ export class StudentListPage {
 
     modal.onWillDismiss().then(async (res) => {
       if (res.role === 'confirm' && res.data) {
-        await this.service.update(res.data as Student);
-        this.uiService.showToast('Student updated successfully', 'success');
+        try {
+            await this.service.update(res.data as Student);
+            this.uiService.showToast('Student updated successfully', 'success');
+        } catch (error) {
+            this.uiService.showToast('Failed to update student', 'danger');
+        }
       }
     });
 

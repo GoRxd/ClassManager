@@ -11,6 +11,8 @@ import { StudentService } from '../../data/student.service';
 import { CollectionService } from '../../../collections/data/collection.service';
 import { Student } from '../../data/student.model';
 import { UiService } from '../../../../core/services/ui.service';
+import { FormatService } from '../../../../core/services/format.service';
+import { StudentCollectionSummary } from '../../../collections/data/collection.repository';
 
 @Component({
   selector: 'app-student-info',
@@ -29,9 +31,10 @@ export class StudentInfoPage implements OnInit {
   private studentService = inject(StudentService);
   private collectionService = inject(CollectionService);
   private uiService = inject(UiService);
+  public formatService = inject(FormatService);
 
   student = signal<Student | undefined>(undefined);
-  collections = signal<any[]>([]);
+  collections = signal<StudentCollectionSummary[]>([]);
   totalDebt = signal<number>(0);
   unpaidCount = signal<number>(0);
   loading = signal<boolean>(true);
@@ -59,8 +62,8 @@ export class StudentInfoPage implements OnInit {
       const count = await this.studentService.getActiveCount();
       this.activeStudentCount.set(count);
 
-      if (s) {
-        const cols = await this.collectionService.getStudentCollections(id);
+      if (s && s.id) {
+        const cols = await this.collectionService.getStudentCollections(s.id);
         this.collections.set(cols);
         this.calculateDebt(cols, count);
       }
@@ -69,7 +72,7 @@ export class StudentInfoPage implements OnInit {
     }
   }
 
-  calculateDebt(cols: any[], studentCount: number) {
+  calculateDebt(cols: StudentCollectionSummary[], studentCount: number) {
      if (studentCount === 0) {
         this.totalDebt.set(0);
         this.unpaidCount.set(0);
@@ -82,7 +85,6 @@ export class StudentInfoPage implements OnInit {
      for (const c of cols) {
         const perStudentCost = Math.round(c.targetAmount / studentCount);
         // Store the calculated cost on the object for easy access in template/logic
-        // Note: 'c' is from the query result, we can attach property to it if we cast or just use it loosely
         c.perStudentCost = perStudentCost;
 
         if (c.status !== 'PAID') {
@@ -94,7 +96,7 @@ export class StudentInfoPage implements OnInit {
      this.unpaidCount.set(unpaid);
   }
 
-  async handleCollectionClick(collection: any) {
+  async handleCollectionClick(collection: StudentCollectionSummary) {
      if (collection.status === 'PAID') {
          await this.markAsUnpaid(collection);
      } else {
@@ -102,7 +104,7 @@ export class StudentInfoPage implements OnInit {
      }
   }
 
-  async markAsPaid(collection: any) {
+  async markAsPaid(collection: StudentCollectionSummary) {
      const s = this.student();
      if (!s || !s.id) return;
      
@@ -114,7 +116,7 @@ export class StudentInfoPage implements OnInit {
      await this.loadData(s.id);
   }
 
-  async markAsUnpaid(collection: any) {
+  async markAsUnpaid(collection: StudentCollectionSummary) {
       const s = this.student();
       if (!s || !s.id) return;
 
@@ -129,14 +131,5 @@ export class StudentInfoPage implements OnInit {
           this.uiService.showToast(`Payment undone for: ${collection.title}`, 'medium');
           await this.loadData(s.id);
       }
-  }
-
-  formatMoney(amount: number): string {
-    return (amount / 100).toFixed(2);
-  }
-
-  formatDate(ts: number | null): string {
-    if (!ts) return 'No deadline';
-    return new Date(ts * 1000).toLocaleDateString();
   }
 }
