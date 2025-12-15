@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { 
   IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonItem, 
   IonLabel, IonButton, IonIcon, IonButtons, IonGrid, IonRow, IonCol, 
-  ToastController, IonMenuButton, AlertController, IonItemSliding, 
+  IonMenuButton, IonItemSliding, 
   IonItemOptions, IonItemOption, IonFab, IonFabButton
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -14,6 +14,7 @@ import { StudentEditModalComponent } from '../../components/student-edit-modal/s
 import { StudentAddModalComponent } from '../../components/student-add-modal/student-add-modal.component';
 import { Student } from '../../data/student.model';
 import { StudentService } from '../../data/student.service';
+import { UiService } from '../../../../core/services/ui.service';
 
 @Component({
   selector: 'app-student-list',
@@ -30,8 +31,7 @@ import { StudentService } from '../../data/student.service';
 })
 export class StudentListPage {
   service = inject(StudentService);
-  toastCtrl = inject(ToastController);
-  alertCtrl = inject(AlertController);
+  uiService = inject(UiService);
   modalCtrl = inject(ModalController);
   
   constructor() {
@@ -40,30 +40,19 @@ export class StudentListPage {
   }
 
   async confirmDelete(id: number) {
-    const alert = await this.alertCtrl.create({
-      header: 'Confirm Delete',
-      message: 'Are you sure you want to delete this student?',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel'
-        },
-        {
-          text: 'Delete',
-          role: 'destructive',
-          handler: () => {
-             this.delete(id);
-          }
-        }
-      ]
-    });
+    const confirmed = await this.uiService.showConfirm(
+      'Confirm Delete',
+      'Are you sure you want to delete this student?'
+    );
 
-    await alert.present();
+    if (confirmed) {
+      this.delete(id);
+    }
   }
   
   async delete(id: number) {
       await this.service.remove(id);
-      this.showToast('Uczeń usunięty', 'medium');
+      this.uiService.showToast('Uczeń usunięty', 'medium');
   }
 
   async openAddModal() {
@@ -74,7 +63,7 @@ export class StudentListPage {
     modal.onWillDismiss().then(async (res) => {
       if (res.role === 'confirm' && res.data) {
         await this.service.add(res.data.firstName, res.data.lastName, res.data.phone);
-        this.showToast('Uczeń dodany pomyślnie!', 'success');
+        this.uiService.showToast('Uczeń dodany pomyślnie!', 'success');
       }
     });
 
@@ -92,7 +81,7 @@ export class StudentListPage {
     modal.onWillDismiss().then(async (res) => {
       if (res.role === 'confirm' && res.data) {
         await this.service.update(res.data as Student);
-        this.showToast('Dane ucznia zaktualizowane', 'success');
+        this.uiService.showToast('Dane ucznia zaktualizowane', 'success');
       }
     });
 
@@ -102,15 +91,5 @@ export class StudentListPage {
   formatPhone(phone: string): string {
     if (!phone) return '';
     return phone.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3');
-  }
-
-  private async showToast(msg: string, color: string) {
-    const toast = await this.toastCtrl.create({
-      message: msg,
-      duration: 2000,
-      color: color,
-      position: 'bottom'
-    });
-    toast.present();
   }
 }

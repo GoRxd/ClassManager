@@ -19,6 +19,11 @@ export class ExpenseService {
     return this.repository.addExpense(title, amountGr, collectionId);
   }
 
+  updateExpense(id: number, title: string, amountPLN: number, collectionId: number): Promise<void> {
+    const amountGr = Math.round(amountPLN * 100);
+    return this.repository.updateExpense(id, title, amountGr, collectionId);
+  }
+
   removeExpense(expenseId: number): Promise<void> {
     return this.repository.removeExpense(expenseId);
   }

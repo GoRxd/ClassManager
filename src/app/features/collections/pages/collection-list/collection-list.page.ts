@@ -5,10 +5,11 @@ import {
   IonContent, IonHeader, IonTitle, IonToolbar, IonList, 
   IonButton, IonIcon, IonButtons, IonMenuButton,
   IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent,
-  IonRefresher, IonRefresherContent, ModalController
+  IonRefresher, IonRefresherContent, ModalController,
+  IonFab, IonFabButton
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { walletOutline, addOutline, timeOutline } from 'ionicons/icons';
+import { walletOutline, addOutline, timeOutline, add } from 'ionicons/icons';
 import { CollectionService } from '../../data/collection.service';
 import { Collection } from '../../data/collection.model';
 import { CollectionAddModalComponent } from '../../components/collection-add-modal/collection-add-modal.component';
@@ -23,7 +24,8 @@ import { CollectionAddModalComponent } from '../../components/collection-add-mod
     IonContent, IonHeader, IonTitle, IonToolbar, IonList, 
     IonButton, IonIcon, IonButtons, IonMenuButton,
     IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent,
-    IonRefresher, IonRefresherContent
+    IonRefresher, IonRefresherContent,
+    IonFab, IonFabButton
   ]
 })
 export class CollectionListPage {
@@ -31,7 +33,7 @@ export class CollectionListPage {
   modalCtrl = inject(ModalController);
 
   constructor() {
-    addIcons({ walletOutline, addOutline, timeOutline });
+    addIcons({ walletOutline, addOutline, timeOutline, add });
   }
 
   isOverdue(col: Collection): boolean {

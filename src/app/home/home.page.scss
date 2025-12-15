@@ -16,7 +16,8 @@ ion-toolbar {
 
 .balance-card {
   margin: 0;
-  background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
+  background-color: rgb(12, 142, 142);
+  //background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
   color: white;
   border-radius: 20px;
   box-shadow: 0 10px 20px -5px rgba(var(--ion-color-primary-rgb), 0.4);
@@ -63,9 +64,18 @@ ion-toolbar {
   }
 
   .stat-item {
+    flex: 1;
     display: flex;
     align-items: center;
     gap: 10px;
+
+    &.income {
+        justify-content: flex-start;
+    }
+
+    &.expense {
+        justify-content: flex-end;
+    }
     
     ion-icon {
       font-size: 24px;
@@ -200,6 +210,7 @@ ion-toolbar {
     ion-note {
         font-weight: 700;
         font-size: 14px;
+        margin-top: 5px;
     }
   }
 }

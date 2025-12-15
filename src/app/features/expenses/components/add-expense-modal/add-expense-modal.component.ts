@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ModalController, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonList, IonItem, IonSelect, IonSelectOption, IonInput } from '@ionic/angular/standalone';
 import { CollectionService } from '../../../collections/data/collection.service';
+import { Expense } from '../../data/expense.repository';
 
 @Component({
   selector: 'app-add-expense-modal',
@@ -21,6 +22,7 @@ export class AddExpenseModalComponent {
   public collectionService = inject(CollectionService);
   
   @Input() preselectedCollectionId?: number;
+  @Input() expense?: Expense;
 
   selectedCollectionId?: number;
   title: string = '';
@@ -29,7 +31,11 @@ export class AddExpenseModalComponent {
   constructor() {}
 
   ionViewWillEnter() {
-    if (this.preselectedCollectionId) {
+    if (this.expense) {
+      this.selectedCollectionId = this.expense.collection_id;
+      this.title = this.expense.title;
+      this.amount = this.expense.amount_gr / 100;
+    } else if (this.preselectedCollectionId) {
       this.selectedCollectionId = this.preselectedCollectionId;
     }
   }

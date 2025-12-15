@@ -2,23 +2,39 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 16px; // Standard margin for list inset
+  padding-left: 10px;
+  padding-right: 10px;
 
   h2 {
-    font-size: 1.25rem;
+    margin: 0;
     font-weight: 600;
-    margin: 0;
-    color: var(--ion-text-color);
-  }
-
-  ion-button {
-    margin: 0;
-    font-size: 0.9rem;
-    --padding-end: 0;
+    font-size: 1.2rem;
   }
 }
-ion-button {
-  margin: 0;
-  font-size: 0.9rem;
-  --padding-end: 0;
+
+ion-note {
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin-top: 5px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  color: var(--ion-color-medium);
+
+  ion-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+
+  p {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0;
+  }
 }

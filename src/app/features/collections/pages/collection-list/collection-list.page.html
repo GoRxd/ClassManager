@@ -5,9 +5,9 @@
     </ion-buttons>
     <ion-title>Collections</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="presentAddModal()">
+      <!-- <ion-button (click)="presentAddModal()">
         <ion-icon slot="icon-only" name="add-outline"></ion-icon>
-      </ion-button>
+      </ion-button> -->
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -48,4 +48,9 @@
       }
     </ion-list>
   }
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="presentAddModal()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

@@ -31,6 +31,11 @@ export class ExpenseRepository {
     await this.db.run(sql, [expenseId]);
   }
 
+  async updateExpense(id: number, title: string, amountGr: number, collectionId: number): Promise<void> {
+    const sql = `UPDATE expenses SET title = ?, amount_gr = ?, collection_id = ? WHERE id = ?`;
+    await this.db.run(sql, [title, amountGr, collectionId, id]);
+  }
+
   async getExpensesByCollectionId(collectionId: number): Promise<Expense[]> {
     const sql = `SELECT * FROM expenses WHERE collection_id = ?`;
     return this.db.query<Expense>(sql, [collectionId]);
