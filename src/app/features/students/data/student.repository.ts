@@ -40,4 +40,19 @@ export class StudentRepository {
     const res = await this.db.query<{count: number}>(`SELECT COUNT(*) as count FROM students WHERE is_active = 1`);
     return res[0]?.count || 0;
   }
+
+  async getById(id: number): Promise<Student | undefined> {
+    const sql = `SELECT * FROM students WHERE id = ?`;
+    const res = await this.db.query<any>(sql, [id]);
+    if (!res.length) return undefined;
+    
+    const row = res[0];
+    return {
+      id: row.id,
+      firstName: row.first_name,
+      lastName: row.last_name,
+      phone: row.phone,
+      isActive: !!row.is_active
+    };
+  }
 }

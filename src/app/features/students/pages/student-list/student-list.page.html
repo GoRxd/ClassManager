@@ -28,7 +28,7 @@
               </ion-item-option>
             </ion-item-options>
 
-            <ion-item>
+            <ion-item button detail="true" (click)="viewStudent(student.id!)">
               <ion-label>
                 <h2>{{ student.firstName }} <strong>{{ student.lastName }}</strong></h2>
                 
@@ -43,10 +43,10 @@
               </ion-label>
               
               <ion-buttons slot="end">
-                <ion-button color="primary" (click)="edit(student)">
+                <ion-button color="primary" (click)="$event.stopPropagation(); edit(student)">
                   <ion-icon name="create-outline"></ion-icon>
                 </ion-button>
-                <ion-button color="medium" (click)="confirmDelete(student.id!)">
+                <ion-button color="medium" (click)="$event.stopPropagation(); confirmDelete(student.id!)">
                   <ion-icon name="trash-outline"></ion-icon>
                 </ion-button>
               </ion-buttons>

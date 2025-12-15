@@ -41,4 +41,8 @@ export class StudentService {
   async getActiveCount(): Promise<number> {
     return this.repo.countActive();
   }
+
+  async getById(id: number): Promise<Student | undefined> {
+    return this.repo.getById(id);
+  }
 }

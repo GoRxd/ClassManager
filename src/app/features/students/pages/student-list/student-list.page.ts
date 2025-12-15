@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { ModalController } from '@ionic/angular/standalone';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { 
@@ -33,10 +34,15 @@ export class StudentListPage {
   service = inject(StudentService);
   uiService = inject(UiService);
   modalCtrl = inject(ModalController);
+  router = inject(Router);
   
   constructor() {
     // Rejestracja ikon
     addIcons({ trashOutline, personAddOutline, callOutline, peopleOutline, createOutline, add });
+  }
+
+  viewStudent(id: number) {
+    this.router.navigate(['/students', id]);
   }
 
   async confirmDelete(id: number) {
@@ -52,7 +58,7 @@ export class StudentListPage {
   
   async delete(id: number) {
       await this.service.remove(id);
-      this.uiService.showToast('Uczeń usunięty', 'medium');
+      this.uiService.showToast('Student deleted', 'medium');
   }
 
   async openAddModal() {
@@ -63,7 +69,7 @@ export class StudentListPage {
     modal.onWillDismiss().then(async (res) => {
       if (res.role === 'confirm' && res.data) {
         await this.service.add(res.data.firstName, res.data.lastName, res.data.phone);
-        this.uiService.showToast('Uczeń dodany pomyślnie!', 'success');
+        this.uiService.showToast('Student added successfully!', 'success');
       }
     });
 
@@ -81,7 +87,7 @@ export class StudentListPage {
     modal.onWillDismiss().then(async (res) => {
       if (res.role === 'confirm' && res.data) {
         await this.service.update(res.data as Student);
-        this.uiService.showToast('Dane ucznia zaktualizowane', 'success');
+        this.uiService.showToast('Student updated successfully', 'success');
       }
     });
 

@@ -15,6 +15,10 @@ export const routes: Routes = [
     loadComponent: () => import('./features/students/pages/student-list/student-list.page').then( m => m.StudentListPage)
   },
   {
+    path: 'students/:id',
+    loadComponent: () => import('./features/students/pages/student-info/student-info.page').then( m => m.StudentInfoPage)
+  },
+  {
     path: 'collections',
     loadComponent: () => import('./features/collections/pages/collection-list/collection-list.page').then( m => m.CollectionListPage)
   },

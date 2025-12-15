@@ -1,0 +1,89 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/students"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Student Details
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  
+  @if (loading()) {
+    <div class="ion-padding">
+      <ion-skeleton-text animated style="width: 50%; height: 20px; margin-bottom: 10px"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 80%; height: 20px"></ion-skeleton-text>
+    </div>
+  } @else {
+    <div class="header-section">
+        <h1>{{ student()?.firstName }} {{ student()?.lastName }}</h1>
+        <p>
+            <ion-icon name="call-outline" style="vertical-align: middle"></ion-icon> 
+            {{ student()?.phone || 'No phone number' }}
+        </p>
+        
+        <div class="meta">
+            @if (totalDebt() > 0) {
+               <span class="debt-warning">
+                 To pay: <strong>{{ formatMoney(totalDebt()) }} PLN</strong>
+               </span>
+               <span class="unpaid-count">
+                 ({{ unpaidCount() }} pending collections)
+               </span>
+            } @else {
+               <span class="all-paid">
+                 <ion-icon name="checkmark-circle-outline" style="vertical-align: bottom"></ion-icon>
+                 All paid up!
+               </span>
+            }
+        </div>
+    </div>
+
+    @if (collections().length > 0) {
+        <h3 class="list-title ion-padding-start ion-padding-top">Collections</h3>
+        
+        <ion-list [inset]="true">
+          @for (col of collections(); track col.collectionId) {
+            <ion-item button lines="full" [class.paid-item]="col.status === 'PAID'" (click)="handleCollectionClick(col)">
+              <ion-icon 
+                [name]="col.status === 'PAID' ? 'checkmark-circle' : 'wallet-outline'" 
+                slot="start"
+                [color]="col.status === 'PAID' ? 'success' : 'medium'">
+              </ion-icon>
+              
+              <ion-label>
+                <h2>{{ col.title }}</h2>
+                <ion-note>
+                    <ion-icon name="time-outline" style="font-size: 12px; vertical-align: middle"></ion-icon> 
+                    {{ formatDate(col.deadline) }}
+                </ion-note>
+              </ion-label>
+    
+              <div slot="end" class="payment-action">
+                 @if (col.status !== 'PAID') {
+                    <div class="cost">
+                        {{ formatMoney(col.perStudentCost) }} PLN
+                    </div>
+                    <ion-button size="small" color="primary">
+                        Pay
+                    </ion-button>
+                 } @else {
+                     <ion-note color="success" class="paid-amount">
+                         {{ formatMoney(col.paidAmount) }} PLN
+                     </ion-note>
+                     <ion-badge color="success">PAID</ion-badge>
+                 }
+              </div>
+            </ion-item>
+          }
+        </ion-list>
+    } @else {
+        <div class="empty-state ion-padding ion-text-center">
+            <ion-note>No active collections for this student.</ion-note>
+        </div>
+    }
+  }
+
+</ion-content>

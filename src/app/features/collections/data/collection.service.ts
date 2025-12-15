@@ -47,4 +47,8 @@ export class CollectionService {
     await this.repo.upsertPayment(collectionId, studentId, amount);
     // Reload if needed, but usually we just refresh the details view
   }
+
+  async getStudentCollections(studentId: number) {
+    return this.repo.getStudentCollections(studentId);
+  }
 }

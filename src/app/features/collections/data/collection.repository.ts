@@ -93,4 +93,26 @@ export class CollectionRepository {
         );
     }
   }
+
+  async getStudentCollections(studentId: number): Promise<any[]> {
+    const sql = `
+        SELECT 
+            c.id as collection_id, c.title, c.target_amount_gr, c.deadline_at,
+            p.paid_amount_gr, p.status, p.paid_at
+        FROM collections c
+        LEFT JOIN payments p ON c.id = p.collection_id AND p.student_id = ?
+        WHERE c.is_archived = 0
+        ORDER BY CASE WHEN p.status = 'PAID' THEN 1 ELSE 0 END, c.deadline_at ASC
+    `;
+    const res = await this.db.query<any>(sql, [studentId]);
+    return res.map(row => ({
+        collectionId: row.collection_id,
+        title: row.title,
+        targetAmount: row.target_amount_gr,
+        deadline: row.deadline_at,
+        paidAmount: row.paid_amount_gr || 0,
+        status: (row.status || 'PENDING') as 'PENDING' | 'PAID',
+        paidAt: row.paid_at
+    }));
+  }
 }
