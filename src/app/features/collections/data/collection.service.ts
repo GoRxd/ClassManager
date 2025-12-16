@@ -51,4 +51,24 @@ export class CollectionService {
   async getStudentCollections(studentId: number) {
     return this.repo.getStudentCollections(studentId);
   }
+
+  async updateDetailed(id: number, title: string, description: string, amount: number, deadline?: string) {
+    let deadlineTs = null;
+    if (deadline) {
+        deadlineTs = Math.floor(new Date(deadline).getTime() / 1000);
+    }
+
+    await this.repo.update(id, {
+        title,
+        description,
+        targetAmount: amount * 100,
+        deadline: deadlineTs
+    });
+    await this.loadCollections();
+  }
+
+  async remove(id: number) {
+    await this.repo.remove(id);
+    await this.loadCollections();
+  }
 }

@@ -6,15 +6,16 @@ import {
   IonButton, IonIcon, IonButtons, IonMenuButton,
   IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent,
   IonRefresher, IonRefresherContent, ModalController,
-  IonFab, IonFabButton
+  IonFab, IonFabButton, IonItemSliding, IonItemOptions, IonItemOption, IonItem
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { walletOutline, addOutline, timeOutline, add } from 'ionicons/icons';
+import { walletOutline, addOutline, timeOutline, add, createOutline, trashOutline } from 'ionicons/icons';
 import { CollectionService } from '../../data/collection.service';
 import { Collection } from '../../data/collection.model';
 import { CollectionAddModalComponent } from '../../components/collection-add-modal/collection-add-modal.component';
 
 import { UiService } from '../../../../core/services/ui.service';
+import { ItemActionService } from '../../../../core/services/item-action.service';
 
 @Component({
   selector: 'app-collection-list',
@@ -27,16 +28,17 @@ import { UiService } from '../../../../core/services/ui.service';
     IonButton, IonIcon, IonButtons, IonMenuButton,
     IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent,
     IonRefresher, IonRefresherContent,
-    IonFab, IonFabButton
+    IonFab, IonFabButton, IonItemSliding, IonItemOptions, IonItemOption, IonItem
   ]
 })
 export class CollectionListPage {
   service = inject(CollectionService);
   modalCtrl = inject(ModalController);
   uiService = inject(UiService);
+  itemAction = inject(ItemActionService);
 
   constructor() {
-    addIcons({ walletOutline, addOutline, timeOutline, add });
+    addIcons({ walletOutline, addOutline, timeOutline, add, createOutline, trashOutline });
   }
 
   isOverdue(col: Collection): boolean {
@@ -67,5 +69,49 @@ export class CollectionListPage {
     });
 
     await modal.present();
+  }
+
+  async edit(col: Collection, slidingItem?: IonItemSliding) {
+    await this.itemAction.handleEdit(slidingItem, async () => {
+        const modal = await this.modalCtrl.create({
+            component: CollectionAddModalComponent,
+            componentProps: {
+              collection: col
+            }
+          });
+      
+          modal.onWillDismiss().then(async (res) => {
+            if (res.role === 'confirm' && res.data) {
+              try {
+                  const d = res.data;
+                  if (col.id) {
+                    await this.service.updateDetailed(col.id, d.title, d.description, d.amount, d.deadline);
+                    this.uiService.showToast('Collection updated successfully', 'success');
+                  }
+              } catch (error) {
+                  this.uiService.showToast('Failed to update collection', 'danger');
+              }
+            }
+          });
+      
+          await modal.present();
+    });
+  }
+
+  async confirmDelete(id: number | undefined, slidingItem?: IonItemSliding) {
+    if (!id) {
+        slidingItem?.close();
+        return;
+    }
+
+    await this.itemAction.handleDelete(
+        slidingItem,
+        async () => {
+             await this.service.remove(id);
+        },
+        'Confirm Delete',
+        'Are you sure you want to delete this collection? This will also delete all associated payments.',
+        'Collection deleted'
+    );
   }
 }

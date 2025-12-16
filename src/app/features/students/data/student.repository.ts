@@ -15,7 +15,7 @@ export class StudentRepository {
     const sql = `SELECT * FROM students WHERE is_active = 1 ORDER BY last_name ASC`;
     const res = await this.db.query<any>(sql);
     
-    // Mapowanie z bazy (snake_case) na aplikację (camelCase)
+
     return res.map(row => ({
       id: row.id,
       firstName: row.first_name,
@@ -30,7 +30,7 @@ export class StudentRepository {
     await this.db.run(sql, [student.firstName, student.lastName, student.phone || null, student.id]);
   }
 
-  // Funkcja do usuwania (soft delete)
+  // Soft delete
   async deleteStudent(id: number) {
       const sql = `UPDATE students SET is_active = 0 WHERE id = ?`;
       await this.db.run(sql, [id]);

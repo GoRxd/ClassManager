@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { 
@@ -6,7 +6,8 @@ import {
   IonIcon, IonInput, IonTextarea, ModalController 
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { closeOutline, saveOutline } from 'ionicons/icons';
+import { closeOutline, saveOutline, addCircleOutline } from 'ionicons/icons';
+import { Collection } from '../../data/collection.model';
 
 @Component({
   selector: 'app-collection-add-modal',
@@ -19,14 +20,31 @@ import { closeOutline, saveOutline } from 'ionicons/icons';
     IonIcon, IonInput, IonTextarea
   ]
 })
-export class CollectionAddModalComponent {
+export class CollectionAddModalComponent implements OnInit {
+  @Input() collection?: Collection;
+
   title = '';
   description = '';
   amount: number | null = null;
   deadline: string = ''; // ISO string from ion-datetime
 
   constructor(private modalCtrl: ModalController) {
-    addIcons({ closeOutline, saveOutline });
+    addIcons({ closeOutline, saveOutline, addCircleOutline });
+  }
+
+  ngOnInit() {
+    if (this.collection) {
+      this.title = this.collection.title;
+      this.description = this.collection.description;
+      this.amount = this.collection.targetAmount / 100;
+      if (this.collection.deadline) {
+        this.deadline = new Date(this.collection.deadline * 1000).toISOString();
+      }
+    }
+  }
+
+  get isEditing(): boolean {
+    return !!this.collection;
   }
 
   get canSave(): boolean {
@@ -40,11 +58,17 @@ export class CollectionAddModalComponent {
   confirm() {
     if (!this.canSave) return;
 
-    this.modalCtrl.dismiss({
+    const data = {
       title: this.title,
       description: this.description,
       amount: this.amount,
       deadline: this.deadline
-    }, 'confirm');
+    };
+
+    if (this.collection) {
+        this.modalCtrl.dismiss({ ...this.collection, ...data }, 'confirm');
+    } else {
+        this.modalCtrl.dismiss(data, 'confirm');
+    }
   }
 }

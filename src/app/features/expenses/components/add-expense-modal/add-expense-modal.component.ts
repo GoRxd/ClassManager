@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ModalController, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonList, IonItem, IonSelect, IonSelectOption, IonInput, IonIcon, IonLabel, IonGrid, IonRow, IonCol } from '@ionic/angular/standalone';
@@ -20,7 +20,7 @@ import { Expense } from '../../data/expense.repository';
   templateUrl: './add-expense-modal.component.html',
   styleUrls: ['./add-expense-modal.component.scss']
 })
-export class AddExpenseModalComponent {
+export class AddExpenseModalComponent implements OnInit {
   private modalCtrl = inject(ModalController);
   public collectionService = inject(CollectionService);
   
@@ -37,7 +37,7 @@ export class AddExpenseModalComponent {
     addIcons({ add, trashOutline });
   }
 
-  ionViewWillEnter() {
+  ngOnInit() {
     if (this.expense) {
       this.selectedCollectionId = this.expense.collection_id;
       this.title = this.expense.title;
@@ -79,11 +79,11 @@ export class AddExpenseModalComponent {
   }
 
   confirm() {
-    if (!this.selectedCollectionId || !this.title || (!this.amount && this.amount !== 0)) {
+    if (!this.selectedCollectionId || !this.title || this.amount === null || this.amount <= 0) {
       return; 
     }
 
-    this.modalCtrl.dismiss({
+    const data = {
       collectionId: this.selectedCollectionId,
       title: this.title,
       amount: this.amount,
@@ -92,6 +92,12 @@ export class AddExpenseModalComponent {
         quantity: p.quantity,
         unitPricePLN: p.unitPrice
       }))
-    }, 'confirm');
+    };
+
+    if (this.expense) {
+        this.modalCtrl.dismiss({ ...this.expense, ...data, id: this.expense.id}, 'confirm');
+    } else {
+        this.modalCtrl.dismiss(data, 'confirm');
+    }
   }
 }

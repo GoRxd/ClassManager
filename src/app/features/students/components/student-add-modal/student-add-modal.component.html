@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>New Student</ion-title>
+    <ion-title>{{ isEditing ? 'Edit Student' : 'New Student' }}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="cancel()">
         <ion-icon name="close-outline"></ion-icon>
@@ -41,8 +41,8 @@
     </ion-input>
 
     <ion-button expand="block" size="large" (click)="confirm()" [disabled]="!canSave" class="save-btn">
-      <ion-icon slot="start" name="person-add-outline"></ion-icon>
-      Add Student
+      <ion-icon slot="start" [name]="isEditing ? 'create-outline' : 'person-add-outline'"></ion-icon>
+      {{ isEditing ? 'Save Changes' : 'Add Student' }}
     </ion-button>
   </div>
 </ion-content>

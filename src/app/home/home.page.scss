@@ -213,4 +213,20 @@ ion-toolbar {
         margin-top: 5px;
     }
   }
+
+  ion-item-sliding {
+    background: transparent; 
+    border-radius: 16px; 
+    margin-bottom: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    
+    // Ensure the item inside doesn't have its own margin/shadow interfering
+    ion-item {
+       margin: 0;
+       box-shadow: none;
+       --background: var(--ion-card-background);
+    }
+    
+
+  }
 }

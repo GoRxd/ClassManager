@@ -21,9 +21,9 @@
         
         <ion-list [inset]="true">
           @for (student of service.students(); track student.id) {
-          <ion-item-sliding>
-            <ion-item-options side="start" (ionSwipe)="edit(student)">
-              <ion-item-option color="primary" expandable (click)="edit(student)">
+          <ion-item-sliding #slidingItem>
+            <ion-item-options side="start" (ionSwipe)="edit(student, slidingItem)">
+              <ion-item-option color="primary" expandable (click)="edit(student, slidingItem)">
                 <ion-icon slot="icon-only" name="create-outline"></ion-icon>
               </ion-item-option>
             </ion-item-options>
@@ -43,17 +43,17 @@
               </ion-label>
               
               <ion-buttons slot="end">
-                <ion-button color="primary" (click)="$event.stopPropagation(); edit(student)">
+                <ion-button color="primary" (click)="$event.stopPropagation(); edit(student, slidingItem)">
                   <ion-icon name="create-outline"></ion-icon>
                 </ion-button>
-                <ion-button color="medium" (click)="$event.stopPropagation(); confirmDelete(student.id!)">
+                <ion-button color="medium" (click)="$event.stopPropagation(); confirmDelete(student.id!, slidingItem)">
                   <ion-icon name="trash-outline"></ion-icon>
                 </ion-button>
               </ion-buttons>
             </ion-item>
 
-            <ion-item-options side="end" (ionSwipe)="confirmDelete(student.id!)">
-              <ion-item-option color="danger" expandable (click)="confirmDelete(student.id!)">
+            <ion-item-options side="end" (ionSwipe)="confirmDelete(student.id!, slidingItem)">
+              <ion-item-option color="danger" expandable (click)="confirmDelete(student.id!, slidingItem)">
                 <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
               </ion-item-option>
             </ion-item-options>

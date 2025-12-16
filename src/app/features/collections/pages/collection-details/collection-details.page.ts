@@ -13,6 +13,7 @@ import { Collection } from '../../data/collection.model';
 import { StudentPaymentStatus } from '../../data/payment-status.model';
 import { PaymentModalComponent } from '../../components/payment-modal/payment-modal.component';
 import { addIcons } from 'ionicons';
+import { ItemActionService } from '../../../../core/services/item-action.service';
 
 @Component({
   selector: 'app-collection-details',
@@ -30,6 +31,7 @@ export class CollectionDetailsPage implements OnInit {
   private route = inject(ActivatedRoute);
   private service = inject(CollectionService);
   private modalCtrl = inject(ModalController);
+  private itemAction = inject(ItemActionService);
 
   collection: Collection | undefined;
   payments: StudentPaymentStatus[] = [];
@@ -68,22 +70,38 @@ export class CollectionDetailsPage implements OnInit {
     }
   }
 
-  async quickPay(student: StudentPaymentStatus, event: Event) {
+  async quickPay(student: StudentPaymentStatus, event: Event, slidingItem?: IonItemSliding) {
     event.stopPropagation();
-    if (!this.collection || this.suggestedAmount <= 0) return;
+    if (!this.collection || this.suggestedAmount <= 0) {
+        slidingItem?.close();
+        return;
+    }
 
-    const amountInGr = Math.round(this.suggestedAmount * 100);
-    await this.service.updatePayment(this.collection.id!, student.studentId, amountInGr);
-    await this.load(this.collection.id!);
+    await this.itemAction.handleEdit(slidingItem, async () => {
+        const amountInGr = Math.round(this.suggestedAmount * 100);
+        await this.service.updatePayment(this.collection!.id!, student.studentId, amountInGr);
+        await this.load(this.collection!.id!);
+    });
   }
 
-  async markUnpaid(student: StudentPaymentStatus, event: Event) {
+  async markUnpaid(student: StudentPaymentStatus, event: Event, slidingItem?: IonItemSliding) {
     event.stopPropagation();
-    if (!this.collection) return;
+    if (!this.collection) {
+        slidingItem?.close();
+        return;
+    }
 
-    // Set amount to 0, which backend treats as resetting to PENDING
-    await this.service.updatePayment(this.collection.id!, student.studentId, 0);
-    await this.load(this.collection.id!);
+    await this.itemAction.handleDelete(
+        slidingItem,
+        async () => {
+            // Set amount to 0, which backend treats as resetting to PENDING
+            await this.service.updatePayment(this.collection!.id!, student.studentId, 0);
+            await this.load(this.collection!.id!);
+        },
+        'Confirm Reset',
+        'Are you sure you want to revert this payment to pending?',
+        'Payment reset'
+    );
   }
 
   async openPayment(student: StudentPaymentStatus) {

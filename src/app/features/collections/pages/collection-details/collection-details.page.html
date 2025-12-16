@@ -34,9 +34,9 @@
     <ion-list>
         @if (segment === 'pending') {
             @for (student of pendingStudents; track student.studentId) {
-                <ion-item-sliding>
-                    <ion-item-options side="start" (ionSwipe)="quickPay(student, $event)">
-                        <ion-item-option color="success" expandable (click)="quickPay(student, $event)" [disabled]="suggestedAmount <= 0">
+                <ion-item-sliding #slidingItem>
+                    <ion-item-options side="start" (ionSwipe)="quickPay(student, $event, slidingItem)">
+                        <ion-item-option color="success" expandable (click)="quickPay(student, $event, slidingItem)" [disabled]="suggestedAmount <= 0">
                             <ion-icon slot="icon-only" name="checkmark-circle-outline"></ion-icon>
                         </ion-item-option>
                     </ion-item-options>
@@ -66,7 +66,7 @@
             }
         } @else {
             @for (student of paidStudents; track student.studentId) {
-                <ion-item-sliding>
+                <ion-item-sliding #slidingItemPaid>
                     <ion-item button (click)="openPayment(student)" class="student-item">
                         <div class="student-info">
                             <h3>{{ student.lastName }} {{ student.firstName }}</h3>
@@ -81,8 +81,8 @@
                         </div>
                     </ion-item>
 
-                    <ion-item-options side="end" (ionSwipe)="markUnpaid(student, $event)">
-                        <ion-item-option color="danger" expandable (click)="markUnpaid(student, $event)">
+                    <ion-item-options side="end" (ionSwipe)="markUnpaid(student, $event, slidingItemPaid)">
+                        <ion-item-option color="danger" expandable (click)="markUnpaid(student, $event, slidingItemPaid)">
                              <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
                         </ion-item-option>
                     </ion-item-options>

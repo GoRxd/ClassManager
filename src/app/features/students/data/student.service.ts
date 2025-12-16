@@ -6,7 +6,7 @@ import { Student } from './student.model';
 export class StudentService {
   private repo = inject(StudentRepository);
   
-  // To jest Twój stan - lista uczniów dostępna dla całej apki
+
   students = signal<Student[]>([]);
 
   constructor() {

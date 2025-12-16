@@ -135,6 +135,22 @@ export class CollectionRepository {
     }
   }
 
+  async update(id: number, collection: Partial<Collection>): Promise<void> {
+    const sql = `UPDATE collections SET title = ?, description = ?, target_amount_gr = ?, deadline_at = ? WHERE id = ?`;
+    await this.db.run(sql, [
+      collection.title,
+      collection.description,
+      collection.targetAmount,
+      collection.deadline || null,
+      id
+    ]);
+  }
+
+  async remove(id: number): Promise<void> {
+    await this.db.run('DELETE FROM payments WHERE collection_id = ?', [id]);
+    await this.db.run('DELETE FROM collections WHERE id = ?', [id]);
+  }
+
   async getStudentCollections(studentId: number): Promise<StudentCollectionSummary[]> {
     const sql = `
         SELECT 

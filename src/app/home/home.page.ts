@@ -5,14 +5,19 @@ import {
   IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonMenuButton,
   IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardSubtitle, 
   IonCardTitle, IonCardContent, IonList, IonItem, IonLabel, IonNote, 
-  IonIcon, IonRefresher, IonRefresherContent
+  IonIcon, IonRefresher, IonRefresherContent,
+  IonItemSliding, IonItemOptions, IonItemOption, ModalController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { arrowUpOutline, arrowDownOutline, walletOutline, timeOutline } from 'ionicons/icons';
+import { arrowUpOutline, arrowDownOutline, walletOutline, timeOutline, createOutline, trashOutline, peopleOutline } from 'ionicons/icons';
 import { StudentService } from '../features/students/data/student.service';
 import { CollectionService } from '../features/collections/data/collection.service';
 import { FinanceService } from '../features/finance/data/finance.service';
-import { TreasuryStatus } from '../features/finance/data/treasury.repository';
+import { ExpenseService } from '../features/expenses/services/expense.service';
+import { UiService } from '../core/services/ui.service';
+import { ItemActionService } from '../core/services/item-action.service';
+import { AddExpenseModalComponent } from '../features/expenses/components/add-expense-modal/add-expense-modal.component';
+import { Expense } from '../features/expenses/data/expense.repository';
 
 @Component({
   selector: 'app-home',
@@ -23,25 +28,29 @@ import { TreasuryStatus } from '../features/finance/data/treasury.repository';
     IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonMenuButton,
     IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardSubtitle, 
     IonCardTitle, IonCardContent, IonList, IonItem, IonLabel, IonNote, 
-    IonIcon, IonRefresher, IonRefresherContent
+    IonIcon, IonRefresher, IonRefresherContent,
+    IonItemSliding, IonItemOptions, IonItemOption
   ],
 })
 export class HomePage {
   private studentService = inject(StudentService);
   private collectionService = inject(CollectionService);
-  public financeService = inject(FinanceService); // Public to access signals directly if needed
+  public financeService = inject(FinanceService); 
+  private expenseService = inject(ExpenseService);
+  private uiService = inject(UiService);
+  private modalCtrl = inject(ModalController);
+  private itemAction = inject(ItemActionService);
   
   // Local signals/computed could be used, or just bind directly to service signals
   public activeStudents: WritableSignal<number> = signal(0);
   public activeCollections: WritableSignal<number> = signal(0);
   
-  // Finance service manages its own signals, we can alias them or use them directly in template
-  // For template simplicity, let's keep local aliases or simple accessors
+  // Finance service manages its own signals
   get treasury() { return this.financeService.treasury; }
   get recentExpenses() { return this.financeService.recentExpenses; }
 
   constructor() {
-    addIcons({ arrowUpOutline, arrowDownOutline, walletOutline, timeOutline });
+    addIcons({ arrowUpOutline, arrowDownOutline, walletOutline, timeOutline, createOutline, trashOutline, peopleOutline });
   }
 
   ionViewWillEnter() {
@@ -68,5 +77,46 @@ export class HomePage {
 
   handleRefresh(event: any) {
     this.loadData(event);
+  }
+
+  async edit(expense: Expense, slidingItem?: IonItemSliding) {
+    await this.itemAction.handleEdit(slidingItem, async () => {
+        const modal = await this.modalCtrl.create({
+            component: AddExpenseModalComponent,
+            componentProps: {
+              expense: expense
+            }
+        });
+      
+        modal.onWillDismiss().then(async (res) => {
+            if (res.role === 'confirm' && res.data) {
+              await this.expenseService.updateExpense(
+                expense.id,
+                res.data.title,
+                res.data.amount,
+                res.data.collectionId,
+                res.data.products || []
+              );
+              
+              await this.uiService.showToast('Expense updated successfully', 'success');
+              await this.loadData();
+            }
+        });
+      
+        await modal.present();
+    });
+  }
+
+  async confirmDelete(id: number, slidingItem?: IonItemSliding) {
+    await this.itemAction.handleDelete(
+        slidingItem,
+        async () => {
+             await this.expenseService.removeExpense(id);
+             await this.loadData();
+        },
+        'Confirm Delete',
+        'Are you sure you want to delete this expense?',
+        'Expense deleted'
+    );
   }
 }

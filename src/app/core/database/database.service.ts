@@ -19,29 +19,29 @@ export class DatabaseService {
     try {
       const platform = Capacitor.getPlatform();
 
-      // === KONFIGURACJA WEB (PRZEGLĄDARKA) ===
+      // === WEB CONFIGURATION ===
       if (platform === 'web') {
-        // 1. Sprawdź czy element już istnieje (żeby nie dodawać go 2 razy)
+
         const jeepSqlite = document.querySelector('jeep-sqlite');
         
         if (!jeepSqlite) {
-            // 2. Stwórz element dynamicznie
+
             const jeepEl = document.createElement('jeep-sqlite');
-            // WAŻNE: Włączamy autoSave - to zapobiega błędom utraty stanu
+            // IMPORTANT: Enable autoSave to prevent state loss.
             jeepEl.setAttribute('autoSave', 'true'); 
             document.body.appendChild(jeepEl);
             
-            // 3. Czekamy na definicję komponentu
+
             await customElements.whenDefined('jeep-sqlite');
-            console.log('✅ Element <jeep-sqlite> zdefiniowany');
+            console.log('✅ <jeep-sqlite> defined');
         }
 
-        // 4. Inicjalizujemy WebStore
+
         await this.sqlite.initWebStore();
         console.log('✅ WebStore initialized');
       }
 
-      // === TWORZENIE POŁĄCZENIA (WSPÓLNE) ===
+      // === CREATE CONNECTION ===
       this.db = await this.sqlite.createConnection(
         'class_manager_db',
         false,
@@ -50,41 +50,41 @@ export class DatabaseService {
         false
       );
 
-      // Otwarcie i SQL
+
       await this.db.open();
-      // === WAŻNE DLA WEBA: SPRAWDZENIE CZY STORE JEST OTWARTY ===
-      // Czasami createConnection jest szybsze niż initWebStore
+      // === WEB CHECK: IS STORE OPEN ===
+      // createConnection can be faster than initWebStore sometimes.
       if (platform === 'web') {
-          // Tu często był błąd "WebStore is not open yet"
-          // Wymuszamy sprawdzenie i ewentualnie zapis
+          // Handle "WebStore is not open yet" error
+          // Force check and save
           await this.sqlite.saveToStore('class_manager_db');
       }
 
       await this.db.execute(CREATE_TABLES_SQL);
       
-      // Zapis końcowy dla weba
+
       if (platform === 'web') {
         await this.sqlite.saveToStore('class_manager_db');
       }
 
-      console.log('✅ Baza danych gotowa! (Platforma: ' + platform + ')');
+      console.log('✅ Database ready! (Platform: ' + platform + ')');
       this.dbReady.set(true);
 
     } catch (e) {
-      console.error('❌ Krytyczny błąd bazy danych:', e);
-      // Jeśli błąd dotyczy "WebStore is not open", spróbuj odświeżyć stronę,
-      // bo czasem przeglądarka blokuje IndexedDB przy pierwszym loadzie.
+      console.error('❌ Critical database error:', e);
+      // If error is "WebStore is not open", try refreshing.
+      // Browser might block IndexedDB on first load.
     }
   }
 
   async query<T>(statement: string, values: any[] = []): Promise<T[]> {
-    if (!this.dbReady()) throw new Error('Baza nie jest gotowa!');
+    if (!this.dbReady()) throw new Error('Database not ready!');
     const result = await this.db.query(statement, values);
     return (result.values as T[]) || [];
   }
 
   async run(statement: string, values: any[] = []) {
-    if (!this.dbReady()) throw new Error('Baza nie jest gotowa!');
+    if (!this.dbReady()) throw new Error('Database not ready!');
     const result = await this.db.run(statement, values);
     
     if (Capacitor.getPlatform() === 'web') {

@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>New Collection</ion-title>
+    <ion-title>{{ isEditing ? 'Edit Collection' : 'New Collection' }}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="cancel()">
         <ion-icon name="close-outline"></ion-icon>
@@ -48,8 +48,8 @@
     </ion-input>
 
     <ion-button expand="block" size="large" (click)="confirm()" [disabled]="!canSave" class="save-btn">
-      <ion-icon slot="start" name="save-outline"></ion-icon>
-      Create Collection
+      <ion-icon slot="start" [name]="isEditing ? 'save-outline' : 'add-circle-outline'"></ion-icon>
+      {{ isEditing ? 'Save Changes' : 'Create Collection' }}
     </ion-button>
     
   </div>

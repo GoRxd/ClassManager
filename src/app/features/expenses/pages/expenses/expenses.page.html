@@ -24,9 +24,9 @@
 
     <ion-list [inset]="true">
       @for (expense of recentExpenses(); track expense.id) {
-        <ion-item-sliding>
-          <ion-item-options side="start" (ionSwipe)="edit(expense)">
-            <ion-item-option color="primary" expandable (click)="edit(expense)">
+        <ion-item-sliding #slidingItem>
+          <ion-item-options side="start" (ionSwipe)="edit(expense, slidingItem)">
+            <ion-item-option color="primary" expandable (click)="edit(expense, slidingItem)">
               <ion-icon slot="icon-only" name="create-outline"></ion-icon>
             </ion-item-option>
           </ion-item-options>
@@ -42,8 +42,8 @@
             </ion-note>
           </ion-item>
 
-          <ion-item-options side="end" (ionSwipe)="confirmDelete(expense.id)">
-            <ion-item-option color="danger" expandable (click)="confirmDelete(expense.id)">
+          <ion-item-options side="end" (ionSwipe)="confirmDelete(expense.id, slidingItem)">
+            <ion-item-option color="danger" expandable (click)="confirmDelete(expense.id, slidingItem)">
               <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
             </ion-item-option>
           </ion-item-options>
@@ -67,9 +67,9 @@
 
     <ion-list [inset]="true">
       @for (expense of allExpenses(); track expense.id) {
-        <ion-item-sliding>
-          <ion-item-options side="start" (ionSwipe)="edit(expense)">
-            <ion-item-option color="primary" expandable (click)="edit(expense)">
+        <ion-item-sliding #slidingItemHistory>
+          <ion-item-options side="start" (ionSwipe)="edit(expense, slidingItemHistory)">
+            <ion-item-option color="primary" expandable (click)="edit(expense, slidingItemHistory)">
               <ion-icon slot="icon-only" name="create-outline"></ion-icon>
             </ion-item-option>
           </ion-item-options>
@@ -85,8 +85,8 @@
             </ion-note>
           </ion-item>
 
-          <ion-item-options side="end" (ionSwipe)="confirmDelete(expense.id)">
-            <ion-item-option color="danger" expandable (click)="confirmDelete(expense.id)">
+          <ion-item-options side="end" (ionSwipe)="confirmDelete(expense.id, slidingItemHistory)">
+            <ion-item-option color="danger" expandable (click)="confirmDelete(expense.id, slidingItemHistory)">
               <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
             </ion-item-option>
           </ion-item-options>

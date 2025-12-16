@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { 
@@ -6,7 +6,8 @@ import {
   IonIcon, IonInput, ModalController 
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { closeOutline, saveOutline, callOutline, personAddOutline } from 'ionicons/icons';
+import { closeOutline, saveOutline, callOutline, personAddOutline, createOutline } from 'ionicons/icons';
+import { Student } from '../../data/student.model';
 
 @Component({
   selector: 'app-student-add-modal',
@@ -19,15 +20,29 @@ import { closeOutline, saveOutline, callOutline, personAddOutline } from 'ionico
     IonIcon, IonInput
   ]
 })
-export class StudentAddModalComponent {
+export class StudentAddModalComponent implements OnInit {
   private modalCtrl = inject(ModalController);
+
+  @Input() student?: Student;
 
   newName = '';
   newLastname = '';
   newPhone = '';
 
   constructor() {
-    addIcons({ closeOutline, saveOutline, callOutline, personAddOutline });
+    addIcons({ closeOutline, saveOutline, callOutline, personAddOutline, createOutline });
+  }
+
+  ngOnInit() {
+    if (this.student) {
+        this.newName = this.student.firstName;
+        this.newLastname = this.student.lastName;
+        this.newPhone = this.student.phone || '';
+    }
+  }
+
+  get isEditing(): boolean {
+    return !!this.student;
   }
 
   get isPhoneValid(): boolean {
@@ -47,10 +62,16 @@ export class StudentAddModalComponent {
   confirm() {
     if (!this.canSave) return;
 
-    this.modalCtrl.dismiss({
-      firstName: this.newName,
-      lastName: this.newLastname,
-      phone: this.newPhone ? this.newPhone.replace(/[\s-]/g, '') : undefined
-    }, 'confirm');
+    const data = {
+        firstName: this.newName,
+        lastName: this.newLastname,
+        phone: this.newPhone ? this.newPhone.replace(/[\s-]/g, '') : undefined
+    };
+
+    if (this.student) {
+        this.modalCtrl.dismiss({ ...this.student, ...data }, 'confirm');
+    } else {
+        this.modalCtrl.dismiss(data, 'confirm');
+    }
   }
 }

@@ -31,7 +31,7 @@
         </ion-chip>
     </div>
 
-    <ion-button expand="block" (click)="confirm()">
+    <ion-button expand="block" (click)="confirm()" [disabled]="amount < 0">
         <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
         Confirm Payment
     </ion-button>
