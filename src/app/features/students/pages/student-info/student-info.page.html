@@ -1,13 +1,4 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/students"></ion-back-button>
-    </ion-buttons>
-    <ion-title>
-      Student Details
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header title="Student Details" backDefaultHref="/students"></app-header>
 
 <ion-content [fullscreen]="true">
   
@@ -27,7 +18,7 @@
         <div class="meta">
             @if (totalDebt() > 0) {
                <span class="debt-warning">
-                 To pay: <strong>{{ formatService.formatMoney(totalDebt()) }} PLN</strong>
+                 To pay: <strong>{{ formatService.formatMoney(totalDebt()) }} {{ currency() }}</strong>
                </span>
                <span class="unpaid-count">
                  ({{ unpaidCount() }} pending collections)
@@ -64,14 +55,14 @@
               <div slot="end" class="payment-action">
                  @if (col.status !== 'PAID') {
                     <div class="cost">
-                        {{ formatService.formatMoney(col.perStudentCost!) }} PLN
+                        {{ formatService.formatMoney(col.perStudentCost!) }} {{ currency() }}
                     </div>
                     <ion-button size="small" color="primary">
                         Pay
                     </ion-button>
                  } @else {
                      <ion-note color="success" class="paid-amount">
-                         {{ formatService.formatMoney(col.paidAmount) }} PLN
+                         {{ formatService.formatMoney(col.paidAmount) }} {{ currency() }}
                      </ion-note>
                      <ion-badge color="success">PAID</ion-badge>
                  }

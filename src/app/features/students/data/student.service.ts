@@ -5,7 +5,6 @@ import { Student } from './student.model';
 @Injectable({ providedIn: 'root' })
 export class StudentService {
   private repo = inject(StudentRepository);
-  
 
   students = signal<Student[]>([]);
 

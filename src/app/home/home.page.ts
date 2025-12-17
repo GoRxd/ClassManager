@@ -18,6 +18,8 @@ import { UiService } from '../core/services/ui.service';
 import { ItemActionService } from '../core/services/item-action.service';
 import { AddExpenseModalComponent } from '../features/expenses/components/add-expense-modal/add-expense-modal.component';
 import { Expense } from '../features/expenses/data/expense.repository';
+import { SettingsService } from '../core/settings/settings.service';
+import { AppHeaderComponent } from '../core/components/app-header/app-header.component';
 
 @Component({
   selector: 'app-home',
@@ -29,7 +31,8 @@ import { Expense } from '../features/expenses/data/expense.repository';
     IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardSubtitle, 
     IonCardTitle, IonCardContent, IonList, IonItem, IonLabel, IonNote, 
     IonIcon, IonRefresher, IonRefresherContent,
-    IonItemSliding, IonItemOptions, IonItemOption
+    IonItemSliding, IonItemOptions, IonItemOption,
+    AppHeaderComponent
   ],
 })
 export class HomePage {
@@ -41,7 +44,9 @@ export class HomePage {
   private modalCtrl = inject(ModalController);
   private itemAction = inject(ItemActionService);
   
-  // Local signals/computed could be used, or just bind directly to service signals
+  public settingsService = inject(SettingsService); // Public so template can access methods if needed, but safer to expose signal
+  public currency = this.settingsService.currency;
+
   public activeStudents: WritableSignal<number> = signal(0);
   public activeCollections: WritableSignal<number> = signal(0);
   

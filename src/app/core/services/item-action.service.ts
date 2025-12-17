@@ -26,8 +26,6 @@ export class ItemActionService {
     successMessage: string = 'Item deleted'
   ): Promise<void> {
     
-
-    
     const confirmed = await this.uiService.showConfirm(title, message);
 
     // Close the slide regardless of choice

@@ -16,6 +16,8 @@ import { CollectionAddModalComponent } from '../../components/collection-add-mod
 
 import { UiService } from '../../../../core/services/ui.service';
 import { ItemActionService } from '../../../../core/services/item-action.service';
+import { SettingsService } from '../../../../core/settings/settings.service';
+import { AppHeaderComponent } from '../../../../core/components/app-header/app-header.component';
 
 @Component({
   selector: 'app-collection-list',
@@ -28,7 +30,8 @@ import { ItemActionService } from '../../../../core/services/item-action.service
     IonButton, IonIcon, IonButtons, IonMenuButton,
     IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent,
     IonRefresher, IonRefresherContent,
-    IonFab, IonFabButton, IonItemSliding, IonItemOptions, IonItemOption, IonItem
+    IonFab, IonFabButton, IonItemSliding, IonItemOptions, IonItemOption, IonItem,
+    AppHeaderComponent
   ]
 })
 export class CollectionListPage {
@@ -36,6 +39,9 @@ export class CollectionListPage {
   modalCtrl = inject(ModalController);
   uiService = inject(UiService);
   itemAction = inject(ItemActionService);
+  settingsService = inject(SettingsService);
+
+  currency = this.settingsService.currency;
 
   constructor() {
     addIcons({ walletOutline, addOutline, timeOutline, add, createOutline, trashOutline });

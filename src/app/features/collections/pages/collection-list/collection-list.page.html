@@ -1,16 +1,10 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>Collections</ion-title>
-    <ion-buttons slot="end">
+<app-header title="Collections" [isRoot]="true">
+  <ion-buttons slot="end">
       <!-- <ion-button (click)="presentAddModal()">
         <ion-icon slot="icon-only" name="add-outline"></ion-icon>
       </ion-button> -->
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+  </ion-buttons>
+</app-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
   <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
@@ -26,7 +20,7 @@
   } @else {
     <ion-list lines="none" style="background: transparent;">
       @for (col of service.collections(); track col.id) {
-        <ion-item-sliding class="ion-margin-bottom" #slidingItem>
+        <ion-item-sliding #slidingItem>
           <ion-item-options side="start" (ionSwipe)="edit(col, slidingItem)">
             <ion-item-option color="primary" expandable (click)="edit(col, slidingItem)">
               <ion-icon slot="icon-only" name="create-outline"></ion-icon>
@@ -44,7 +38,7 @@
                     </span>
                     <span class="deadline" *ngIf="!col.deadline">No deadline</span>
 
-                    <span class="amount">{{ (col.targetAmount / 100) | currency:'PLN ':'symbol':'1.0-0' }}</span>
+                    <span class="amount">{{ (col.targetAmount / 100) | number:'1.0-0' }} {{ currency() }}</span>
                 </ion-card-subtitle>
               </ion-card-header>
               <ion-card-content>

@@ -5,15 +5,19 @@ import { ActivatedRoute } from '@angular/router';
 import {
   IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton,
   IonList, IonListHeader, IonLabel, IonItem, IonNote, IonBadge, ModalController, IonButton, IonIcon,
-  IonSegment, IonSegmentButton, IonItemSliding, IonItemOptions, IonItemOption
+  IonSegment, IonSegmentButton, IonItemSliding, IonItemOptions, IonItemOption, IonProgressBar
 } from '@ionic/angular/standalone';
 import { arrowBackOutline, checkmarkCircleOutline, closeCircleOutline } from 'ionicons/icons';
+import { SettingsService } from '../../../../core/settings/settings.service';
+
 import { CollectionService } from '../../data/collection.service';
 import { Collection } from '../../data/collection.model';
 import { StudentPaymentStatus } from '../../data/payment-status.model';
 import { PaymentModalComponent } from '../../components/payment-modal/payment-modal.component';
 import { addIcons } from 'ionicons';
 import { ItemActionService } from '../../../../core/services/item-action.service';
+
+import { AppHeaderComponent } from '../../../../core/components/app-header/app-header.component';
 
 @Component({
   selector: 'app-collection-details',
@@ -23,8 +27,9 @@ import { ItemActionService } from '../../../../core/services/item-action.service
   imports: [
     CommonModule, FormsModule,
     IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton,
-    IonList, IonListHeader, IonLabel, IonItem, IonNote, IonBadge, IonButton, IonIcon, IonSegment, IonSegmentButton,
-    IonItemSliding, IonItemOptions, IonItemOption
+    IonList, IonLabel, IonItem, IonNote, IonBadge, IonButton, IonIcon, IonSegment, IonSegmentButton,
+    IonItemSliding, IonItemOptions, IonItemOption, IonProgressBar,
+    AppHeaderComponent
   ]
 })
 export class CollectionDetailsPage implements OnInit {
@@ -32,14 +37,26 @@ export class CollectionDetailsPage implements OnInit {
   private service = inject(CollectionService);
   private modalCtrl = inject(ModalController);
   private itemAction = inject(ItemActionService);
+  private settingsService = inject(SettingsService);
 
   collection: Collection | undefined;
   payments: StudentPaymentStatus[] = [];
   suggestedAmount: number = 0;
   segment: 'pending' | 'paid' = 'pending';
+  
+  currency = this.settingsService.currency;
 
   constructor() {
     addIcons({ arrowBackOutline, checkmarkCircleOutline, closeCircleOutline });
+  }
+
+  get totalCollected() {
+    return this.payments.reduce((sum, p) => sum + (p.paidAmount || 0), 0);
+  }
+
+  get progress() {
+    if (!this.collection || this.collection.targetAmount <= 0) return 0;
+    return this.totalCollected / this.collection.targetAmount;
   }
 
   get pendingStudents() {

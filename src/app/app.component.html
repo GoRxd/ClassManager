@@ -46,10 +46,12 @@
       </ion-list>
       
       <div class="menu-footer">
-        <ion-item button detail="false" lines="none">
-            <ion-icon slot="start" name="settings-outline"></ion-icon>
-            <ion-label>Settings</ion-label>
-        </ion-item>
+        <ion-menu-toggle auto-hide="false">
+            <ion-item button detail="false" lines="none" routerLink="/settings">
+                <ion-icon slot="start" name="settings-outline"></ion-icon>
+                <ion-label>Settings</ion-label>
+            </ion-item>
+        </ion-menu-toggle>
       </div>
     </ion-content>
   </ion-menu>

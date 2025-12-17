@@ -30,7 +30,7 @@
     </ion-textarea>
 
     <ion-input 
-      label="Target Amount (PLN)"
+      [label]="'Target Amount (' + currency() + ')'"
       labelPlacement="floating"
       fill="outline"
       type="number"

@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { SettingsService } from '../../../../core/settings/settings.service';
 import { 
   IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, 
   IonIcon, IonInput, IonTextarea, ModalController 
@@ -21,6 +22,9 @@ import { Collection } from '../../data/collection.model';
   ]
 })
 export class CollectionAddModalComponent implements OnInit {
+  private settingsService = inject(SettingsService);
+  currency = this.settingsService.currency;
+  
   @Input() collection?: Collection;
 
   title = '';

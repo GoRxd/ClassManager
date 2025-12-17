@@ -1,13 +1,4 @@
-<ion-header [translucent]="true" class="ion-no-border">
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start" class="menu-btn-container">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>
-      Dashboard
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header title="Dashboard" [isRoot]="true"></app-header>
 
 <ion-content [fullscreen]="true" class="ion-padding-vertical">
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
@@ -26,7 +17,7 @@
       <ion-card-header>
         <ion-card-subtitle>Total Balance</ion-card-subtitle>
         <ion-card-title>
-          <span class="currency-symbol">PLN </span>
+          <span class="currency-symbol">{{ currency() }} </span>
           <span class="currency-value">{{ (treasury().current_balance / 100) | number:'1.2-2' }}</span>
         </ion-card-title>
       </ion-card-header>
@@ -36,7 +27,7 @@
             <ion-icon name="arrow-up-outline"></ion-icon>
             <div>
               <span class="label">Collected</span>
-              <span class="value">{{ (treasury().total_income / 100) | currency:'PLN ':'symbol':'1.0-0' }}</span>
+              <span class="value">{{ (treasury().total_income / 100) | currency:(currency() + ' '):'symbol':'1.0-0' }}</span>
             </div>
           </div>
           <div class="stat-divider"></div>
@@ -44,7 +35,7 @@
             <ion-icon name="arrow-down-outline"></ion-icon>
             <div>
               <span class="label">Spent</span>
-              <span class="value">{{ (treasury().total_expenses / 100) | currency:'PLN ':'symbol':'1.0-0' }}</span>
+              <span class="value">{{ (treasury().total_expenses / 100) | currency:(currency() + ' '):'symbol':'1.0-0' }}</span>
             </div>
           </div>
         </div>
@@ -103,7 +94,7 @@
           <p>{{ expense.created_at * 1000 | date:'mediumDate' }}</p>
         </ion-label>
         <ion-note slot="end" color="danger">
-        -{{ (expense.amount_gr / 100) | currency:'PLN ':'symbol':'1.2-2' }}
+        -{{ (expense.amount_gr / 100) | currency:(currency() + ' '):'symbol':'1.2-2' }}
         </ion-note>
       </ion-item>
 

@@ -4,7 +4,6 @@ ion-fab-button {
 }
 
 .collection-card {
-  margin-bottom: 20px;
   border-radius: 16px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.06);
 
@@ -54,6 +53,6 @@ ion-fab-button {
 
 ion-item-sliding {
   border-radius: 16px;
-  
-
+  overflow: hidden;
+  margin-bottom: 20px;
 }

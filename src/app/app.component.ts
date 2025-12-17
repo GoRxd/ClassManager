@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IonApp, IonRouterOutlet, IonMenu, IonContent, IonList, IonItem, IonIcon, IonLabel, IonMenuToggle } from '@ionic/angular/standalone';
 import { DatabaseService } from './core/database/database.service';
+import { SettingsService } from './core/settings/settings.service';
 import { addIcons } from 'ionicons';
 import { homeOutline, peopleOutline, walletOutline, statsChartOutline, settingsOutline, receiptOutline } from 'ionicons/icons';
 
@@ -14,6 +15,7 @@ import { homeOutline, peopleOutline, walletOutline, statsChartOutline, settingsO
 })
 export class AppComponent {
   private dbService = inject(DatabaseService);
+  private settingsService = inject(SettingsService);
 
   constructor() {
     addIcons({ homeOutline, peopleOutline, walletOutline, statsChartOutline, settingsOutline, receiptOutline });

@@ -6,6 +6,7 @@ import { addIcons } from 'ionicons';
 import { add, trashOutline } from 'ionicons/icons';
 import { CollectionService } from '../../../collections/data/collection.service';
 import { Expense } from '../../data/expense.repository';
+import { SettingsService } from '../../../../core/settings/settings.service';
 
 @Component({
   selector: 'app-add-expense-modal',
@@ -23,6 +24,9 @@ import { Expense } from '../../data/expense.repository';
 export class AddExpenseModalComponent implements OnInit {
   private modalCtrl = inject(ModalController);
   public collectionService = inject(CollectionService);
+  private settingsService = inject(SettingsService);
+  
+  currency = this.settingsService.currency;
   
   @Input() preselectedCollectionId?: number;
   @Input() expense?: Expense;

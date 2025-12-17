@@ -13,15 +13,19 @@ import { addIcons } from 'ionicons';
 import { calendarOutline, arrowBackOutline, timeOutline, walletOutline, add, createOutline, trashOutline } from 'ionicons/icons';
 import { AddExpenseModalComponent } from '../../components/add-expense-modal/add-expense-modal.component';
 import { ItemActionService } from '../../../../core/services/item-action.service';
+import { SettingsService } from '../../../../core/settings/settings.service';
+
+import { AppHeaderComponent } from '../../../../core/components/app-header/app-header.component';
 
 @Component({
   selector: 'app-expenses',
   standalone: true,
   imports: [
     CommonModule,
-    IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton, 
-    IonList, IonItem, IonLabel, IonNote, IonIcon, IonButton, IonGrid, IonRow, IonCol,
-    IonFab, IonFabButton, IonItemSliding, IonItemOptions, IonItemOption
+    IonContent, IonHeader, IonTitle, IonToolbar,
+    IonList, IonItem, IonLabel, IonNote, IonIcon, IonButton,
+    IonFab, IonFabButton, IonItemSliding, IonItemOptions, IonItemOption,
+    AppHeaderComponent
   ],
   templateUrl: './expenses.page.html',
   styleUrls: ['./expenses.page.scss']
@@ -31,10 +35,12 @@ export class ExpensesPage implements OnInit {
   private modalCtrl = inject(ModalController);
   private uiService = inject(UiService);
   private itemAction = inject(ItemActionService);
+  private settingsService = inject(SettingsService);
 
   recentExpenses = signal<Expense[]>([]);
   allExpenses = signal<Expense[]>([]);
   viewMode = signal<'recent' | 'history'>('recent');
+  currency = this.settingsService.currency;
 
   constructor() {
     addIcons({ calendarOutline, arrowBackOutline, timeOutline, walletOutline, add, createOutline, trashOutline });

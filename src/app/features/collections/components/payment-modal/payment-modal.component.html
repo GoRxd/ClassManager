@@ -16,7 +16,7 @@
     </ion-note>
 
     <ion-input
-        label="Amount (PLN)"
+        [label]="'Amount (' + currency() + ')'"
         labelPlacement="floating"
         fill="outline"
         type="number"

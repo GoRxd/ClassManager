@@ -13,6 +13,9 @@ import { Student } from '../../data/student.model';
 import { UiService } from '../../../../core/services/ui.service';
 import { FormatService } from '../../../../core/services/format.service';
 import { StudentCollectionSummary } from '../../../collections/data/collection.repository';
+import { SettingsService } from '../../../../core/settings/settings.service';
+
+import { AppHeaderComponent } from '../../../../core/components/app-header/app-header.component';
 
 @Component({
   selector: 'app-student-info',
@@ -21,7 +24,8 @@ import { StudentCollectionSummary } from '../../../collections/data/collection.r
     CommonModule, 
     IonContent, IonHeader, IonToolbar, IonButtons, IonBackButton, 
     IonTitle, 
-    IonList, IonItem, IonLabel, IonNote, IonIcon, IonButton, IonBadge, IonSkeletonText
+    IonList, IonItem, IonLabel, IonNote, IonIcon, IonButton, IonBadge, IonSkeletonText,
+    AppHeaderComponent
   ],
   templateUrl: './student-info.page.html',
   styleUrls: ['./student-info.page.scss']
@@ -32,6 +36,8 @@ export class StudentInfoPage implements OnInit {
   private collectionService = inject(CollectionService);
   private uiService = inject(UiService);
   public formatService = inject(FormatService);
+  private settingsService = inject(SettingsService);
+  currency = this.settingsService.currency;
 
   student = signal<Student | undefined>(undefined);
   collections = signal<StudentCollectionSummary[]>([]);

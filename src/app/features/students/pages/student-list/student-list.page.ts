@@ -18,6 +18,7 @@ import { StudentService } from '../../data/student.service';
 import { UiService } from '../../../../core/services/ui.service';
 import { FormatService } from '../../../../core/services/format.service';
 import { ItemActionService } from '../../../../core/services/item-action.service';
+import { AppHeaderComponent } from '../../../../core/components/app-header/app-header.component';
 
 @Component({
   selector: 'app-student-list',
@@ -29,7 +30,8 @@ import { ItemActionService } from '../../../../core/services/item-action.service
     IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonItem, 
     IonLabel, IonButton, IonIcon, IonButtons, IonMenuButton,
     IonGrid, IonRow, IonCol, IonItemSliding, IonItemOptions, IonItemOption,
-    IonFab, IonFabButton
+    IonFab, IonFabButton,
+    AppHeaderComponent
   ]
 })
 export class StudentListPage {
