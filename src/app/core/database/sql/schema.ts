@@ -33,6 +33,7 @@ export const CREATE_TABLES_SQL = `
     CREATE TABLE IF NOT EXISTS expenses (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
+        description TEXT,
         amount_gr INTEGER NOT NULL,
         collection_id INTEGER,
         created_at INTEGER DEFAULT (strftime('%s', 'now')),

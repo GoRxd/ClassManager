@@ -12,6 +12,7 @@ export interface ExpenseProduct {
 export interface Expense {
   id: number;
   title: string;
+  description?: string;
   amount_gr: number;
   collection_id: number;
   created_at: number;
@@ -28,19 +29,19 @@ export class ExpenseRepository {
     return this.attachProducts(expenses);
   }
 
-  async addExpense(title: string, amountGr: number, collectionId: number, products: {name: string, quantity: number, unit_price_gr: number}[] = []): Promise<void> {     
-      const sql = `INSERT INTO expenses (title, amount_gr, collection_id) VALUES (?, ?, ?)`;
-      
-      const result = await this.db.run(sql, [title, amountGr, collectionId]);
-      
-      // In capacitor-sqlite, result.changes.lastId contains the ID of inserted row
-      const expenseId = result.changes?.lastId;
+  async addExpense(title: string, amountGr: number, collectionId: number, products: { name: string, quantity: number, unit_price_gr: number }[] = [], description?: string): Promise<void> {
+    const sql = `INSERT INTO expenses (title, amount_gr, collection_id, description) VALUES (?, ?, ?, ?)`;
 
-      if (expenseId && products.length > 0) {
-        await this.addProducts(expenseId, products);
-      }
-      
-      console.log('Zapisano wydatek w pamięci telefonu!');
+    const result = await this.db.run(sql, [title, amountGr, collectionId, description || null]);
+
+    // In capacitor-sqlite, result.changes.lastId contains the ID of inserted row
+    const expenseId = result.changes?.lastId;
+
+    if (expenseId && products.length > 0) {
+      await this.addProducts(expenseId, products);
+    }
+
+    console.log('Zapisano wydatek w pamięci telefonu!');
   }
 
   async removeExpense(expenseId: number): Promise<void> {
@@ -52,13 +53,13 @@ export class ExpenseRepository {
     await this.db.run(sql, [expenseId]);
   }
 
-  async updateExpense(id: number, title: string, amountGr: number, collectionId: number, products: {name: string, quantity: number, unit_price_gr: number}[] = []): Promise<void> {
-    const sql = `UPDATE expenses SET title = ?, amount_gr = ?, collection_id = ? WHERE id = ?`;
-    await this.db.run(sql, [title, amountGr, collectionId, id]);
+  async updateExpense(id: number, title: string, amountGr: number, collectionId: number, products: { name: string, quantity: number, unit_price_gr: number }[] = [], description?: string): Promise<void> {
+    const sql = `UPDATE expenses SET title = ?, amount_gr = ?, collection_id = ?, description = ? WHERE id = ?`;
+    await this.db.run(sql, [title, amountGr, collectionId, description || null, id]);
 
     // Replace products: delete old, add new
     await this.db.run('DELETE FROM expense_products WHERE expense_id = ?', [id]);
-    
+
     if (products.length > 0) {
       await this.addProducts(id, products);
     }
@@ -76,7 +77,7 @@ export class ExpenseRepository {
     return this.attachProducts(expenses);
   }
 
-  private async addProducts(expenseId: number, products: {name: string, quantity: number, unit_price_gr: number}[]) {
+  private async addProducts(expenseId: number, products: { name: string, quantity: number, unit_price_gr: number }[]) {
     // Bulk insert would be better but simple loop is fine for small scale
     for (const p of products) {
       await this.db.run(
@@ -88,7 +89,7 @@ export class ExpenseRepository {
 
   private async attachProducts(expenses: Expense[]): Promise<Expense[]> {
     if (expenses.length === 0) return [];
-    
+
     const ids = expenses.map(e => e.id).join(',');
     const sql = `SELECT * FROM expense_products WHERE expense_id IN (${ids})`;
     const products = await this.db.query<ExpenseProduct>(sql);

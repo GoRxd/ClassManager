@@ -1,7 +1,7 @@
 import { Component, Input, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ModalController, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonList, IonItem, IonSelect, IonSelectOption, IonInput, IonIcon, IonLabel, IonGrid, IonRow, IonCol } from '@ionic/angular/standalone';
+import { ModalController, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonList, IonItem, IonSelect, IonSelectOption, IonInput, IonIcon, IonLabel, IonGrid, IonRow, IonCol, IonTextarea } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { add, trashOutline } from 'ionicons/icons';
 import { CollectionService } from '../../../collections/data/collection.service';
@@ -14,9 +14,9 @@ import { SettingsService } from '../../../../core/settings/settings.service';
   imports: [
     CommonModule,
     FormsModule,
-    IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, 
+    IonHeader, IonToolbar, IonTitle, IonButtons, IonButton,
     IonContent, IonList, IonItem, IonSelect, IonSelectOption, IonInput,
-    IonIcon, IonLabel, IonGrid, IonRow, IonCol
+    IonIcon, IonLabel, IonGrid, IonRow, IonCol, IonTextarea
   ],
   templateUrl: './add-expense-modal.component.html',
   styleUrls: ['./add-expense-modal.component.scss']
@@ -25,16 +25,17 @@ export class AddExpenseModalComponent implements OnInit {
   private modalCtrl = inject(ModalController);
   public collectionService = inject(CollectionService);
   private settingsService = inject(SettingsService);
-  
+
   currency = this.settingsService.currency;
-  
+
   @Input() preselectedCollectionId?: number;
   @Input() expense?: Expense;
 
   selectedCollectionId?: number;
   title: string = '';
+  description: string = '';
   amount: number | null = null;
-  
+
   products: { name: string; quantity: number; unitPrice: number }[] = [];
 
   constructor() {
@@ -45,8 +46,9 @@ export class AddExpenseModalComponent implements OnInit {
     if (this.expense) {
       this.selectedCollectionId = this.expense.collection_id;
       this.title = this.expense.title;
+      this.description = this.expense.description || '';
       this.amount = this.expense.amount_gr / 100;
-      
+
       if (this.expense.products) {
         this.products = this.expense.products.map(p => ({
           name: p.name,
@@ -84,12 +86,13 @@ export class AddExpenseModalComponent implements OnInit {
 
   confirm() {
     if (!this.selectedCollectionId || !this.title || this.amount === null || this.amount <= 0) {
-      return; 
+      return;
     }
 
     const data = {
       collectionId: this.selectedCollectionId,
       title: this.title,
+      description: this.description,
       amount: this.amount,
       products: this.products.map(p => ({
         name: p.name,
@@ -99,9 +102,9 @@ export class AddExpenseModalComponent implements OnInit {
     };
 
     if (this.expense) {
-        this.modalCtrl.dismiss({ ...this.expense, ...data, id: this.expense.id}, 'confirm');
+      this.modalCtrl.dismiss({ ...this.expense, ...data, id: this.expense.id }, 'confirm');
     } else {
-        this.modalCtrl.dismiss(data, 'confirm');
+      this.modalCtrl.dismiss(data, 'confirm');
     }
   }
 }

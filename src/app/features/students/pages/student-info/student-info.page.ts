@@ -1,8 +1,8 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { 
-  IonContent, IonHeader, IonToolbar, IonButtons, IonBackButton, 
+import {
+  IonContent, IonHeader, IonToolbar, IonButtons, IonBackButton,
   IonTitle, IonList, IonItem, IonLabel, IonNote, IonIcon, IonButton, IonBadge, IonSkeletonText
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -14,6 +14,7 @@ import { UiService } from '../../../../core/services/ui.service';
 import { FormatService } from '../../../../core/services/format.service';
 import { StudentCollectionSummary } from '../../../collections/data/collection.repository';
 import { SettingsService } from '../../../../core/settings/settings.service';
+import { PaymentManagementService } from '../../../../core/services/payment-management.service';
 
 import { AppHeaderComponent } from '../../../../core/components/app-header/app-header.component';
 
@@ -21,9 +22,9 @@ import { AppHeaderComponent } from '../../../../core/components/app-header/app-h
   selector: 'app-student-info',
   standalone: true,
   imports: [
-    CommonModule, 
-    IonContent, IonHeader, IonToolbar, IonButtons, IonBackButton, 
-    IonTitle, 
+    CommonModule,
+    IonContent, IonHeader, IonToolbar, IonButtons, IonBackButton,
+    IonTitle,
     IonList, IonItem, IonLabel, IonNote, IonIcon, IonButton, IonBadge, IonSkeletonText,
     AppHeaderComponent
   ],
@@ -37,6 +38,7 @@ export class StudentInfoPage implements OnInit {
   private uiService = inject(UiService);
   public formatService = inject(FormatService);
   private settingsService = inject(SettingsService);
+  private paymentManagement = inject(PaymentManagementService);
   currency = this.settingsService.currency;
 
   student = signal<Student | undefined>(undefined);
@@ -79,63 +81,62 @@ export class StudentInfoPage implements OnInit {
   }
 
   calculateDebt(cols: StudentCollectionSummary[], studentCount: number) {
-     if (studentCount === 0) {
-        this.totalDebt.set(0);
-        this.unpaidCount.set(0);
-        return;
-     }
+    if (studentCount === 0) {
+      this.totalDebt.set(0);
+      this.unpaidCount.set(0);
+      return;
+    }
 
-     let debt = 0;
-     let unpaid = 0;
-     
-     for (const c of cols) {
-        const perStudentCost = Math.round(c.targetAmount / studentCount);
-        // Store the calculated cost on the object for easy access in template/logic
-        c.perStudentCost = perStudentCost;
+    let debt = 0;
+    let unpaid = 0;
 
-        if (c.status !== 'PAID') {
-            debt += (perStudentCost - c.paidAmount);
-            unpaid++;
-        }
-     }
-     this.totalDebt.set(debt);
-     this.unpaidCount.set(unpaid);
+    for (const c of cols) {
+      const perStudentCost = Math.round(c.targetAmount / studentCount);
+      // Store the calculated cost on the object for easy access in template/logic
+      c.perStudentCost = perStudentCost;
+
+      if (c.status !== 'PAID') {
+        debt += (perStudentCost - c.paidAmount);
+        unpaid++;
+      }
+    }
+    this.totalDebt.set(debt);
+    this.unpaidCount.set(unpaid);
   }
 
   async handleCollectionClick(collection: StudentCollectionSummary) {
-     if (collection.status === 'PAID') {
-         await this.markAsUnpaid(collection);
-     } else {
-         await this.markAsPaid(collection);
-     }
+    if (collection.status === 'PAID') {
+      await this.markAsUnpaid(collection);
+    } else {
+      await this.markAsPaid(collection);
+    }
   }
 
   async markAsPaid(collection: StudentCollectionSummary) {
-     const s = this.student();
-     if (!s || !s.id) return;
-     
-     // Use the calculated per-student cost
-     const amountToPay = collection.perStudentCost || collection.targetAmount;
+    const s = this.student();
+    if (!s || !s.id) return;
 
-     await this.collectionService.updatePayment(collection.collectionId, s.id, amountToPay);
-     this.uiService.showToast(`Payment marked for: ${collection.title}`, 'success');
-     await this.loadData(s.id);
+    // Use the calculated per-student cost
+    const amountToPay = collection.perStudentCost || collection.targetAmount;
+
+    await this.collectionService.updatePayment(collection.collectionId, s.id, amountToPay);
+    this.uiService.showToast(`Payment marked for: ${collection.title}`, 'success');
+    await this.loadData(s.id);
   }
 
   async markAsUnpaid(collection: StudentCollectionSummary) {
-      const s = this.student();
-      if (!s || !s.id) return;
+    const s = this.student();
+    if (!s || !s.id) return;
+    const studentId = s.id;
 
-      const confirmed = await this.uiService.showConfirm(
-          'Undo Payment',
-          `Are you sure you want to mark "${collection.title}" as unpaid?`,
-          'Undo Payment'
-      );
-
-      if (confirmed) {
-          await this.collectionService.updatePayment(collection.collectionId, s.id, 0);
-          this.uiService.showToast(`Payment undone for: ${collection.title}`, 'medium');
-          await this.loadData(s.id);
+    await this.paymentManagement.revertPayment(
+      collection.collectionId,
+      studentId,
+      `${s.firstName} ${s.lastName}`,
+      collection.paidAmount || 0,
+      async () => {
+        await this.loadData(studentId);
       }
+    );
   }
 }

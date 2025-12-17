@@ -23,17 +23,17 @@ export class DatabaseService {
       if (platform === 'web') {
 
         const jeepSqlite = document.querySelector('jeep-sqlite');
-        
+
         if (!jeepSqlite) {
 
-            const jeepEl = document.createElement('jeep-sqlite');
-            // IMPORTANT: Enable autoSave to prevent state loss.
-            jeepEl.setAttribute('autoSave', 'true'); 
-            document.body.appendChild(jeepEl);
-            
+          const jeepEl = document.createElement('jeep-sqlite');
+          // IMPORTANT: Enable autoSave to prevent state loss.
+          jeepEl.setAttribute('autoSave', 'true');
+          document.body.appendChild(jeepEl);
 
-            await customElements.whenDefined('jeep-sqlite');
-            console.log('✅ <jeep-sqlite> defined');
+
+          await customElements.whenDefined('jeep-sqlite');
+          console.log('✅ <jeep-sqlite> defined');
         }
 
 
@@ -55,13 +55,20 @@ export class DatabaseService {
       // === WEB CHECK: IS STORE OPEN ===
       // createConnection can be faster than initWebStore sometimes.
       if (platform === 'web') {
-          // Handle "WebStore is not open yet" error
-          // Force check and save
-          await this.sqlite.saveToStore('class_manager_db');
+        // Handle "WebStore is not open yet" error
+        // Force check and save
+        await this.sqlite.saveToStore('class_manager_db');
       }
 
       await this.db.execute(CREATE_TABLES_SQL);
-      
+
+      // MIGRATION: Ensure 'description' column exists in 'expenses'
+      try {
+        await this.db.run('ALTER TABLE expenses ADD COLUMN description TEXT');
+      } catch (e) {
+        // Ignore error if column likely already exists
+      }
+
 
       if (platform === 'web') {
         await this.sqlite.saveToStore('class_manager_db');
@@ -86,7 +93,7 @@ export class DatabaseService {
   async run(statement: string, values: any[] = []) {
     if (!this.dbReady()) throw new Error('Database not ready!');
     const result = await this.db.run(statement, values);
-    
+
     if (Capacitor.getPlatform() === 'web') {
       await this.sqlite.saveToStore('class_manager_db');
     }

@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Expense } from '../../data/expense.repository';
 import { ExpenseService } from '../../services/expense.service';
 import { UiService } from '../../../../core/services/ui.service';
-import { 
-  IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton, 
+import {
+  IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton,
   IonList, IonItem, IonLabel, IonNote, IonIcon, IonButton, IonGrid, IonRow, IonCol,
   IonFab, IonFabButton, ModalController,
   IonItemSliding, IonItemOptions, IonItemOption
@@ -50,6 +50,10 @@ export class ExpensesPage implements OnInit {
     await this.loadRecent();
   }
 
+  async ionViewWillEnter() {
+    await this.refreshList();
+  }
+
   async loadRecent() {
     const expenses = await this.expenseService.getRecent(5);
     this.recentExpenses.set(expenses);
@@ -74,12 +78,13 @@ export class ExpensesPage implements OnInit {
       if (res.role === 'confirm' && res.data) {
         // Service handles conversion
         await this.expenseService.addExpense(
-          res.data.title, 
-          res.data.amount, 
+          res.data.title,
+          res.data.amount,
           res.data.collectionId,
-          res.data.products || []
+          res.data.products || [],
+          res.data.description
         );
-        
+
         await this.uiService.showToast('Expense added successfully', 'success');
         await this.refreshList();
       }
@@ -90,42 +95,43 @@ export class ExpensesPage implements OnInit {
 
   async edit(expense: Expense, slidingItem?: IonItemSliding) {
     await this.itemAction.handleEdit(slidingItem, async () => {
-        const modal = await this.modalCtrl.create({
-            component: AddExpenseModalComponent,
-            componentProps: {
-              expense: expense
-            }
-        });
-    
-        modal.onWillDismiss().then(async (res) => {
-            if (res.role === 'confirm' && res.data) {
-                await this.expenseService.updateExpense(
-                  expense.id,
-                  res.data.title,
-                  res.data.amount,
-                  res.data.collectionId,
-                  res.data.products || []
-                );
-                
-                await this.uiService.showToast('Expense updated successfully', 'success');
-                await this.refreshList();
-            }
-        });
-    
-        await modal.present();
+      const modal = await this.modalCtrl.create({
+        component: AddExpenseModalComponent,
+        componentProps: {
+          expense: expense
+        }
+      });
+
+      modal.onWillDismiss().then(async (res) => {
+        if (res.role === 'confirm' && res.data) {
+          await this.expenseService.updateExpense(
+            expense.id,
+            res.data.title,
+            res.data.amount,
+            res.data.collectionId,
+            res.data.products || [],
+            res.data.description
+          );
+
+          await this.uiService.showToast('Expense updated successfully', 'success');
+          await this.refreshList();
+        }
+      });
+
+      await modal.present();
     });
   }
 
   async confirmDelete(id: number, slidingItem?: IonItemSliding) {
     await this.itemAction.handleDelete(
-        slidingItem,
-        async () => {
-             await this.expenseService.removeExpense(id);
-             await this.refreshList();
-        },
-        'Confirm Delete',
-        'Are you sure you want to delete this expense?',
-        'Expense deleted'
+      slidingItem,
+      async () => {
+        await this.expenseService.removeExpense(id);
+        await this.refreshList();
+      },
+      'Confirm Delete',
+      'Are you sure you want to delete this expense?',
+      'Expense deleted'
     );
   }
 
