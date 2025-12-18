@@ -2,9 +2,9 @@ import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SettingsService } from '../../../../core/settings/settings.service';
-import { 
-  IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, 
-  IonIcon, IonInput, IonNote, IonChip, IonLabel, ModalController 
+import {
+  IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton,
+  IonIcon, IonInput, IonNote, IonChip, IonLabel, ModalController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { closeOutline, checkmarkCircleOutline } from 'ionicons/icons';
@@ -16,7 +16,7 @@ import { closeOutline, checkmarkCircleOutline } from 'ionicons/icons';
   styleUrls: ['./payment-modal.component.scss'],
   imports: [
     CommonModule, FormsModule,
-    IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, 
+    IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton,
     IonIcon, IonInput, IonNote, IonChip, IonLabel
   ]
 })
@@ -24,7 +24,7 @@ export class PaymentModalComponent implements OnInit {
   @Input() studentName: string = '';
   @Input() suggestedAmount: number = 0;
   @Input() currentAmount: number = 0;
-  
+
   private settingsService = inject(SettingsService);
   currency = this.settingsService.currency;
 
@@ -35,9 +35,8 @@ export class PaymentModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    // If already paid something, show that. If not, default to suggested.
-    // If suggested is 0 (uncalculated or error), assume 0.
-    this.amount = this.currentAmount > 0 ? (this.currentAmount / 100) : this.suggestedAmount;
+    // Both currentAmount and suggestedAmount are now passed in PLN
+    this.amount = this.currentAmount > 0 ? this.currentAmount : this.suggestedAmount;
   }
 
   cancel() {

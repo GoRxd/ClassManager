@@ -1,10 +1,12 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { CollectionRepository } from './collection.repository';
 import { Collection } from './collection.model';
+import { FormatService } from '../../../core/services/format.service';
 
 @Injectable({ providedIn: 'root' })
 export class CollectionService {
   private repo = inject(CollectionRepository);
+  private formatService = inject(FormatService);
 
   public collections = signal<Collection[]>([]);
 
@@ -24,15 +26,15 @@ export class CollectionService {
   async addDetailed(title: string, description: string, amount: number, deadline?: string) {
     let deadlineTs = null;
     if (deadline) {
-        deadlineTs = Math.floor(new Date(deadline).getTime() / 1000);
+      deadlineTs = this.formatService.toTimestamp(deadline);
     }
 
     await this.repo.create({
-        title,
-        description,
-        targetAmount: amount * 100, // convert to grosze
-        deadline: deadlineTs,
-        isArchived: false
+      title,
+      description,
+      targetAmount: this.formatService.toGrosze(amount),
+      deadline: deadlineTs,
+      isArchived: false
     });
     await this.loadCollections();
   }
@@ -55,14 +57,14 @@ export class CollectionService {
   async updateDetailed(id: number, title: string, description: string, amount: number, deadline?: string) {
     let deadlineTs = null;
     if (deadline) {
-        deadlineTs = Math.floor(new Date(deadline).getTime() / 1000);
+      deadlineTs = this.formatService.toTimestamp(deadline);
     }
 
     await this.repo.update(id, {
-        title,
-        description,
-        targetAmount: amount * 100,
-        deadline: deadlineTs
+      title,
+      description,
+      targetAmount: this.formatService.toGrosze(amount),
+      deadline: deadlineTs
     });
     await this.loadCollections();
   }

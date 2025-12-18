@@ -3,6 +3,7 @@ import { UiService } from './ui.service';
 import { CollectionService } from '../../features/collections/data/collection.service';
 import { ExpenseService } from '../../features/expenses/services/expense.service';
 import { Expense } from '../../features/expenses/data/expense.repository';
+import { FormatService } from './format.service';
 
 @Injectable({
     providedIn: 'root'
@@ -11,6 +12,7 @@ export class PaymentManagementService {
     private collectionService = inject(CollectionService);
     private expenseService = inject(ExpenseService);
     private uiService = inject(UiService);
+    private formatService = inject(FormatService);
 
     async revertPayment(
         collectionId: number,
@@ -68,7 +70,7 @@ export class PaymentManagementService {
             header: 'Warning: Expenses Affected',
             message: `<p>This student is listed as a contributor in some expenses.</p>` +
                 `<p>Reverting this payment will update <strong>${expenses.length} expense(s)</strong> by removing "${studentName}" from contributors and reducing the expense amount(s).</p>` +
-                `<p><strong>Note:</strong> We will deduct the student's entire paid amount (${(paidAmount / 100).toFixed(2)}) distributed across these expenses.</p>`,
+                `<p><strong>Note:</strong> We will deduct the student's entire paid amount (${this.formatService.formatMoney(paidAmount)}) distributed across these expenses.</p>`,
             confirmText: 'Revert & Update Expenses'
         });
 
@@ -149,7 +151,7 @@ export class PaymentManagementService {
                 await this.expenseService.removeExpense(expense.id);
             } else {
                 // Update expense
-                const amountPLN = newAmount / 100;
+                const amountPLN = this.formatService.toPLN(newAmount);
                 await this.expenseService.updateExpense(
                     expense.id,
                     expense.title,
@@ -158,7 +160,7 @@ export class PaymentManagementService {
                     expense.products?.map(p => ({
                         name: p.name,
                         quantity: p.quantity,
-                        unitPricePLN: p.unit_price_gr / 100
+                        unitPricePLN: this.formatService.toPLN(p.unit_price_gr)
                     })) || [],
                     newDesc
                 );

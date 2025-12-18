@@ -63,10 +63,15 @@ export class DatabaseService {
       await this.db.execute(CREATE_TABLES_SQL);
 
       // MIGRATION: Ensure 'description' column exists in 'expenses'
-      try {
-        await this.db.run('ALTER TABLE expenses ADD COLUMN description TEXT');
-      } catch (e) {
-        // Ignore error if column likely already exists
+      const tableInfo = await this.db.query("PRAGMA table_info(expenses)");
+      const hasDescription = tableInfo.values?.some((col: any) => col.name === 'description');
+
+      if (!hasDescription) {
+        try {
+          await this.db.run('ALTER TABLE expenses ADD COLUMN description TEXT');
+        } catch (e) {
+          console.log('Column description might already exist, ignoring.');
+        }
       }
 
 

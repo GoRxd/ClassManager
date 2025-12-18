@@ -12,6 +12,7 @@ import { SettingsService } from '../../../../core/settings/settings.service';
 import { ExpenseService } from '../../../expenses/services/expense.service';
 import { PaymentManagementService } from '../../../../core/services/payment-management.service';
 import { UiService } from '../../../../core/services/ui.service';
+import { FormatService } from '../../../../core/services/format.service';
 
 import { CollectionService } from '../../data/collection.service';
 import { Collection } from '../../data/collection.model';
@@ -46,6 +47,7 @@ export class CollectionDetailsPage implements OnInit {
   private expenseService = inject(ExpenseService);
   private paymentManagement = inject(PaymentManagementService);
   private uiService = inject(UiService);
+  private formatService = inject(FormatService);
 
   collection: Collection | undefined;
   payments: StudentPaymentStatus[] = [];
@@ -113,7 +115,7 @@ export class CollectionDetailsPage implements OnInit {
     }
 
     await this.itemAction.handleEdit(slidingItem, async () => {
-      const amountInGr = Math.round(this.suggestedAmount * 100);
+      const amountInGr = Math.round(this.suggestedAmount);
       await this.service.updatePayment(this.collection!.id!, student.studentId, amountInGr);
       await this.load(this.collection!.id!);
     });
@@ -145,14 +147,14 @@ export class CollectionDetailsPage implements OnInit {
       component: PaymentModalComponent,
       componentProps: {
         studentName: `${student.firstName} ${student.lastName}`,
-        suggestedAmount: this.suggestedAmount,
-        currentAmount: student.paidAmount
+        suggestedAmount: this.suggestedAmount / 100,
+        currentAmount: (student.paidAmount || 0) / 100
       }
     });
 
     modal.onWillDismiss().then(async (res) => {
       if (res.role === 'confirm') {
-        const amountInGr = Math.round(res.data * 100);
+        const amountInGr = this.formatService.toGrosze(res.data);
         await this.service.updatePayment(this.collection!.id!, student.studentId, amountInGr);
         await this.load(this.collection!.id!);
       }
@@ -175,7 +177,7 @@ export class CollectionDetailsPage implements OnInit {
       return;
     }
 
-    const availableToPayOutPLN = availableToPayOutGr / 100;
+    const availableToPayOutPLN = this.formatService.toPLN(availableToPayOutGr);
 
     // Calculate contributing students
     let description = '';
@@ -210,7 +212,7 @@ export class CollectionDetailsPage implements OnInit {
 
     const confirmed = await this.uiService.showConfirm({
       header: 'Pay Out Collection',
-      message: `Do you want to create an expense for the remaining collected amount of ${availableToPayOutPLN.toFixed(2)} ${this.currency()}?`,
+      message: `Do you want to create an expense for the remaining collected amount of ${this.formatService.formatMoney(availableToPayOutGr)} ${this.currency()}?`,
       confirmText: 'Confirm'
     });
 

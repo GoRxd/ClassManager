@@ -1,13 +1,14 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { 
-  IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, 
-  IonIcon, IonInput, ModalController 
+import {
+  IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton,
+  IonIcon, IonInput, ModalController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { closeOutline, saveOutline, callOutline, personAddOutline, createOutline } from 'ionicons/icons';
 import { Student } from '../../data/student.model';
+import { FormatService } from '../../../../core/services/format.service';
 
 @Component({
   selector: 'app-student-add-modal',
@@ -16,12 +17,13 @@ import { Student } from '../../data/student.model';
   styleUrls: ['./student-add-modal.component.scss'],
   imports: [
     CommonModule, FormsModule,
-    IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, 
+    IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton,
     IonIcon, IonInput
   ]
 })
 export class StudentAddModalComponent implements OnInit {
   private modalCtrl = inject(ModalController);
+  private formatService = inject(FormatService);
 
   @Input() student?: Student;
 
@@ -35,9 +37,9 @@ export class StudentAddModalComponent implements OnInit {
 
   ngOnInit() {
     if (this.student) {
-        this.newName = this.student.firstName;
-        this.newLastname = this.student.lastName;
-        this.newPhone = this.student.phone || '';
+      this.newName = this.student.firstName;
+      this.newLastname = this.student.lastName;
+      this.newPhone = this.student.phone || '';
     }
   }
 
@@ -47,7 +49,7 @@ export class StudentAddModalComponent implements OnInit {
 
   get isPhoneValid(): boolean {
     if (!this.newPhone) return true;
-    const cleaned = this.newPhone.replace(/[\s-]/g, '');
+    const cleaned = this.formatService.cleanPhone(this.newPhone);
     return /^\d{9}$/.test(cleaned);
   }
 
@@ -63,15 +65,15 @@ export class StudentAddModalComponent implements OnInit {
     if (!this.canSave) return;
 
     const data = {
-        firstName: this.newName,
-        lastName: this.newLastname,
-        phone: this.newPhone ? this.newPhone.replace(/[\s-]/g, '') : undefined
+      firstName: this.newName,
+      lastName: this.newLastname,
+      phone: this.newPhone ? this.formatService.cleanPhone(this.newPhone) : undefined
     };
 
     if (this.student) {
-        this.modalCtrl.dismiss({ ...this.student, ...data }, 'confirm');
+      this.modalCtrl.dismiss({ ...this.student, ...data }, 'confirm');
     } else {
-        this.modalCtrl.dismiss(data, 'confirm');
+      this.modalCtrl.dismiss(data, 'confirm');
     }
   }
 }

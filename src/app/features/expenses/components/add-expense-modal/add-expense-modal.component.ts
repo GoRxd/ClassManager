@@ -7,6 +7,7 @@ import { add, trashOutline } from 'ionicons/icons';
 import { CollectionService } from '../../../collections/data/collection.service';
 import { Expense } from '../../data/expense.repository';
 import { SettingsService } from '../../../../core/settings/settings.service';
+import { FormatService } from '../../../../core/services/format.service';
 
 @Component({
   selector: 'app-add-expense-modal',
@@ -25,6 +26,7 @@ export class AddExpenseModalComponent implements OnInit {
   private modalCtrl = inject(ModalController);
   public collectionService = inject(CollectionService);
   private settingsService = inject(SettingsService);
+  private formatService = inject(FormatService);
 
   currency = this.settingsService.currency;
 
@@ -47,13 +49,13 @@ export class AddExpenseModalComponent implements OnInit {
       this.selectedCollectionId = this.expense.collection_id;
       this.title = this.expense.title;
       this.description = this.expense.description || '';
-      this.amount = this.expense.amount_gr / 100;
+      this.amount = this.formatService.toPLN(this.expense.amount_gr);
 
       if (this.expense.products) {
         this.products = this.expense.products.map(p => ({
           name: p.name,
           quantity: p.quantity,
-          unitPrice: p.unit_price_gr / 100
+          unitPrice: this.formatService.toPLN(p.unit_price_gr)
         }));
       }
     } else if (this.preselectedCollectionId) {
@@ -75,8 +77,9 @@ export class AddExpenseModalComponent implements OnInit {
   updateTotal() {
     // Always calculate sum if products exist
     if (this.products.length > 0) {
-      const sum = this.products.reduce((acc, p) => acc + (p.quantity * p.unitPrice), 0);
-      this.amount = parseFloat(sum.toFixed(2));
+      const sum = this.products.reduce((acc, p) => acc + (p.quantity * (p.unitPrice || 0)), 0);
+      // Round to 2 decimals safely
+      this.amount = Math.round(sum * 100) / 100;
     }
   }
 
