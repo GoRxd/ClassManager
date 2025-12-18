@@ -1,42 +1,5 @@
-.student-form-card {
-  margin-bottom: 2rem;
-  /* Delikatny cień dla karty */
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); 
-}
-
-.form-inputs {
-  display: flex;
-  flex-direction: column;
-  gap: 16px; /* Odstęp między inputami */
-  padding-top: 10px;
-}
-
-.list-header {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--ion-color-medium);
-  margin-bottom: 0.5rem;
-  margin-top: 0;
-}
-
 .no-phone {
   font-style: italic;
   color: var(--ion-color-medium-tint);
   font-size: 0.85em;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 3rem 1rem;
-  color: var(--ion-color-medium);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-
-  ion-icon {
-    font-size: 64px;
-    margin-bottom: 10px;
-    opacity: 0.5;
-  }
 }

@@ -20,6 +20,7 @@ import { Expense } from '../../../expenses/data/expense.repository';
 import { PaymentModalComponent } from '../../components/payment-modal/payment-modal.component';
 import { addIcons } from 'ionicons';
 import { ItemActionService } from '../../../../core/services/item-action.service';
+import { MoneyPipe } from '../../../../core/pipes/money.pipe';
 
 import { AppHeaderComponent } from '../../../../core/components/app-header/app-header.component';
 
@@ -33,7 +34,7 @@ import { AppHeaderComponent } from '../../../../core/components/app-header/app-h
     IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton,
     IonList, IonLabel, IonItem, IonNote, IonBadge, IonButton, IonIcon, IonSegment, IonSegmentButton,
     IonItemSliding, IonItemOptions, IonItemOption, IonProgressBar,
-    AppHeaderComponent
+    AppHeaderComponent, MoneyPipe
   ]
 })
 export class CollectionDetailsPage implements OnInit {
@@ -49,21 +50,18 @@ export class CollectionDetailsPage implements OnInit {
   collection: Collection | undefined;
   payments: StudentPaymentStatus[] = [];
   expenses: Expense[] = [];
-  suggestedAmount: number = 0;
   segment: 'pending' | 'paid' = 'pending';
-
-  currency = this.settingsService.currency;
 
   constructor() {
     addIcons({ arrowBackOutline, checkmarkCircleOutline, closeCircleOutline, cardOutline });
   }
 
-  get totalCollected() {
-    return this.payments.reduce((sum, p) => sum + (p.paidAmount || 0), 0);
+  get totalCollected(): number {
+    return this.payments.reduce((acc, curr) => acc + (curr.paidAmount || 0), 0);
   }
 
-  get progress() {
-    if (!this.collection || this.collection.targetAmount <= 0) return 0;
+  get progress(): number {
+    if (!this.collection || this.collection.targetAmount === 0) return 0;
     return this.totalCollected / this.collection.targetAmount;
   }
 
@@ -73,6 +71,15 @@ export class CollectionDetailsPage implements OnInit {
 
   get paidStudents() {
     return this.payments.filter(p => p.status === 'PAID');
+  }
+
+  get suggestedAmount(): number {
+    if (!this.collection || this.payments.length === 0) return 0;
+    return this.collection.targetAmount / this.payments.length;
+  }
+
+  get currency() {
+    return this.settingsService.currency;
   }
 
   async ngOnInit() {
@@ -95,11 +102,6 @@ export class CollectionDetailsPage implements OnInit {
       this.collection = data.collection;
       this.payments = data.payments;
       this.expenses = await this.expenseService.getExpensesByCollectionId(id);
-
-      // Calculate suggested amount: Target / Students Count
-      if (this.payments.length > 0 && this.collection.targetAmount > 0) {
-        this.suggestedAmount = (this.collection.targetAmount / 100) / this.payments.length;
-      }
     }
   }
 

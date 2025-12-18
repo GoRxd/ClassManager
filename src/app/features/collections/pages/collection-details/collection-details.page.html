@@ -7,14 +7,14 @@
         <p>{{ collection.description || 'No description' }}</p>
         <div class="meta">
             <span class="per-student" *ngIf="suggestedAmount > 0">
-                (~{{ suggestedAmount | number:'1.2-2' }} {{ currency() }} / person)
+                (~{{ suggestedAmount | money }} / person)
             </span>
         </div>
 
         <div class="progress-container ion-padding-top">
             <div class="progress-labels" style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                <span>Collected: {{ (totalCollected / 100) | number:'1.2-2' }} {{ currency() }}</span>
-                <span>Target: {{ (collection.targetAmount / 100) | number:'1.2-2' }} {{ currency() }}</span>
+                <span>Collected: {{ totalCollected | money }}</span>
+                <span>Target: {{ collection.targetAmount | money }}</span>
             </div>
             <ion-progress-bar color="primary" [value]="progress"></ion-progress-bar>
             <div class="progress-actions"
@@ -89,8 +89,7 @@
                         <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
                     </ion-button>
                     <ion-badge color="success">PAID</ion-badge>
-                    <ion-note color="success">{{ (student.paidAmount / 100) | number:'1.2-2' }} {{ currency()
-                        }}</ion-note>
+                    <ion-note color="success">{{ student.paidAmount | money }}</ion-note>
                 </div>
             </ion-item>
 

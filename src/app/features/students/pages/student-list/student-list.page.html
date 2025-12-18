@@ -1,73 +1,61 @@
 <app-header title="Manage Class" [isRoot]="true"></app-header>
 
-<ion-content [fullscreen]="true" class="ion-padding-vertical">
-  
-  <ion-grid fixed>
-    <ion-row class="ion-justify-content-center">
-      <ion-col size="12" size-md="8" size-lg="6">
+<ion-content [fullscreen]="true">
+  <app-search></app-search>
 
+  <h3 class="list-header-text">
+    Attendance list ({{ filteredStudents().length }})
+  </h3>
 
+  <ion-list [inset]="true" class="section-margin">
+    @for (student of filteredStudents(); track student.id) {
+    <ion-item-sliding #slidingItem>
+      <ion-item-options side="start" (ionSwipe)="edit(student, slidingItem)">
+        <ion-item-option color="primary" expandable (click)="edit(student, slidingItem)">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
 
-        <h3 class="list-header ion-padding-start">
-          Attendance list ({{ service.students().length }})
-        </h3>
-        
-        <ion-list [inset]="true">
-          @for (student of service.students(); track student.id) {
-          <ion-item-sliding #slidingItem>
-            <ion-item-options side="start" (ionSwipe)="edit(student, slidingItem)">
-              <ion-item-option color="primary" expandable (click)="edit(student, slidingItem)">
-                <ion-icon slot="icon-only" name="create-outline"></ion-icon>
-              </ion-item-option>
-            </ion-item-options>
+      <ion-item button detail="true" (click)="viewStudent(student.id!)">
+        <ion-label>
+          <h2>{{ student.firstName }} <strong>{{ student.lastName }}</strong></h2>
 
-            <ion-item button detail="true" (click)="viewStudent(student.id!)">
-              <ion-label>
-                <h2>{{ student.firstName }} <strong>{{ student.lastName }}</strong></h2>
-                
-                @if (student.phone) {
-                  <p>
-                    <ion-icon name="call-outline" style="vertical-align: middle; font-size: 0.9em;"></ion-icon> 
-                    {{ formatPhone(student.phone) }}
-                  </p>
-                } @else {
-                  <p class="no-phone">No phone number</p>
-                }
-              </ion-label>
-              
-              <ion-buttons slot="end">
-                <ion-button color="primary" (click)="$event.stopPropagation(); edit(student, slidingItem)">
-                  <ion-icon name="create-outline"></ion-icon>
-                </ion-button>
-                <ion-button color="medium" (click)="$event.stopPropagation(); confirmDelete(student.id!, slidingItem)">
-                  <ion-icon name="trash-outline"></ion-icon>
-                </ion-button>
-              </ion-buttons>
-            </ion-item>
-
-            <ion-item-options side="end" (ionSwipe)="confirmDelete(student.id!, slidingItem)">
-              <ion-item-option color="danger" expandable (click)="confirmDelete(student.id!, slidingItem)">
-                <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-              </ion-item-option>
-            </ion-item-options>
-          </ion-item-sliding>
-          } @empty {
-            <div class="empty-state">
-              <ion-icon name="people-outline" size="large"></ion-icon>
-              <p>Class is empty.</p>
-              <small>Fill the form above to add the first student.</small>
-            </div>
+          @if (student.phone) {
+          <p>
+            <ion-icon name="call-outline" style="vertical-align: middle; font-size: 0.9em;"></ion-icon>
+            {{ formatPhone(student.phone) }}
+          </p>
+          } @else {
+          <p class="no-phone">No phone number</p>
           }
-        </ion-list>
+        </ion-label>
 
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+        <ion-buttons slot="end">
+          <ion-button color="primary" (click)="$event.stopPropagation(); edit(student, slidingItem)">
+            <ion-icon name="create-outline"></ion-icon>
+          </ion-button>
+          <ion-button color="medium" (click)="$event.stopPropagation(); confirmDelete(student.id!, slidingItem)">
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+
+      <ion-item-options side="end" (ionSwipe)="confirmDelete(student.id!, slidingItem)">
+        <ion-item-option color="danger" expandable (click)="confirmDelete(student.id!, slidingItem)">
+          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+    } @empty {
+    <app-empty-state icon="people-outline" title="Class is empty"
+      description="Use the button below to add your first student.">
+    </app-empty-state>
+    }
+  </ion-list>
 
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (click)="openAddModal()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-
 </ion-content>

@@ -17,8 +17,7 @@
       <ion-card-header>
         <ion-card-subtitle>Total Balance</ion-card-subtitle>
         <ion-card-title>
-          <span class="currency-symbol">{{ currency() }} </span>
-          <span class="currency-value">{{ (treasury().current_balance / 100) | number:'1.2-2' }}</span>
+          <span class="currency-value">{{ treasury().current_balance | money }}</span>
         </ion-card-title>
       </ion-card-header>
       <ion-card-content>
@@ -27,7 +26,7 @@
             <ion-icon name="arrow-up-outline"></ion-icon>
             <div>
               <span class="label">Collected</span>
-              <span class="value">{{ (treasury().total_income / 100) | currency:(currency() + ' '):'symbol':'1.0-0' }}</span>
+              <span class="value">{{ treasury().total_income | money }}</span>
             </div>
           </div>
           <div class="stat-divider"></div>
@@ -35,7 +34,7 @@
             <ion-icon name="arrow-down-outline"></ion-icon>
             <div>
               <span class="label">Spent</span>
-              <span class="value">{{ (treasury().total_expenses / 100) | currency:(currency() + ' '):'symbol':'1.0-0' }}</span>
+              <span class="value">{{ treasury().total_expenses | money }}</span>
             </div>
           </div>
         </div>
@@ -78,7 +77,8 @@
   </div>
 
   <ion-list lines="none" class="recent-list">
-    <ion-item-sliding *ngFor="let expense of recentExpenses()" #slidingItem>
+    @for (expense of recentExpenses(); track expense.id) {
+    <ion-item-sliding #slidingItem>
       <ion-item-options side="start" (ionSwipe)="edit(expense, slidingItem)">
         <ion-item-option color="primary" expandable (click)="edit(expense, slidingItem)">
           <ion-icon slot="icon-only" name="create-outline"></ion-icon>
@@ -94,7 +94,7 @@
           <p>{{ expense.created_at * 1000 | date:'mediumDate' }}</p>
         </ion-label>
         <ion-note slot="end" color="danger">
-        -{{ (expense.amount_gr / 100) | currency:(currency() + ' '):'symbol':'1.2-2' }}
+          -{{ expense.amount_gr | money }}
         </ion-note>
       </ion-item>
 
@@ -104,11 +104,11 @@
         </ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
-    
-    <ion-item *ngIf="recentExpenses().length === 0">
-      <ion-label class="ion-text-center">
-        <p>No recent expenses</p>
-      </ion-label>
-    </ion-item>
+
+    } @empty {
+    <app-empty-state icon="calendar-outline" title="No recent expenses"
+      description="Your latest activities will show up here.">
+    </app-empty-state>
+    }
   </ion-list>
 </ion-content>

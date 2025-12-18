@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, signal, OnInit, computed, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Expense } from '../../data/expense.repository';
 import { ExpenseService } from '../../services/expense.service';
@@ -16,6 +16,10 @@ import { ItemActionService } from '../../../../core/services/item-action.service
 import { SettingsService } from '../../../../core/settings/settings.service';
 
 import { AppHeaderComponent } from '../../../../core/components/app-header/app-header.component';
+import { AppSearchComponent } from '../../../../core/components/app-search/app-search.component';
+import { EmptyStateComponent } from '../../../../core/components/empty-state/empty-state.component';
+import { MoneyPipe } from '../../../../core/pipes/money.pipe';
+import { SearchService } from '../../../../core/services/search.service';
 
 @Component({
   selector: 'app-expenses',
@@ -25,22 +29,27 @@ import { AppHeaderComponent } from '../../../../core/components/app-header/app-h
     IonContent, IonHeader, IonTitle, IonToolbar,
     IonList, IonItem, IonLabel, IonNote, IonIcon, IonButton,
     IonFab, IonFabButton, IonItemSliding, IonItemOptions, IonItemOption,
-    AppHeaderComponent
+    AppHeaderComponent, AppSearchComponent, EmptyStateComponent, MoneyPipe
   ],
   templateUrl: './expenses.page.html',
   styleUrls: ['./expenses.page.scss']
 })
-export class ExpensesPage implements OnInit {
+export class ExpensesPage implements OnInit, OnDestroy {
   private expenseService = inject(ExpenseService);
   private modalCtrl = inject(ModalController);
   private uiService = inject(UiService);
   private itemAction = inject(ItemActionService);
   private settingsService = inject(SettingsService);
+  private searchService = inject(SearchService);
 
   recentExpenses = signal<Expense[]>([]);
   allExpenses = signal<Expense[]>([]);
   viewMode = signal<'recent' | 'history'>('recent');
-  currency = this.settingsService.currency;
+
+  filteredExpenses = computed(() => {
+    const list = this.viewMode() === 'recent' ? this.recentExpenses() : this.allExpenses();
+    return this.searchService.filter(list, e => [e.title, e.description]);
+  });
 
   constructor() {
     addIcons({ calendarOutline, arrowBackOutline, timeOutline, walletOutline, add, createOutline, trashOutline });
@@ -145,5 +154,9 @@ export class ExpensesPage implements OnInit {
       const all = await this.expenseService.getAll();
       this.allExpenses.set(all);
     }
+  }
+
+  ngOnDestroy() {
+    this.searchService.clearQuery();
   }
 }
