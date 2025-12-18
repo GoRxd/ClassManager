@@ -14,12 +14,12 @@ jeepSqlite(window);
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    provideIonicAngular(),
+    provideIonicAngular({ innerHTMLTemplatesEnabled: true }),
     provideRouter(routes),
 
     provideAppInitializer(() => {
-        const dbService = inject(DatabaseService);
-        return dbService.initializeDatabase();
+      const dbService = inject(DatabaseService);
+      return dbService.initializeDatabase();
     }),
   ],
 });

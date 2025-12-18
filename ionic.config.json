@@ -1,5 +1,6 @@
 {
   "name": "class-manager",
+  "innerHTMLTemplatesEnabled": true,
   "integrations": {
     "capacitor": {}
   },

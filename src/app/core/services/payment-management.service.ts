@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { AlertController, ToastController } from '@ionic/angular/standalone';
+import { UiService } from './ui.service';
 import { CollectionService } from '../../features/collections/data/collection.service';
 import { ExpenseService } from '../../features/expenses/services/expense.service';
 import { Expense } from '../../features/expenses/data/expense.repository';
@@ -10,8 +10,7 @@ import { Expense } from '../../features/expenses/data/expense.repository';
 export class PaymentManagementService {
     private collectionService = inject(CollectionService);
     private expenseService = inject(ExpenseService);
-    private alertCtrl = inject(AlertController);
-    private toastCtrl = inject(ToastController);
+    private uiService = inject(UiService);
 
     async revertPayment(
         collectionId: number,
@@ -46,24 +45,15 @@ export class PaymentManagementService {
     }
 
     private async showStandardConfirm(collectionId: number, studentId: number, onComplete: () => Promise<void>) {
-        const alert = await this.alertCtrl.create({
+        const confirmed = await this.uiService.showConfirm({
             header: 'Undo Payment',
             message: 'Are you sure you want to revert this payment to pending?',
-            buttons: [
-                {
-                    text: 'Cancel',
-                    role: 'cancel'
-                },
-                {
-                    text: 'Confirm',
-                    role: 'confirm',
-                    handler: async () => {
-                        await this.processRevert(collectionId, studentId, onComplete);
-                    }
-                }
-            ]
+            confirmText: 'Confirm'
         });
-        await alert.present();
+
+        if (confirmed) {
+            await this.processRevert(collectionId, studentId, onComplete);
+        }
     }
 
     private async showAdvancedConfirm(
@@ -74,36 +64,23 @@ export class PaymentManagementService {
         expenses: Expense[],
         onComplete: () => Promise<void>
     ) {
-        const alert = await this.alertCtrl.create({
+        const confirmed = await this.uiService.showConfirm({
             header: 'Warning: Expenses Affected',
-            subHeader: 'This student is listed as a contributor in some expenses.',
-            message: `Reverting this payment will update <strong>${expenses.length} expense(s)</strong> by removing "${studentName}" from contributors and reducing the expense amount(s). <br><br><strong>Note:</strong> We will deduct the student's entire paid amount (${(paidAmount / 100).toFixed(2)}) distributed across these expenses.`,
-            buttons: [
-                {
-                    text: 'Cancel',
-                    role: 'cancel'
-                },
-                {
-                    text: 'Revert & Update Expenses',
-                    role: 'confirm',
-                    handler: async () => {
-                        await this.processRevertWithExpenses(collectionId, studentId, studentName, paidAmount, expenses, onComplete);
-                    }
-                }
-            ]
+            message: `<p>This student is listed as a contributor in some expenses.</p>` +
+                `<p>Reverting this payment will update <strong>${expenses.length} expense(s)</strong> by removing "${studentName}" from contributors and reducing the expense amount(s).</p>` +
+                `<p><strong>Note:</strong> We will deduct the student's entire paid amount (${(paidAmount / 100).toFixed(2)}) distributed across these expenses.</p>`,
+            confirmText: 'Revert & Update Expenses'
         });
-        await alert.present();
+
+        if (confirmed) {
+            await this.processRevertWithExpenses(collectionId, studentId, studentName, paidAmount, expenses, onComplete);
+        }
     }
 
     private async processRevert(collectionId: number, studentId: number, onComplete: () => Promise<void>) {
         await this.collectionService.updatePayment(collectionId, studentId, 0);
 
-        const toast = await this.toastCtrl.create({
-            message: 'Payment reverted to pending',
-            duration: 2000,
-            color: 'medium'
-        });
-        await toast.present();
+        this.uiService.showToast('Payment reverted to pending', 'medium');
 
         await onComplete();
     }
@@ -188,12 +165,7 @@ export class PaymentManagementService {
             }
         }
 
-        const toast = await this.toastCtrl.create({
-            message: 'Payment reverted & expenses updated',
-            duration: 3000,
-            color: 'success'
-        });
-        await toast.present();
+        this.uiService.showToast('Payment reverted & expenses updated', 'success');
 
         await onComplete();
     }

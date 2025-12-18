@@ -19,7 +19,7 @@ export class AppComponent {
 
   constructor() {
     addIcons({ homeOutline, peopleOutline, walletOutline, statsChartOutline, settingsOutline, receiptOutline });
-    
+
     // HACK DO DEBUGOWANIA: (USUNAC W WERSJI FINALNEJ)
     // Przypisujemy serwis do obiektu window, żeby był dostępny w konsoli F12
     (window as any).db = this.dbService;

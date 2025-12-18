@@ -5,13 +5,13 @@ import { ActivatedRoute } from '@angular/router';
 import {
   IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton,
   IonList, IonListHeader, IonLabel, IonItem, IonNote, IonBadge, ModalController, IonButton, IonIcon,
-  IonSegment, IonSegmentButton, IonItemSliding, IonItemOptions, IonItemOption, IonProgressBar,
-  AlertController, ToastController
+  IonSegment, IonSegmentButton, IonItemSliding, IonItemOptions, IonItemOption, IonProgressBar
 } from '@ionic/angular/standalone';
 import { arrowBackOutline, checkmarkCircleOutline, closeCircleOutline, cardOutline } from 'ionicons/icons';
 import { SettingsService } from '../../../../core/settings/settings.service';
 import { ExpenseService } from '../../../expenses/services/expense.service';
 import { PaymentManagementService } from '../../../../core/services/payment-management.service';
+import { UiService } from '../../../../core/services/ui.service';
 
 import { CollectionService } from '../../data/collection.service';
 import { Collection } from '../../data/collection.model';
@@ -44,8 +44,7 @@ export class CollectionDetailsPage implements OnInit {
   private settingsService = inject(SettingsService);
   private expenseService = inject(ExpenseService);
   private paymentManagement = inject(PaymentManagementService);
-  private alertCtrl = inject(AlertController);
-  private toastCtrl = inject(ToastController);
+  private uiService = inject(UiService);
 
   collection: Collection | undefined;
   payments: StudentPaymentStatus[] = [];
@@ -170,13 +169,7 @@ export class CollectionDetailsPage implements OnInit {
     const availableToPayOutGr = totalCollectedGr - totalExpensedGr;
 
     if (availableToPayOutGr <= 0) {
-      const toast = await this.toastCtrl.create({
-        message: 'No funds available to pay out (Total collected already expensed)',
-        duration: 2000,
-        color: 'warning',
-        position: 'bottom'
-      });
-      await toast.present();
+      this.uiService.showToast('No funds available to pay out (Total collected already expensed)', 'warning');
       return;
     }
 
@@ -213,42 +206,26 @@ export class CollectionDetailsPage implements OnInit {
       description = 'Contributors: ' + contributingStudents.join(', ');
     }
 
-    const alert = await this.alertCtrl.create({
+    const confirmed = await this.uiService.showConfirm({
       header: 'Pay Out Collection',
       message: `Do you want to create an expense for the remaining collected amount of ${availableToPayOutPLN.toFixed(2)} ${this.currency()}?`,
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel'
-        },
-        {
-          text: 'Confirm',
-          role: 'confirm',
-          handler: async () => {
-            if (!this.collection) return;
-
-            await this.expenseService.addExpense(
-              `Payout: ${this.collection.title}`,
-              availableToPayOutPLN,
-              this.collection.id!,
-              [],
-              description
-            );
-
-            const toast = await this.toastCtrl.create({
-              message: 'Collection paid out (Expense created)',
-              duration: 2000,
-              color: 'success',
-              position: 'bottom'
-            });
-            await toast.present();
-            // Reload to update expenses list
-            await this.load(this.collection.id!);
-          }
-        }
-      ]
+      confirmText: 'Confirm'
     });
 
-    await alert.present();
+    if (confirmed) {
+      if (!this.collection) return;
+
+      await this.expenseService.addExpense(
+        `Payout: ${this.collection.title}`,
+        availableToPayOutPLN,
+        this.collection.id!,
+        [],
+        description
+      );
+
+      this.uiService.showToast('Collection paid out (Expense created)', 'success');
+      // Reload to update expenses list
+      await this.load(this.collection.id!);
+    }
   }
 }

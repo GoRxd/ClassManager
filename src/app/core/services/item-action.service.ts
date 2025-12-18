@@ -25,8 +25,13 @@ export class ItemActionService {
     message: string = 'Are you sure you want to delete this item?',
     successMessage: string = 'Item deleted'
   ): Promise<void> {
-    
-    const confirmed = await this.uiService.showConfirm(title, message);
+
+    const confirmed = await this.uiService.showConfirm({
+      header: title,
+      message,
+      confirmText: title.toLowerCase().includes('delete') ? 'Delete' : 'Confirm',
+      role: title.toLowerCase().includes('delete') ? 'destructive' : 'confirm'
+    });
 
     // Close the slide regardless of choice
     if (slidingItem) {
@@ -37,7 +42,7 @@ export class ItemActionService {
       try {
         await deleteFn();
         if (successMessage) {
-            this.uiService.showToast(successMessage, 'medium');
+          this.uiService.showToast(successMessage, 'medium');
         }
       } catch (error) {
         // Error handling acts as a fallback if the deleteFn doesn't handle it
