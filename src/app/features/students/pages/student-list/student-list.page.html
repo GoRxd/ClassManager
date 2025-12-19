@@ -7,7 +7,7 @@
     Attendance list ({{ filteredStudents().length }})
   </h3>
 
-  <ion-list [inset]="true" class="section-margin">
+  <ion-list class="section-margin island-items">
     @for (student of filteredStudents(); track student.id) {
     <ion-item-sliding #slidingItem>
       <ion-item-options side="start" (ionSwipe)="edit(student, slidingItem)">

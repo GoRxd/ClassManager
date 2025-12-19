@@ -13,7 +13,7 @@
     </div>
   </div>
 
-  <ion-list [inset]="true" class="section-margin">
+  <ion-list class="section-margin island-items">
     @for (expense of filteredExpenses(); track expense.id) {
     <ion-item-sliding #slidingItem>
       <ion-item-options side="start" (ionSwipe)="edit(expense, slidingItem)">
@@ -58,7 +58,7 @@
     </div>
   </div>
 
-  <ion-list [inset]="true" class="section-margin">
+  <ion-list class="section-margin island-items">
     @for (expense of filteredExpenses(); track expense.id) {
     <ion-item-sliding #slidingItemHistory>
       <ion-item-options side="start" (ionSwipe)="edit(expense, slidingItemHistory)">

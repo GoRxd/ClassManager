@@ -76,7 +76,7 @@
     <!-- <ion-button fill="clear" size="small">See All</ion-button> -->
   </div>
 
-  <ion-list lines="none" class="recent-list">
+  <ion-list lines="none" class="island-items">
     @for (expense of recentExpenses(); track expense.id) {
     <ion-item-sliding #slidingItem>
       <ion-item-options side="start" (ionSwipe)="edit(expense, slidingItem)">

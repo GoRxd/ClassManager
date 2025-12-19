@@ -3,46 +3,52 @@
 <ion-content>
     @if (collection) {
     <div class="header-section">
-        <h1>{{ collection.title }}</h1>
-        <p>{{ collection.description || 'No description' }}</p>
-        <div class="meta">
-            <span class="per-student" *ngIf="suggestedAmount > 0">
-                (~{{ suggestedAmount | money }} / person)
-            </span>
+        <div class="header-content ion-text-center">
+            <h1>{{ collection.title }}</h1>
+            <p class="description">{{ collection.description || 'No description provided' }}</p>
+            <div class="per-student-box" *ngIf="suggestedAmount > 0">
+                <span class="label">Suggested per person:</span>
+                <span class="value">{{ suggestedAmount | money }}</span>
+            </div>
         </div>
 
-        <div class="progress-container ion-padding-top">
-            <div class="progress-labels" style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                <span>Collected: {{ totalCollected | money }}</span>
-                <span>Target: {{ collection.targetAmount | money }}</span>
+        <div class="progress-container">
+            <div class="progress-info">
+                <div class="collected">
+                    <span class="label">Collected</span>
+                    <span class="amount">{{ totalCollected | money }}</span>
+                </div>
+                <div class="target">
+                    <span class="label">Target</span>
+                    <span class="amount">{{ collection.targetAmount | money }}</span>
+                </div>
             </div>
-            <ion-progress-bar color="primary" [value]="progress"></ion-progress-bar>
-            <div class="progress-actions"
-                style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
-                <ion-button size="small" shape="round" fill="outline" (click)="payOut()"
+
+            <ion-progress-bar [value]="progress"></ion-progress-bar>
+
+            <div class="progress-footer">
+                <div class="percentage">{{ progress | percent:'1.0-0' }}</div>
+                <ion-button size="small" shape="round" color="primary" (click)="payOut()"
                     [disabled]="totalCollected <= 0">
                     <ion-icon slot="start" name="card-outline"></ion-icon>
-                    Pay Out
+                    Pay Out Remaining
                 </ion-button>
-                <div class="progress-text">
-                    <small>{{ progress | percent:'1.0-0' }}</small>
-                </div>
             </div>
         </div>
     </div>
 
-    <div class="ion-padding-bottom">
-        <ion-segment [(ngModel)]="segment">
+    <div class="segment-container">
+        <ion-segment [(ngModel)]="segment" mode="ios">
             <ion-segment-button value="pending">
-                <ion-label>Pending ({{ pendingStudents.length }})</ion-label>
+                <ion-label>Pending <span>{{ pendingStudents.length }}</span></ion-label>
             </ion-segment-button>
             <ion-segment-button value="paid">
-                <ion-label>Paid ({{ paidStudents.length }})</ion-label>
+                <ion-label>Paid <span>{{ paidStudents.length }}</span></ion-label>
             </ion-segment-button>
         </ion-segment>
     </div>
 
-    <ion-list>
+    <ion-list lines="none" class="student-list island-items">
         @if (segment === 'pending') {
         @for (student of pendingStudents; track student.studentId) {
         <ion-item-sliding #slidingItem>
@@ -53,43 +59,50 @@
                 </ion-item-option>
             </ion-item-options>
 
-            <ion-item button (click)="openPayment(student)" class="student-item">
-                <div class="student-info">
-                    <h3>{{ student.lastName }} {{ student.firstName }}</h3>
+            <ion-item button detail="false" (click)="openPayment(student)" class="student-item">
+                <div slot="start" class="avatar-box">
+                    {{ student.firstName[0] }}{{ student.lastName[0] }}
                 </div>
-
-                <div slot="end" class="payment-status">
-                    @if (student.status === 'PENDING') {
-                    <ion-button fill="clear" (click)="quickPay(student, $event)" [disabled]="suggestedAmount <= 0">
-                        <ion-icon slot="icon-only" name="checkmark-circle-outline" color="medium"></ion-icon>
+                <ion-label>
+                    <h2>{{ student.firstName }} {{ student.lastName }}</h2>
+                    <p class="status-text">
+                        @if (student.status === 'PENDING') {
+                        Not paid yet
+                        } @else {
+                        Partial: {{ student.paidAmount | money }}
+                        }
+                    </p>
+                </ion-label>
+                <div slot="end" class="action-box">
+                    <ion-button fill="clear" color="success" (click)="quickPay(student, $event)"
+                        [disabled]="suggestedAmount <= 0">
+                        <ion-icon slot="icon-only" name="checkmark-circle-outline"></ion-icon>
                     </ion-button>
-                    <ion-badge color="medium">PENDING</ion-badge>
-                    } @else {
-                    <ion-badge color="warning">PARTIAL</ion-badge>
-                    }
                 </div>
             </ion-item>
         </ion-item-sliding>
         }
         @if (pendingStudents.length === 0) {
-        <div class="ion-padding ion-text-center">
-            <ion-note>Everyone paid! 🎉</ion-note>
+        <div class="empty-state">
+            <ion-icon name="checkmark-done-circle-outline" color="success"></ion-icon>
+            <p>Everyone has paid!</p>
         </div>
         }
         } @else {
         @for (student of paidStudents; track student.studentId) {
         <ion-item-sliding #slidingItemPaid>
-            <ion-item button (click)="openPayment(student)" class="student-item">
-                <div class="student-info">
-                    <h3>{{ student.lastName }} {{ student.firstName }}</h3>
+            <ion-item button detail="false" (click)="openPayment(student)" class="student-item paid">
+                <div slot="start" class="avatar-box paid">
+                    {{ student.firstName[0] }}{{ student.lastName[0] }}
                 </div>
-
-                <div slot="end" class="payment-status">
-                    <ion-button fill="clear" (click)="markUnpaid(student, $event)" color="danger">
+                <ion-label>
+                    <h2>{{ student.firstName }} {{ student.lastName }}</h2>
+                    <p class="amount-paid">Paid: {{ student.paidAmount | money }}</p>
+                </ion-label>
+                <div slot="end" class="action-box">
+                    <ion-button fill="clear" color="medium" (click)="markUnpaid(student, $event)">
                         <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
                     </ion-button>
-                    <ion-badge color="success">PAID</ion-badge>
-                    <ion-note color="success">{{ student.paidAmount | money }}</ion-note>
                 </div>
             </ion-item>
 
@@ -101,8 +114,9 @@
         </ion-item-sliding>
         }
         @if (paidStudents.length === 0) {
-        <div class="ion-padding ion-text-center">
-            <ion-note>No payments yet.</ion-note>
+        <div class="empty-state">
+            <ion-icon name="receipt-outline" color="medium"></ion-icon>
+            <p>No payments recorded yet.</p>
         </div>
         }
         }

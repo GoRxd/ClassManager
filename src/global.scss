@@ -41,8 +41,8 @@
   --app-side-padding: 20px;
   --app-header-margin-top: 16px;
   --app-section-margin-bottom: 24px;
-  --app-list-header-margin: 12px 16px 8px 16px;
-  --app-border-radius: 16px;
+  --app-list-header-margin: 16px 20px 8px 20px;
+  --app-border-radius: 18px;
   --app-card-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
 }
 
@@ -73,11 +73,95 @@
   margin: var(--app-list-header-margin);
 }
 
-/* Common UI Elements */
-.app-card {
-  border-radius: var(--app-border-radius);
+/* Common UI Elements - "The Island Pattern" */
+.app-card,
+ion-card,
+.island {
+  --border-radius: var(--app-border-radius) !important;
+  border-radius: var(--app-border-radius) !important;
   box-shadow: var(--app-card-shadow);
   overflow: hidden;
+}
+
+/* Standardize inset lists to match islands */
+ion-list[inset="true"] {
+  --border-radius: var(--app-border-radius) !important;
+  border-radius: var(--app-border-radius) !important;
+  margin-left: var(--app-side-padding) !important;
+  margin-right: var(--app-side-padding) !important;
+  overflow: hidden;
+  background: transparent;
+
+  ion-item {
+    --inner-border-width: 1px; // Standard inset look
+  }
+}
+
+/* 
+ * The "Island Group" Pattern
+ * Turns a list into a series of individual floating cards
+ */
+.island-items {
+  background: transparent !important;
+  --background: transparent !important;
+  padding: 0 var(--app-side-padding) !important;
+  margin: 0 0 var(--app-section-margin-bottom) 0 !important;
+  overflow: visible !important;
+
+  // Each direct child (item or sliding) becomes a card
+  >ion-item,
+  >ion-item-sliding,
+  >.island-item {
+    margin-bottom: 12px !important;
+    --border-radius: var(--app-border-radius) !important;
+    border-radius: var(--app-border-radius) !important;
+    box-shadow: var(--app-card-shadow) !important;
+    overflow: hidden !important;
+    display: block !important;
+    --background: var(--ion-card-background) !important;
+    background: var(--ion-card-background) !important;
+
+    // Remove individual borders
+    --inner-border-width: 0 !important;
+    --border-width: 0 !important;
+  }
+
+  // Individual elements inside sliding items should stay flat
+  ion-item-sliding {
+    ion-item {
+      margin-bottom: 0 !important;
+      box-shadow: none !important;
+      border-radius: 0 !important;
+      --border-radius: 0 !important;
+      width: 100%;
+    }
+  }
+}
+
+/* Standalone items that should look like islands */
+.island-item,
+.app-card {
+  --border-radius: var(--app-border-radius) !important;
+  border-radius: var(--app-border-radius) !important;
+  margin-bottom: 12px;
+  box-shadow: var(--app-card-shadow);
+  overflow: hidden;
+  background: var(--ion-card-background);
+}
+
+/* Support for sliding items as standalone cards */
+ion-item-sliding.app-card,
+ion-item-sliding.island-item {
+  --border-radius: var(--app-border-radius) !important;
+  border-radius: var(--app-border-radius) !important;
+  margin-bottom: 12px;
+  box-shadow: var(--app-card-shadow);
+  overflow: hidden;
+
+  ion-item {
+    --border-radius: 0 !important;
+    --inner-border-width: 0;
+  }
 }
 
 /* Empty State Styling (DRY candidates) */
@@ -107,4 +191,9 @@
     margin: 0;
     font-size: 0.95rem;
   }
+}
+
+/* Global FAB Positioning - Fixed to default for correct corner placement */
+ion-fab {
+  margin: 0;
 }

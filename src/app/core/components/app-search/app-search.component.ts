@@ -4,10 +4,10 @@ import { IonSearchbar } from '@ionic/angular/standalone';
 import { SearchService } from '../../services/search.service';
 
 @Component({
-    selector: 'app-search',
-    standalone: true,
-    imports: [CommonModule, IonSearchbar],
-    template: `
+  selector: 'app-search',
+  standalone: true,
+  imports: [CommonModule, IonSearchbar],
+  template: `
     <ion-searchbar 
       (ionInput)="onInput($event)" 
       (ionClear)="onClear()"
@@ -16,15 +16,15 @@ import { SearchService } from '../../services/search.service';
       class="custom-search">
     </ion-searchbar>
   `,
-    styles: [`
+  styles: [`
     :host {
       display: block;
       width: 100%;
-      padding: 12px 8px 0 8px;
+      padding: 16px 20px 0 20px;
     }
     ion-searchbar {
       --box-shadow: none;
-      --border-radius: 12px;
+      --border-radius: var(--app-border-radius);
       --background: var(--ion-color-light);
       padding-top: 0;
       padding-bottom: 8px;
@@ -32,14 +32,14 @@ import { SearchService } from '../../services/search.service';
   `]
 })
 export class AppSearchComponent {
-    private searchService = inject(SearchService);
+  private searchService = inject(SearchService);
 
-    onInput(event: any) {
-        const value = event.target.value;
-        this.searchService.setQuery(value || '');
-    }
+  onInput(event: any) {
+    const value = event.target.value;
+    this.searchService.setQuery(value || '');
+  }
 
-    onClear() {
-        this.searchService.clearQuery();
-    }
+  onClear() {
+    this.searchService.clearQuery();
+  }
 }

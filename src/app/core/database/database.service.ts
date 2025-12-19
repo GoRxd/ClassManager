@@ -21,24 +21,33 @@ export class DatabaseService {
 
       // === WEB CONFIGURATION ===
       if (platform === 'web') {
+        console.log('🌐 Web platform detected, initializing jeep-sqlite...');
 
-        const jeepSqlite = document.querySelector('jeep-sqlite');
+        // Ensure the custom element is defined
+        await customElements.whenDefined('jeep-sqlite');
+        console.log('✅ <jeep-sqlite> defined');
 
-        if (!jeepSqlite) {
+        let jeepSqliteEl = document.querySelector('jeep-sqlite');
 
-          const jeepEl = document.createElement('jeep-sqlite');
-          // IMPORTANT: Enable autoSave to prevent state loss.
-          jeepEl.setAttribute('autoSave', 'true');
-          document.body.appendChild(jeepEl);
-
-
-          await customElements.whenDefined('jeep-sqlite');
-          console.log('✅ <jeep-sqlite> defined');
+        if (!jeepSqliteEl) {
+          console.warn('🏗️ <jeep-sqlite> not found in index.html, creating dynamically...');
+          jeepSqliteEl = document.createElement('jeep-sqlite');
+          document.body.appendChild(jeepSqliteEl);
         }
 
+        if ((jeepSqliteEl as any).componentOnReady) {
+          await (jeepSqliteEl as any).componentOnReady();
+          console.log('✅ <jeep-sqlite> component ready');
+        }
+
+        // Enable autoSave
+        jeepSqliteEl.setAttribute('autoSave', 'true');
 
         await this.sqlite.initWebStore();
         console.log('✅ WebStore initialized');
+
+        // Small delay for the web store internal state to sync
+        await new Promise(resolve => setTimeout(resolve, 200));
       }
 
       // === CREATE CONNECTION ===

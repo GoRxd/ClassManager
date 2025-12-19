@@ -24,7 +24,7 @@
 
   <ion-list lines="none" class="section-margin" style="background: transparent; padding: 0 var(--app-side-padding);">
     @for (col of filteredCollections(); track col.id) {
-    <ion-item-sliding #slidingItem class="app-card" style="margin-bottom: 16px;">
+    <ion-item-sliding #slidingItem class="app-card">
       <ion-item-options side="start" (ionSwipe)="edit(col, slidingItem)">
         <ion-item-option color="primary" expandable (click)="edit(col, slidingItem)">
           <ion-icon slot="icon-only" name="create-outline"></ion-icon>

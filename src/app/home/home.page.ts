@@ -9,7 +9,7 @@ import {
   IonItemSliding, IonItemOptions, IonItemOption, ModalController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { arrowUpOutline, arrowDownOutline, walletOutline, timeOutline, createOutline, trashOutline, peopleOutline } from 'ionicons/icons';
+import { arrowUpOutline, arrowDownOutline, walletOutline, timeOutline, createOutline, trashOutline, peopleOutline, calendarOutline } from 'ionicons/icons';
 import { StudentService } from '../features/students/data/student.service';
 import { CollectionService } from '../features/collections/data/collection.service';
 import { FinanceService } from '../features/finance/data/finance.service';
@@ -56,7 +56,7 @@ export class HomePage {
   get recentExpenses() { return this.financeService.recentExpenses; }
 
   constructor() {
-    addIcons({ arrowUpOutline, arrowDownOutline, walletOutline, timeOutline, createOutline, trashOutline, peopleOutline });
+    addIcons({ arrowUpOutline, arrowDownOutline, walletOutline, timeOutline, createOutline, trashOutline, peopleOutline, calendarOutline });
   }
 
   ionViewWillEnter() {
