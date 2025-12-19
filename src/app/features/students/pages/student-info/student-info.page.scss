@@ -1,6 +1,5 @@
-
 .header-section {
-    padding: 20px 16px;
+    padding: 16px;
     border-bottom: 1px solid var(--ion-border-color, #eee);
     background: var(--ion-background-color);
 
@@ -9,7 +8,7 @@
         font-size: 24px;
         font-weight: 700;
     }
-    
+
     p {
         margin: 0 0 16px;
         color: var(--ion-color-medium);
@@ -21,18 +20,18 @@
 
     .meta {
         font-size: 15px;
-        
+
         .debt-warning {
             color: var(--ion-color-danger);
             display: block;
             margin-bottom: 4px;
         }
-        
+
         .unpaid-count {
             color: var(--ion-color-medium);
             font-size: 13px;
         }
-        
+
         .all-paid {
             color: var(--ion-color-success);
             font-weight: 600;
@@ -63,7 +62,7 @@
         font-size: 14px;
         color: var(--ion-color-dark);
     }
-    
+
     .paid-amount {
         font-size: 12px;
     }
@@ -72,4 +71,60 @@
 .paid-item {
     --background: transparent;
     opacity: 0.8;
+}
+
+.balance-section {
+    margin-top: 20px;
+    padding: 12px;
+    border-radius: 12px;
+    background: var(--ion-color-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid transparent;
+
+    .balance-info {
+        display: flex;
+        flex-direction: column;
+
+        .label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--ion-color-medium);
+            font-weight: 600;
+        }
+
+        .amount {
+            font-size: 14px;
+            font-weight: 500;
+        }
+    }
+
+    &.positive {
+        background: rgba(var(--ion-color-warning-rgb), 0.1);
+        border-color: rgba(var(--ion-color-warning-rgb), 0.2);
+
+        .amount {
+            color: var(--ion-color-warning);
+        }
+    }
+
+    &.negative {
+        background: rgba(var(--ion-color-danger-rgb), 0.1);
+        border-color: rgba(var(--ion-color-danger-rgb), 0.2);
+
+        .amount {
+            color: var(--ion-color-danger);
+        }
+    }
+
+    &.settled {
+        background: rgba(var(--ion-color-success-rgb), 0.1);
+        border-color: rgba(var(--ion-color-success-rgb), 0.2);
+
+        .amount {
+            color: var(--ion-color-success);
+        }
+    }
 }

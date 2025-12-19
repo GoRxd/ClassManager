@@ -73,4 +73,13 @@ export class CollectionService {
     await this.repo.remove(id);
     await this.loadCollections();
   }
+
+  async equalizeStudentPayments(studentId: number, collections: any[], activeStudentCount: number) {
+    for (const col of collections) {
+      const recommendedPrice = Math.round(col.targetAmount / activeStudentCount);
+      if (col.paidAmount !== recommendedPrice) {
+        await this.updatePayment(col.collectionId, studentId, recommendedPrice);
+      }
+    }
+  }
 }

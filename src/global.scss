@@ -39,11 +39,21 @@
 /* Global variables for spacing and common elements */
 :root {
   --app-side-padding: 20px;
-  --app-header-margin-top: 16px;
-  --app-section-margin-bottom: 24px;
-  --app-list-header-margin: 16px 20px 8px 20px;
+  --app-header-margin-top: 12px;
+  --app-section-margin-bottom: 20px;
+  --app-list-header-margin: 12px 20px 8px 20px;
   --app-border-radius: 18px;
   --app-card-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+/* Dark mode specific overrides */
+body.dark {
+  --app-card-shadow: none;
+
+  ion-modal {
+    --box-shadow: none;
+    --border-radius: var(--app-border-radius);
+  }
 }
 
 /* Global Typography & Spacing Utilities */
@@ -170,13 +180,13 @@ ion-item-sliding.island-item {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 4rem 2rem;
+  padding: 3rem 2rem;
   text-align: center;
   color: var(--ion-color-medium);
 
   ion-icon {
-    font-size: 80px;
-    margin-bottom: 16px;
+    font-size: 64px;
+    margin-bottom: 12px;
     opacity: 0.3;
   }
 

@@ -12,70 +12,73 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-list>
-    <ion-item>
-      <ion-select label="Collection" label-placement="floating" [(ngModel)]="selectedCollectionId"
+  <div class="form-inputs">
+    <div class="input-group">
+      <ion-select label="Collection" label-placement="floating" fill="outline" [(ngModel)]="selectedCollectionId"
         placeholder="Select Collection">
         @for (coll of collectionService.collections(); track coll.id) {
         <ion-select-option [value]="coll.id">{{ coll.title }}</ion-select-option>
         }
       </ion-select>
-    </ion-item>
+    </div>
 
-    <ion-item>
-      <ion-input label="Title" label-placement="floating" [(ngModel)]="title"
+    <div class="input-group">
+      <ion-input label="Title" label-placement="floating" fill="outline" [(ngModel)]="title"
         placeholder="e.g. Bus Tickets"></ion-input>
-    </ion-item>
+    </div>
 
-    <ion-item>
-      <ion-textarea label="Description" label-placement="floating" [(ngModel)]="description"
+    <div class="input-group">
+      <ion-textarea label="Description" label-placement="floating" fill="outline" [(ngModel)]="description"
         placeholder="Optional details..." auto-grow="true" rows="2"></ion-textarea>
-    </ion-item>
+    </div>
 
-    <ion-item>
-      <ion-input [label]="'Amount (' + currency() + ')'" label-placement="floating" type="number" [(ngModel)]="amount"
-        placeholder="0.00"></ion-input>
-    </ion-item>
-  </ion-list>
+    <div class="input-group">
+      <ion-input [label]="'Amount (' + currency() + ')'" label-placement="floating" fill="outline" type="number"
+        [(ngModel)]="amount" placeholder="0.00"></ion-input>
+    </div>
+  </div>
 
-  <ion-list>
-    <ion-item lines="none" color="light">
+  <div class="products-section">
+    <div class="section-header">
       <ion-label class="ion-text-uppercase font-bold">Products (Optional)</ion-label>
-      <ion-button (click)="addProduct()" size="small" slot="end" fill="solid">
+      <ion-button (click)="addProduct()" size="small" fill="solid">
         <ion-icon name="add" slot="start"></ion-icon>
         Add Item
       </ion-button>
-    </ion-item>
+    </div>
 
-    @for (p of products; track $index) {
-    <ion-item>
-      <ion-grid class="ion-no-padding">
-        <ion-row class="ion-align-items-center">
-          <ion-col size="5">
-            <ion-input label="Name" label-placement="stacked" [(ngModel)]="p.name" placeholder="Item"></ion-input>
-          </ion-col>
-          <ion-col size="2">
-            <ion-input label="Qty" label-placement="stacked" type="number" [(ngModel)]="p.quantity"
-              (ionInput)="updateTotal()"></ion-input>
-          </ion-col>
-          <ion-col size="3">
-            <ion-input label="Price" label-placement="stacked" type="number" [(ngModel)]="p.unitPrice"
-              (ionInput)="updateTotal()"></ion-input>
-          </ion-col>
-          <ion-col size="2" class="ion-text-end">
-            <ion-button fill="clear" color="danger" (click)="removeProduct($index)">
-              <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-item>
-    }
+    <div class="products-list">
+      @for (p of products; track $index) {
+      <div class="product-item">
+        <ion-grid class="ion-no-padding">
+          <ion-row class="ion-align-items-center">
+            <ion-col size="5">
+              <ion-input label="Name" label-placement="stacked" fill="outline" [(ngModel)]="p.name"
+                placeholder="Item"></ion-input>
+            </ion-col>
+            <ion-col size="2">
+              <ion-input label="Qty" label-placement="stacked" fill="outline" type="number" [(ngModel)]="p.quantity"
+                (ionInput)="updateTotal()"></ion-input>
+            </ion-col>
+            <ion-col size="3">
+              <ion-input label="Price" label-placement="stacked" fill="outline" type="number" [(ngModel)]="p.unitPrice"
+                (ionInput)="updateTotal()"></ion-input>
+            </ion-col>
+            <ion-col size="2" class="ion-text-end">
+              <ion-button fill="clear" color="danger" (click)="removeProduct($index)">
+                <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+      }
 
-    @if (products.length === 0) {
-    <ion-item lines="none">
-      <ion-label color="medium" class="ion-text-center">No products added. Enter total manually.</ion-label>
-    </ion-item>
-    }
-  </ion-list>
+      @if (products.length === 0) {
+      <div class="empty-products ion-padding ion-text-center">
+        <ion-note color="medium">No products added. Enter total manually.</ion-note>
+      </div>
+      }
+    </div>
+  </div>
 </ion-content>

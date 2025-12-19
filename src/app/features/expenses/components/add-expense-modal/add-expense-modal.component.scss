@@ -1,3 +1,31 @@
 .font-bold {
   font-weight: bold;
 }
+
+.input-group {
+  margin-bottom: 16px;
+}
+
+.products-section {
+  margin-top: 24px;
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 0 4px;
+  }
+}
+
+.product-item {
+  margin-bottom: 12px;
+  padding: 8px;
+  border-radius: 8px;
+  background: rgba(var(--ion-color-step-100-rgb, 42, 42, 42), 0.3);
+}
+
+.empty-products {
+  opacity: 0.7;
+  font-style: italic;
+}

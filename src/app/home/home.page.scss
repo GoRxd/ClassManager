@@ -10,7 +10,7 @@ ion-toolbar {
 
 .welcome-card {
   padding: 0 16px;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .balance-card {
@@ -22,8 +22,8 @@ ion-toolbar {
   box-shadow: 0 10px 20px -5px rgba(var(--ion-color-primary-rgb), 0.4);
 
   ion-card-header {
-    padding-top: 24px;
-    padding-bottom: 12px;
+    padding-top: 16px;
+    padding-bottom: 8px;
   }
 
   ion-card-subtitle {
@@ -58,8 +58,8 @@ ion-toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
-  padding: 20px 12px 8px 12px;
+  margin-top: 12px;
+  padding: 12px 12px 8px 12px;
   border-top: 1px solid rgba(255, 255, 255, 0.15);
 
   .stat-divider {
@@ -108,11 +108,11 @@ ion-toolbar {
 
 .quick-stats {
   padding: 0 8px;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 
   .stat-box {
     background: var(--ion-card-background);
-    padding: 16px;
+    padding: 12px;
     border-radius: var(--app-border-radius);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     display: flex;

@@ -1,25 +1,25 @@
 .header-section {
-    padding: 24px;
-    margin: 16px var(--app-side-padding) 16px;
+    padding: 16px;
+    margin: 12px var(--app-side-padding) 12px;
     background: var(--ion-card-background);
     border-radius: var(--app-border-radius);
     box-shadow: var(--app-card-shadow);
 
     .header-content {
-        margin-bottom: 24px;
+        margin-bottom: 16px;
 
         h1 {
-            margin: 0 0 12px;
-            font-size: 26px;
+            margin: 0 0 8px;
+            font-size: 24px;
             font-weight: 800;
             color: var(--ion-color-dark);
         }
 
         .description {
-            margin: 0 0 20px;
+            margin: 0 0 16px;
             color: var(--ion-color-medium);
-            font-size: 15px;
-            line-height: 1.5;
+            font-size: 14px;
+            line-height: 1.4;
         }
 
         .per-student-box {
@@ -27,7 +27,7 @@
             flex-direction: column;
             align-items: center;
             background: rgba(var(--ion-color-primary-rgb), 0.05);
-            padding: 12px 24px;
+            padding: 8px 20px;
             border-radius: var(--app-border-radius);
             border: 1px dashed rgba(var(--ion-color-primary-rgb), 0.2);
 
@@ -49,14 +49,14 @@
     }
 
     .progress-container {
-        padding: 16px;
+        padding: 12px;
         background: var(--ion-background-color);
         border-radius: var(--app-border-radius);
 
         .progress-info {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
 
             .collected,
             .target {
@@ -110,7 +110,7 @@
 }
 
 .segment-container {
-    padding: 0 var(--app-side-padding) 16px;
+    padding: 0 var(--app-side-padding) 12px;
 
     ion-segment {
         --background: var(--ion-color-step-100, #e0e0e0);

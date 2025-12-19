@@ -40,10 +40,12 @@ export class StudentInfoPage implements OnInit {
   private settingsService = inject(SettingsService);
   private paymentManagement = inject(PaymentManagementService);
   currency = this.settingsService.currency;
+  protected Math = Math;
 
   student = signal<Student | undefined>(undefined);
   collections = signal<StudentCollectionSummary[]>([]);
   totalDebt = signal<number>(0);
+  studentBalance = signal<number>(0);
   unpaidCount = signal<number>(0);
   loading = signal<boolean>(true);
 
@@ -73,21 +75,23 @@ export class StudentInfoPage implements OnInit {
       if (s && s.id) {
         const cols = await this.collectionService.getStudentCollections(s.id);
         this.collections.set(cols);
-        this.calculateDebt(cols, count);
+        this.calculateSummary(cols, count);
       }
     } finally {
       this.loading.set(false);
     }
   }
 
-  calculateDebt(cols: StudentCollectionSummary[], studentCount: number) {
+  calculateSummary(cols: StudentCollectionSummary[], studentCount: number) {
     if (studentCount === 0) {
       this.totalDebt.set(0);
+      this.studentBalance.set(0);
       this.unpaidCount.set(0);
       return;
     }
 
     let debt = 0;
+    let balance = 0;
     let unpaid = 0;
 
     for (const c of cols) {
@@ -95,13 +99,33 @@ export class StudentInfoPage implements OnInit {
       // Store the calculated cost on the object for easy access in template/logic
       c.perStudentCost = perStudentCost;
 
+      balance += (c.paidAmount - perStudentCost);
+
       if (c.status !== 'PAID') {
         debt += (perStudentCost - c.paidAmount);
         unpaid++;
       }
     }
     this.totalDebt.set(debt);
+    this.studentBalance.set(balance);
     this.unpaidCount.set(unpaid);
+  }
+
+  async equalizePayments() {
+    const s = this.student();
+    if (!s || !s.id) return;
+
+    const confirmed = await this.uiService.showConfirm({
+      header: 'Equalize Payments',
+      message: 'This will update all payments to match the recommended prices. Are you sure?',
+      confirmText: 'Equalize'
+    });
+
+    if (confirmed) {
+      await this.collectionService.equalizeStudentPayments(s.id, this.collections(), this.activeStudentCount());
+      this.uiService.showToast('All payments have been equalized', 'success');
+      await this.loadData(s.id);
+    }
   }
 
   async handleCollectionClick(collection: StudentCollectionSummary) {
