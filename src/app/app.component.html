@@ -4,21 +4,21 @@
       <div class="menu-header">
         <ion-icon name="wallet-outline" size="large"></ion-icon>
         <h2>Class Manager</h2>
-        <p>Finance Tracker</p>
+        <p>{{ 'SIDE_MENU.FINANCE_TRACKER' | translate }}</p>
       </div>
 
       <ion-list lines="none">
         <ion-menu-toggle auto-hide="false">
           <ion-item routerLink="/home" routerDirection="root" detail="false">
             <ion-icon slot="start" name="home-outline"></ion-icon>
-            <ion-label>Dashboard</ion-label>
+            <ion-label>{{ 'SIDE_MENU.DASHBOARD' | translate }}</ion-label>
           </ion-item>
         </ion-menu-toggle>
 
         <ion-menu-toggle auto-hide="false">
           <ion-item routerLink="/students" routerDirection="root" detail="false">
             <ion-icon slot="start" name="people-outline"></ion-icon>
-            <ion-label>Students</ion-label>
+            <ion-label>{{ 'SIDE_MENU.STUDENTS' | translate }}</ion-label>
           </ion-item>
         </ion-menu-toggle>
 
@@ -26,31 +26,31 @@
         <ion-menu-toggle auto-hide="false">
           <ion-item button detail="false" class="tbd-item" routerLink="/collections">
             <ion-icon slot="start" name="wallet-outline"></ion-icon>
-            <ion-label>Collections</ion-label>
+            <ion-label>{{ 'SIDE_MENU.COLLECTIONS' | translate }}</ion-label>
           </ion-item>
         </ion-menu-toggle>
 
         <ion-menu-toggle auto-hide="false">
           <ion-item routerLink="/expenses" routerDirection="root" detail="false">
             <ion-icon slot="start" name="receipt-outline"></ion-icon>
-            <ion-label>Expenses</ion-label>
+            <ion-label>{{ 'SIDE_MENU.EXPENSES' | translate }}</ion-label>
           </ion-item>
         </ion-menu-toggle>
 
         <ion-menu-toggle auto-hide="false">
           <ion-item button detail="false" class="tbd-item">
             <ion-icon slot="start" name="stats-chart-outline"></ion-icon>
-            <ion-label>Statistics</ion-label>
+            <ion-label>{{ 'SIDE_MENU.STATISTICS' | translate }}</ion-label>
           </ion-item>
         </ion-menu-toggle>
       </ion-list>
-      
+
       <div class="menu-footer">
         <ion-menu-toggle auto-hide="false">
-            <ion-item button detail="false" lines="none" routerLink="/settings">
-                <ion-icon slot="start" name="settings-outline"></ion-icon>
-                <ion-label>Settings</ion-label>
-            </ion-item>
+          <ion-item button detail="false" lines="none" routerLink="/settings">
+            <ion-icon slot="start" name="settings-outline"></ion-icon>
+            <ion-label>{{ 'SIDE_MENU.SETTINGS' | translate }}</ion-label>
+          </ion-item>
         </ion-menu-toggle>
       </div>
     </ion-content>

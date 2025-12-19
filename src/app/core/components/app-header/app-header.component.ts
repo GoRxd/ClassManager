@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonHeader, IonToolbar, IonButtons, IonBackButton, IonMenuButton, IonTitle } from '@ionic/angular/standalone';
+// Removed LanguageSwitcherComponent from here
 
 @Component({
   selector: 'app-header',

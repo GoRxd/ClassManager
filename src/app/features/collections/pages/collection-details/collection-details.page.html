@@ -1,13 +1,13 @@
-<app-header title="Details" backDefaultHref="/collections"></app-header>
+<app-header [title]="'COLLECTIONS.DETAILS' | translate" backDefaultHref="/collections"></app-header>
 
 <ion-content>
     @if (collection) {
     <div class="header-section">
         <div class="header-content ion-text-center">
             <h1>{{ collection.title }}</h1>
-            <p class="description">{{ collection.description || 'No description provided' }}</p>
+            <p class="description">{{ collection.description || ('COLLECTIONS.NO_DESCRIPTION' | translate) }}</p>
             <div class="per-student-box" *ngIf="suggestedAmount > 0">
-                <span class="label">Suggested per person:</span>
+                <span class="label">{{ 'COLLECTIONS.SUGGESTED_PER_PERSON' | translate }}</span>
                 <span class="value">{{ suggestedAmount | money }}</span>
             </div>
         </div>
@@ -15,11 +15,11 @@
         <div class="progress-container">
             <div class="progress-info">
                 <div class="collected">
-                    <span class="label">Collected</span>
+                    <span class="label">{{ 'COLLECTIONS.COLLECTED' | translate }}</span>
                     <span class="amount">{{ totalCollected | money }}</span>
                 </div>
                 <div class="target">
-                    <span class="label">Target</span>
+                    <span class="label">{{ 'COLLECTIONS.TARGET' | translate }}</span>
                     <span class="amount">{{ collection.targetAmount | money }}</span>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                 <ion-button size="small" shape="round" color="primary" (click)="payOut()"
                     [disabled]="totalCollected <= 0">
                     <ion-icon slot="start" name="card-outline"></ion-icon>
-                    Pay Out Remaining
+                    {{ 'COLLECTIONS.PAY_OUT_REMAINING' | translate }}
                 </ion-button>
             </div>
         </div>
@@ -40,10 +40,12 @@
     <div class="segment-container">
         <ion-segment [(ngModel)]="segment" mode="ios">
             <ion-segment-button value="pending">
-                <ion-label>Pending <span>{{ pendingStudents.length }}</span></ion-label>
+                <ion-label>{{ 'COLLECTIONS.PENDING_SEGMENT' | translate }} <span>{{ pendingStudents.length
+                        }}</span></ion-label>
             </ion-segment-button>
             <ion-segment-button value="paid">
-                <ion-label>Paid <span>{{ paidStudents.length }}</span></ion-label>
+                <ion-label>{{ 'COLLECTIONS.PAID_SEGMENT' | translate }} <span>{{ paidStudents.length
+                        }}</span></ion-label>
             </ion-segment-button>
         </ion-segment>
     </div>
@@ -67,9 +69,10 @@
                     <h2>{{ student.firstName }} {{ student.lastName }}</h2>
                     <p class="status-text">
                         @if (student.status === 'PENDING') {
-                        Not paid yet
+                        {{ 'COLLECTIONS.NOT_PAID_YET' | translate }}
                         } @else {
-                        Partial: {{ student.paidAmount | money }}
+                        {{ 'COLLECTIONS.PARTIAL' | translate:{ amount: formatService.formatMoney(student.paidAmount ||
+                        0), currency: currency() } }}
                         }
                     </p>
                 </ion-label>
@@ -85,7 +88,7 @@
         @if (pendingStudents.length === 0) {
         <div class="empty-state">
             <ion-icon name="checkmark-done-circle-outline" color="success"></ion-icon>
-            <p>Everyone has paid!</p>
+            <p>{{ 'COLLECTIONS.EVERYONE_PAID' | translate }}</p>
         </div>
         }
         } @else {
@@ -97,7 +100,8 @@
                 </div>
                 <ion-label>
                     <h2>{{ student.firstName }} {{ student.lastName }}</h2>
-                    <p class="amount-paid">Paid: {{ student.paidAmount | money }}</p>
+                    <p class="amount-paid">{{ 'COLLECTIONS.PAID_SEGMENT' | translate }}: {{ student.paidAmount | money
+                        }}</p>
                 </ion-label>
                 <div slot="end" class="action-box">
                     <ion-button fill="clear" color="medium" (click)="markUnpaid(student, $event)">
@@ -116,14 +120,14 @@
         @if (paidStudents.length === 0) {
         <div class="empty-state">
             <ion-icon name="receipt-outline" color="medium"></ion-icon>
-            <p>No payments recorded yet.</p>
+            <p>{{ 'COLLECTIONS.NO_PAYMENTS_YET' | translate }}</p>
         </div>
         }
         }
     </ion-list>
     } @else {
     <div class="ion-padding">
-        <ion-note>Loading...</ion-note>
+        <ion-note>{{ 'COMMON.LOADING' | translate }}</ion-note>
     </div>
     }
 </ion-content>

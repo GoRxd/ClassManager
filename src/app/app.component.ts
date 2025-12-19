@@ -6,10 +6,12 @@ import { SettingsService } from './core/settings/settings.service';
 import { addIcons } from 'ionicons';
 import { homeOutline, peopleOutline, walletOutline, statsChartOutline, settingsOutline, receiptOutline } from 'ionicons/icons';
 
+import { TranslatePipe } from './core/pipes/translate.pipe';
+
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterLink, IonApp, IonRouterOutlet, IonMenu, IonContent, IonList, IonItem, IonIcon, IonLabel, IonMenuToggle],
+  imports: [RouterLink, IonApp, IonRouterOutlet, IonMenu, IonContent, IonList, IonItem, IonIcon, IonLabel, IonMenuToggle, TranslatePipe],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

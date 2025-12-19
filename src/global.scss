@@ -53,6 +53,15 @@ body.dark {
   ion-modal {
     --box-shadow: none;
     --border-radius: var(--app-border-radius);
+    --backdrop-opacity: 0;
+  }
+
+  ion-alert {
+    --backdrop-opacity: 0;
+
+    .alert-wrapper {
+      box-shadow: none !important;
+    }
   }
 }
 

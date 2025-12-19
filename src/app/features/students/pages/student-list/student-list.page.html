@@ -1,10 +1,10 @@
-<app-header title="Manage Class" [isRoot]="true"></app-header>
+<app-header [title]="'STUDENTS.MANAGE_CLASS' | translate" [isRoot]="true"></app-header>
 
 <ion-content [fullscreen]="true">
   <app-search></app-search>
 
   <h3 class="list-header-text">
-    Attendance list ({{ filteredStudents().length }})
+    {{ 'STUDENTS.ATTENDANCE_LIST' | translate:{ count: filteredStudents().length } }}
   </h3>
 
   <ion-list class="section-margin island-items">
@@ -26,7 +26,7 @@
             {{ formatPhone(student.phone) }}
           </p>
           } @else {
-          <p class="no-phone">No phone number</p>
+          <p class="no-phone">{{ 'STUDENTS.NO_PHONE' | translate }}</p>
           }
         </ion-label>
 
@@ -47,8 +47,8 @@
       </ion-item-options>
     </ion-item-sliding>
     } @empty {
-    <app-empty-state icon="people-outline" title="Class is empty"
-      description="Use the button below to add your first student.">
+    <app-empty-state icon="people-outline" [title]="'STUDENTS.NO_STUDENTS_TITLE' | translate"
+      [description]="'STUDENTS.NO_STUDENTS_DESC' | translate">
     </app-empty-state>
     }
   </ion-list>

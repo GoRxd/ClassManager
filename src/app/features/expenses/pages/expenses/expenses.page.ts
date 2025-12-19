@@ -19,7 +19,9 @@ import { AppHeaderComponent } from '../../../../core/components/app-header/app-h
 import { AppSearchComponent } from '../../../../core/components/app-search/app-search.component';
 import { EmptyStateComponent } from '../../../../core/components/empty-state/empty-state.component';
 import { MoneyPipe } from '../../../../core/pipes/money.pipe';
+import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { SearchService } from '../../../../core/services/search.service';
+import { TranslationService } from '../../../../core/services/translation.service';
 
 @Component({
   selector: 'app-expenses',
@@ -29,7 +31,7 @@ import { SearchService } from '../../../../core/services/search.service';
     IonContent, IonHeader, IonTitle, IonToolbar,
     IonList, IonItem, IonLabel, IonNote, IonIcon, IonButton,
     IonFab, IonFabButton, IonItemSliding, IonItemOptions, IonItemOption,
-    AppHeaderComponent, AppSearchComponent, EmptyStateComponent, MoneyPipe
+    AppHeaderComponent, AppSearchComponent, EmptyStateComponent, MoneyPipe, TranslatePipe
   ],
   templateUrl: './expenses.page.html',
   styleUrls: ['./expenses.page.scss']
@@ -41,6 +43,7 @@ export class ExpensesPage implements OnInit, OnDestroy {
   private itemAction = inject(ItemActionService);
   private settingsService = inject(SettingsService);
   private searchService = inject(SearchService);
+  private translationService = inject(TranslationService);
 
   recentExpenses = signal<Expense[]>([]);
   allExpenses = signal<Expense[]>([]);
@@ -94,7 +97,7 @@ export class ExpensesPage implements OnInit, OnDestroy {
           res.data.description
         );
 
-        await this.uiService.showToast('Expense added successfully', 'success');
+        await this.uiService.showToast(this.translationService.translate('EXPENSES.ADD_SUCCESS'), 'success');
         await this.refreshList();
       }
     });
@@ -122,7 +125,7 @@ export class ExpensesPage implements OnInit, OnDestroy {
             res.data.description
           );
 
-          await this.uiService.showToast('Expense updated successfully', 'success');
+          await this.uiService.showToast(this.translationService.translate('EXPENSES.UPDATE_SUCCESS'), 'success');
           await this.refreshList();
         }
       });
@@ -138,9 +141,9 @@ export class ExpensesPage implements OnInit, OnDestroy {
         await this.expenseService.removeExpense(id);
         await this.refreshList();
       },
-      'Confirm Delete',
-      'Are you sure you want to delete this expense?',
-      'Expense deleted'
+      this.translationService.translate('EXPENSES.DELETE_CONFIRM_TITLE'),
+      this.translationService.translate('EXPENSES.DELETE_CONFIRM_TEXT'),
+      this.translationService.translate('EXPENSES.DELETE_SUCCESS')
     );
   }
 

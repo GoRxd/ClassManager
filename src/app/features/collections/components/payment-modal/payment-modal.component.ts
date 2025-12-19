@@ -9,6 +9,9 @@ import {
 import { addIcons } from 'ionicons';
 import { closeOutline, checkmarkCircleOutline } from 'ionicons/icons';
 
+import { TranslationService } from '../../../../core/services/translation.service';
+import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
+
 @Component({
   selector: 'app-payment-modal',
   standalone: true,
@@ -17,7 +20,7 @@ import { closeOutline, checkmarkCircleOutline } from 'ionicons/icons';
   imports: [
     CommonModule, FormsModule,
     IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton,
-    IonIcon, IonInput, IonNote, IonChip, IonLabel
+    IonIcon, IonInput, IonNote, IonChip, IonLabel, TranslatePipe
   ]
 })
 export class PaymentModalComponent implements OnInit {
@@ -25,12 +28,13 @@ export class PaymentModalComponent implements OnInit {
   @Input() suggestedAmount: number = 0;
   @Input() currentAmount: number = 0;
 
-  private settingsService = inject(SettingsService);
-  currency = this.settingsService.currency;
+  private translationService = inject(TranslationService);
+  private modalCtrl = inject(ModalController);
+  currency = this.translationService.currency;
 
   amount: number = 0;
 
-  constructor(private modalCtrl: ModalController) {
+  constructor() {
     addIcons({ closeOutline, checkmarkCircleOutline });
   }
 

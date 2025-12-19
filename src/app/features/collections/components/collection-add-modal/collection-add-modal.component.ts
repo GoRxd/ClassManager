@@ -11,6 +11,9 @@ import { closeOutline, saveOutline, addCircleOutline } from 'ionicons/icons';
 import { Collection } from '../../data/collection.model';
 import { FormatService } from '../../../../core/services/format.service';
 
+import { TranslationService } from '../../../../core/services/translation.service';
+import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
+
 @Component({
   selector: 'app-collection-add-modal',
   standalone: true,
@@ -19,13 +22,14 @@ import { FormatService } from '../../../../core/services/format.service';
   imports: [
     CommonModule, FormsModule,
     IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton,
-    IonIcon, IonInput, IonTextarea
+    IonIcon, IonInput, IonTextarea, TranslatePipe
   ]
 })
 export class CollectionAddModalComponent implements OnInit {
-  private settingsService = inject(SettingsService);
+  private translationService = inject(TranslationService);
   private formatService = inject(FormatService);
-  currency = this.settingsService.currency;
+  private modalCtrl = inject(ModalController);
+  currency = this.translationService.currency;
 
   @Input() collection?: Collection;
 
@@ -34,7 +38,7 @@ export class CollectionAddModalComponent implements OnInit {
   amount: number | null = null;
   deadline: string = ''; // ISO string from ion-datetime
 
-  constructor(private modalCtrl: ModalController) {
+  constructor() {
     addIcons({ closeOutline, saveOutline, addCircleOutline });
   }
 

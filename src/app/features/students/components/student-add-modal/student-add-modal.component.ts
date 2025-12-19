@@ -10,6 +10,8 @@ import { closeOutline, saveOutline, callOutline, personAddOutline, createOutline
 import { Student } from '../../data/student.model';
 import { FormatService } from '../../../../core/services/format.service';
 
+import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
+
 @Component({
   selector: 'app-student-add-modal',
   standalone: true,
@@ -18,7 +20,7 @@ import { FormatService } from '../../../../core/services/format.service';
   imports: [
     CommonModule, FormsModule,
     IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton,
-    IonIcon, IonInput
+    IonIcon, IonInput, TranslatePipe
   ]
 })
 export class StudentAddModalComponent implements OnInit {

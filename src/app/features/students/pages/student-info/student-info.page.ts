@@ -15,8 +15,9 @@ import { FormatService } from '../../../../core/services/format.service';
 import { StudentCollectionSummary } from '../../../collections/data/collection.repository';
 import { SettingsService } from '../../../../core/settings/settings.service';
 import { PaymentManagementService } from '../../../../core/services/payment-management.service';
-
 import { AppHeaderComponent } from '../../../../core/components/app-header/app-header.component';
+import { TranslationService } from '../../../../core/services/translation.service';
+import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 
 @Component({
   selector: 'app-student-info',
@@ -26,7 +27,7 @@ import { AppHeaderComponent } from '../../../../core/components/app-header/app-h
     IonContent, IonHeader, IonToolbar, IonButtons, IonBackButton,
     IonTitle,
     IonList, IonItem, IonLabel, IonNote, IonIcon, IonButton, IonBadge, IonSkeletonText,
-    AppHeaderComponent
+    AppHeaderComponent, TranslatePipe
   ],
   templateUrl: './student-info.page.html',
   styleUrls: ['./student-info.page.scss']
@@ -37,9 +38,10 @@ export class StudentInfoPage implements OnInit {
   private collectionService = inject(CollectionService);
   private uiService = inject(UiService);
   public formatService = inject(FormatService);
-  private settingsService = inject(SettingsService);
+  public translationService = inject(TranslationService);
   private paymentManagement = inject(PaymentManagementService);
-  currency = this.settingsService.currency;
+
+  currency = this.translationService.currency;
   protected Math = Math;
 
   student = signal<Student | undefined>(undefined);
@@ -116,14 +118,15 @@ export class StudentInfoPage implements OnInit {
     if (!s || !s.id) return;
 
     const confirmed = await this.uiService.showConfirm({
-      header: 'Equalize Payments',
-      message: 'This will update all payments to match the recommended prices. Are you sure?',
-      confirmText: 'Equalize'
+      header: this.translationService.translate('STUDENT_INFO.EQUALIZE_CONFIRM_HEADER'),
+      message: this.translationService.translate('STUDENT_INFO.EQUALIZE_CONFIRM_MSG'),
+      confirmText: this.translationService.translate('STUDENT_INFO.EQUALIZE')
     });
 
     if (confirmed) {
-      await this.collectionService.equalizeStudentPayments(s.id, this.collections(), this.activeStudentCount());
-      this.uiService.showToast('All payments have been equalized', 'success');
+      const studentName = `${s.firstName} ${s.lastName}`;
+      await this.paymentManagement.equalizePayments(s.id, studentName, this.collections(), this.activeStudentCount());
+      this.uiService.showToast(this.translationService.translate('STUDENT_INFO.EQUALIZE_SUCCESS'), 'success');
       await this.loadData(s.id);
     }
   }
@@ -144,7 +147,10 @@ export class StudentInfoPage implements OnInit {
     const amountToPay = collection.perStudentCost || collection.targetAmount;
 
     await this.collectionService.updatePayment(collection.collectionId, s.id, amountToPay);
-    this.uiService.showToast(`Payment marked for: ${collection.title}`, 'success');
+    this.uiService.showToast(
+      this.translationService.translate('COMMON.SUCCESS') + ': ' + collection.title,
+      'success'
+    );
     await this.loadData(s.id);
   }
 

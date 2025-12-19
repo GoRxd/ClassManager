@@ -1,12 +1,13 @@
 import { Pipe, PipeTransform, inject } from '@angular/core';
-import { SettingsService } from '../settings/settings.service';
+import { TranslationService } from '../services/translation.service';
 
 @Pipe({
     name: 'money',
-    standalone: true
+    standalone: true,
+    pure: false
 })
 export class MoneyPipe implements PipeTransform {
-    private settingsService = inject(SettingsService);
+    private translationService = inject(TranslationService);
 
     transform(value: number | undefined | null): string {
         const amount = (value || 0) / 100;
@@ -16,6 +17,7 @@ export class MoneyPipe implements PipeTransform {
             maximumFractionDigits: 2
         }).format(amount);
 
-        return `${formattedAmount} ${this.settingsService.currency()}`;
+        const currency = this.translationService.translate('COMMON.CURRENCY');
+        return `${formattedAmount} ${currency}`;
     }
 }

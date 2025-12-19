@@ -1,4 +1,4 @@
-<app-header title="Expenses" [isRoot]="true"></app-header>
+<app-header [title]="'EXPENSES.TITLE' | translate" [isRoot]="true"></app-header>
 
 <ion-content [fullscreen]="true">
   <app-search></app-search>
@@ -6,9 +6,9 @@
   @if (viewMode() === 'recent') {
   <div class="page-header">
     <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-      <h2>Recent Expenses</h2>
+      <h2>{{ 'EXPENSES.RECENT_EXPENSES' | translate }}</h2>
       <ion-button fill="clear" size="small" (click)="showHistory()">
-        View History
+        {{ 'EXPENSES.VIEW_HISTORY' | translate }}
       </ion-button>
     </div>
   </div>
@@ -43,8 +43,8 @@
       </ion-item-options>
     </ion-item-sliding>
     } @empty {
-    <app-empty-state icon="wallet-outline" title="No expenses found"
-      description="Add your first expense using the button below.">
+    <app-empty-state icon="wallet-outline" [title]="'EXPENSES.NO_EXPENSES_TITLE' | translate"
+      [description]="'EXPENSES.NO_EXPENSES_DESC' | translate">
     </app-empty-state>
     }
   </ion-list>
@@ -54,7 +54,7 @@
       <ion-button fill="clear" (click)="showRecent()" style="--padding-start: 0;">
         <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
       </ion-button>
-      <h2 style="margin-left: 8px;">Full History</h2>
+      <h2 style="margin-left: 8px;">{{ 'EXPENSES.FULL_HISTORY' | translate }}</h2>
     </div>
   </div>
 
@@ -88,8 +88,8 @@
       </ion-item-options>
     </ion-item-sliding>
     } @empty {
-    <app-empty-state icon="wallet-outline" title="No history found"
-      description="Your full expense history will appear here.">
+    <app-empty-state icon="wallet-outline" [title]="'EXPENSES.NO_HISTORY_TITLE' | translate"
+      [description]="'EXPENSES.NO_HISTORY_DESC' | translate">
     </app-empty-state>
     }
   </ion-list>

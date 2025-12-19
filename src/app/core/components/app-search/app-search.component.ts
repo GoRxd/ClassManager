@@ -2,16 +2,17 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonSearchbar } from '@ionic/angular/standalone';
 import { SearchService } from '../../services/search.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [CommonModule, IonSearchbar],
+  imports: [CommonModule, IonSearchbar, TranslatePipe],
   template: `
     <ion-searchbar 
       (ionInput)="onInput($event)" 
       (ionClear)="onClear()"
-      placeholder="Search..."
+      [placeholder]=" 'COMMON.SEARCH' | translate "
       animated="true"
       class="custom-search">
     </ion-searchbar>

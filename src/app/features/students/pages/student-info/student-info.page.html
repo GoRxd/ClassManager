@@ -1,4 +1,4 @@
-<app-header title="Student Details" backDefaultHref="/students"></app-header>
+<app-header [title]="'STUDENT_INFO.STUDENT_DETAILS' | translate" backDefaultHref="/students"></app-header>
 
 <ion-content [fullscreen]="true">
 
@@ -12,21 +12,22 @@
     <h1>{{ student()?.firstName }} {{ student()?.lastName }}</h1>
     <p>
       <ion-icon name="call-outline" style="vertical-align: middle"></ion-icon>
-      {{ student()?.phone || 'No phone number' }}
+      {{ student()?.phone || ('STUDENTS.PHONE' | translate) + ': ---' }}
     </p>
 
     <div class="meta">
       @if (totalDebt() > 0) {
       <span class="debt-warning">
-        To pay: <strong>{{ formatService.formatMoney(totalDebt()) }} {{ currency() }}</strong>
+        {{ 'STUDENT_INFO.OWES_TO_PAY' | translate:{ amount: formatService.formatMoney(totalDebt()), currency: currency()
+        } }}
       </span>
       <span class="unpaid-count">
-        ({{ unpaidCount() }} pending collections)
+        {{ 'STUDENT_INFO.PENDING_COLLECTIONS' | translate:{ count: unpaidCount() } }}
       </span>
       } @else {
       <span class="all-paid">
         <ion-icon name="checkmark-circle-outline" style="vertical-align: bottom"></ion-icon>
-        All paid up!
+        {{ 'STUDENT_INFO.ALL_PAID' | translate }}
       </span>
       }
     </div>
@@ -38,21 +39,23 @@
         'settled': studentBalance() === 0
       }">
       <div class="balance-info">
-        <span class="label">Balance</span>
+        <span class="label">{{ 'STUDENT_INFO.BALANCE' | translate }}</span>
         <span class="amount">
           @if (studentBalance() > 0) {
-          You owe student: {{ formatService.formatMoney(studentBalance()) }} {{ currency() }}
-          } @else if (studentBalance() < 0) { Student owes: {{ formatService.formatMoney(Math.abs(studentBalance())) }}
-            {{ currency() }} } @else { Settled } </span>
+          {{ 'STUDENT_INFO.YOU_OWE_STUDENT' | translate:{ amount: formatService.formatMoney(studentBalance()), currency:
+          currency() } }}
+          } @else if (studentBalance() < 0) { {{ 'STUDENT_INFO.STUDENT_OWES' | translate:{ amount:
+            formatService.formatMoney(Math.abs(studentBalance())), currency: currency() } }} } @else {
+            {{ 'COMMON.SETTLED' | translate }} } </span>
       </div>
       <ion-button fill="clear" color="primary" size="small" (click)="equalizePayments()">
-        Equalize
+        {{ 'STUDENT_INFO.EQUALIZE' | translate }}
       </ion-button>
     </div>
   </div>
 
   @if (collections().length > 0) {
-  <h3 class="list-title ion-padding-start ion-padding-top">Collections</h3>
+  <h3 class="list-title ion-padding-start ion-padding-top">{{ 'COLLECTIONS.TITLE' | translate }}</h3>
 
   <ion-list [inset]="true">
     @for (col of collections(); track col.collectionId) {
@@ -75,13 +78,13 @@
           {{ formatService.formatMoney(col.perStudentCost!) }} {{ currency() }}
         </div>
         <ion-button size="small" color="primary">
-          Pay
+          {{ 'COLLECTIONS.PAY' | translate }}
         </ion-button>
         } @else {
         <ion-note color="success" class="paid-amount">
           {{ formatService.formatMoney(col.paidAmount) }} {{ currency() }}
         </ion-note>
-        <ion-badge color="success">PAID</ion-badge>
+        <ion-badge color="success">{{ 'COLLECTIONS.PAID' | translate }}</ion-badge>
         }
       </div>
     </ion-item>
@@ -89,7 +92,7 @@
   </ion-list>
   } @else {
   <div class="empty-state ion-padding ion-text-center">
-    <ion-note>No active collections for this student.</ion-note>
+    <ion-note>{{ 'STUDENT_INFO.NO_COLLECTIONS' | translate }}</ion-note>
   </div>
   }
   }

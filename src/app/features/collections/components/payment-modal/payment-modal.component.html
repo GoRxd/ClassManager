@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Record Payment</ion-title>
+    <ion-title>{{ 'COLLECTIONS.PAY' | translate }}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="cancel()">
         <ion-icon name="close-outline"></ion-icon>
@@ -12,28 +12,22 @@
 <ion-content class="ion-padding">
   <div class="modal-content">
     <ion-note color="medium">
-        Student: <strong>{{ studentName }}</strong>
+      {{ 'PAYMENT_MODAL.HEADER' | translate:{ name: studentName } }}
     </ion-note>
 
-    <ion-input
-        [label]="'Amount (' + currency() + ')'"
-        labelPlacement="floating"
-        fill="outline"
-        type="number"
-        inputmode="decimal"
-        [(ngModel)]="amount"
-        placeholder="0.00"
-    ></ion-input>
+    <ion-input [label]=" 'PAYMENT_MODAL.CURRENT_AMOUNT' | translate:{ currency: currency() } " labelPlacement="floating"
+      fill="outline" type="number" inputmode="decimal" [(ngModel)]="amount" placeholder="0.00"></ion-input>
 
     <div class="hints" *ngIf="suggestedAmount > 0">
-        <ion-chip (click)="amount = suggestedAmount" color="secondary">
-            <ion-label>Use Default: {{ suggestedAmount | number:'1.2-2' }}</ion-label>
-        </ion-chip>
+      <ion-chip (click)="amount = suggestedAmount" color="secondary">
+        <ion-label>{{ 'PAYMENT_MODAL.SUGGESTED' | translate:{ amount: (suggestedAmount | number:'1.2-2'), currency:
+          currency() } }}</ion-label>
+      </ion-chip>
     </div>
 
     <ion-button expand="block" (click)="confirm()" [disabled]="amount < 0">
-        <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
-        Confirm Payment
+      <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
+      {{ 'COMMON.CONFIRM' | translate }}
     </ion-button>
   </div>
 </ion-content>

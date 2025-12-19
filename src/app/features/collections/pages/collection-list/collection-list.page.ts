@@ -20,6 +20,8 @@ import { AppHeaderComponent } from '../../../../core/components/app-header/app-h
 import { AppSearchComponent } from '../../../../core/components/app-search/app-search.component';
 import { EmptyStateComponent } from '../../../../core/components/empty-state/empty-state.component';
 import { MoneyPipe } from '../../../../core/pipes/money.pipe';
+import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
+import { TranslationService } from '../../../../core/services/translation.service';
 import { SearchService } from '../../../../core/services/search.service';
 
 @Component({
@@ -34,7 +36,7 @@ import { SearchService } from '../../../../core/services/search.service';
     IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent,
     IonRefresher, IonRefresherContent,
     IonFab, IonFabButton, IonItemSliding, IonItemOptions, IonItemOption, IonItem,
-    AppHeaderComponent, AppSearchComponent, EmptyStateComponent, MoneyPipe
+    AppHeaderComponent, AppSearchComponent, EmptyStateComponent, MoneyPipe, TranslatePipe
   ]
 })
 export class CollectionListPage implements OnDestroy {
@@ -44,6 +46,7 @@ export class CollectionListPage implements OnDestroy {
   uiService = inject(UiService);
   itemAction = inject(ItemActionService);
   settingsService = inject(SettingsService);
+  translationService = inject(TranslationService);
 
   filteredCollections = computed(() => {
     return this.searchService.filter(
@@ -76,9 +79,9 @@ export class CollectionListPage implements OnDestroy {
         try {
           const d = res.data;
           await this.service.addDetailed(d.title, d.description, d.amount, d.deadline);
-          this.uiService.showToast('Collection added successfully', 'success');
+          this.uiService.showToast(this.translationService.translate('COMMON.ITEM_ADDED'), 'success');
         } catch (error) {
-          this.uiService.showToast('Failed to add collection', 'danger');
+          this.uiService.showToast(this.translationService.translate('COMMON.ERROR_ADD'), 'danger');
         }
       }
     });
@@ -101,10 +104,10 @@ export class CollectionListPage implements OnDestroy {
             const d = res.data;
             if (col.id) {
               await this.service.updateDetailed(col.id, d.title, d.description, d.amount, d.deadline);
-              this.uiService.showToast('Collection updated successfully', 'success');
+              this.uiService.showToast(this.translationService.translate('COMMON.ITEM_UPDATED'), 'success');
             }
           } catch (error) {
-            this.uiService.showToast('Failed to update collection', 'danger');
+            this.uiService.showToast(this.translationService.translate('COMMON.ERROR_UPDATE'), 'danger');
           }
         }
       });
@@ -124,9 +127,9 @@ export class CollectionListPage implements OnDestroy {
       async () => {
         await this.service.remove(id);
       },
-      'Confirm Delete',
-      'Are you sure you want to delete this collection? This will also delete all associated payments.',
-      'Collection deleted'
+      this.translationService.translate('COMMON.DELETE_CONFIRM_TITLE'),
+      this.translationService.translate('COLLECTIONS.DELETE_CONFIRM_MSG'),
+      this.translationService.translate('COMMON.ITEM_DELETED')
     );
   }
 

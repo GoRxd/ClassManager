@@ -1,4 +1,4 @@
-<app-header title="Dashboard" [isRoot]="true"></app-header>
+<app-header [title]="'DASHBOARD.TITLE' | translate" [isRoot]="true"></app-header>
 
 <ion-content [fullscreen]="true" class="ion-padding-vertical">
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
@@ -7,7 +7,7 @@
 
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Dashboard</ion-title>
+      <ion-title size="large">{{ 'DASHBOARD.TITLE' | translate }}</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -15,7 +15,7 @@
   <div class="welcome-card">
     <ion-card class="balance-card">
       <ion-card-header>
-        <ion-card-subtitle>Total Balance</ion-card-subtitle>
+        <ion-card-subtitle>{{ 'DASHBOARD.TOTAL_BALANCE' | translate }}</ion-card-subtitle>
         <ion-card-title>
           <span class="currency-value">{{ treasury().current_balance | money }}</span>
         </ion-card-title>
@@ -25,7 +25,7 @@
           <div class="stat-item income">
             <ion-icon name="arrow-up-outline"></ion-icon>
             <div>
-              <span class="label">Collected</span>
+              <span class="label">{{ 'DASHBOARD.COLLECTED' | translate }}</span>
               <span class="value">{{ treasury().total_income | money }}</span>
             </div>
           </div>
@@ -33,7 +33,7 @@
           <div class="stat-item expense">
             <ion-icon name="arrow-down-outline"></ion-icon>
             <div>
-              <span class="label">Spent</span>
+              <span class="label">{{ 'DASHBOARD.SPENT' | translate }}</span>
               <span class="value">{{ treasury().total_expenses | money }}</span>
             </div>
           </div>
@@ -52,7 +52,7 @@
           </div>
           <div class="stat-info">
             <h3>{{ activeStudents() }}</h3>
-            <p>Students</p>
+            <p>{{ 'DASHBOARD.STUDENTS' | translate }}</p>
           </div>
         </div>
       </ion-col>
@@ -63,7 +63,7 @@
           </div>
           <div class="stat-info">
             <h3>{{ activeCollections() }}</h3>
-            <p>Active Collections</p>
+            <p>{{ 'DASHBOARD.ACTIVE_COLLECTIONS' | translate }}</p>
           </div>
         </div>
       </ion-col>
@@ -72,7 +72,7 @@
 
   <!-- Recent Activity -->
   <div class="section-title">
-    <h3>Recent Expenses</h3>
+    <h3>{{ 'DASHBOARD.RECENT_EXPENSES' | translate }}</h3>
     <!-- <ion-button fill="clear" size="small">See All</ion-button> -->
   </div>
 
@@ -106,8 +106,8 @@
     </ion-item-sliding>
 
     } @empty {
-    <app-empty-state icon="calendar-outline" title="No recent expenses"
-      description="Your latest activities will show up here.">
+    <app-empty-state icon="calendar-outline" [title]="'DASHBOARD.NO_EXPENSES_TITLE' | translate"
+      [description]="'DASHBOARD.NO_EXPENSES_DESC' | translate">
     </app-empty-state>
     }
   </ion-list>

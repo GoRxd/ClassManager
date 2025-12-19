@@ -22,8 +22,9 @@ import { PaymentModalComponent } from '../../components/payment-modal/payment-mo
 import { addIcons } from 'ionicons';
 import { ItemActionService } from '../../../../core/services/item-action.service';
 import { MoneyPipe } from '../../../../core/pipes/money.pipe';
-
 import { AppHeaderComponent } from '../../../../core/components/app-header/app-header.component';
+import { TranslationService } from '../../../../core/services/translation.service';
+import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 
 @Component({
   selector: 'app-collection-details',
@@ -35,7 +36,7 @@ import { AppHeaderComponent } from '../../../../core/components/app-header/app-h
     IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton,
     IonList, IonLabel, IonItem, IonNote, IonBadge, IonButton, IonIcon, IonSegment, IonSegmentButton,
     IonItemSliding, IonItemOptions, IonItemOption, IonProgressBar,
-    AppHeaderComponent, MoneyPipe
+    AppHeaderComponent, MoneyPipe, TranslatePipe
   ]
 })
 export class CollectionDetailsPage implements OnInit {
@@ -43,16 +44,18 @@ export class CollectionDetailsPage implements OnInit {
   private service = inject(CollectionService);
   private modalCtrl = inject(ModalController);
   private itemAction = inject(ItemActionService);
+  public translationService = inject(TranslationService);
   private settingsService = inject(SettingsService);
   private expenseService = inject(ExpenseService);
   private paymentManagement = inject(PaymentManagementService);
-  private uiService = inject(UiService);
-  private formatService = inject(FormatService);
+  public uiService = inject(UiService);
+  public formatService = inject(FormatService);
 
   collection: Collection | undefined;
   payments: StudentPaymentStatus[] = [];
   expenses: Expense[] = [];
   segment: 'pending' | 'paid' = 'pending';
+  currency = this.translationService.currency;
 
   constructor() {
     addIcons({ arrowBackOutline, checkmarkCircleOutline, closeCircleOutline, cardOutline });
@@ -80,9 +83,7 @@ export class CollectionDetailsPage implements OnInit {
     return this.collection.targetAmount / this.payments.length;
   }
 
-  get currency() {
-    return this.settingsService.currency;
-  }
+  // Removed duplicate currency getter
 
   async ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -173,7 +174,7 @@ export class CollectionDetailsPage implements OnInit {
     const availableToPayOutGr = totalCollectedGr - totalExpensedGr;
 
     if (availableToPayOutGr <= 0) {
-      this.uiService.showToast('No funds available to pay out (Total collected already expensed)', 'warning');
+      this.uiService.showToast(this.translationService.translate('COLLECTIONS.PAY_OUT_NO_FUNDS'), 'warning');
       return;
     }
 
@@ -207,27 +208,30 @@ export class CollectionDetailsPage implements OnInit {
     }
 
     if (contributingStudents.length > 0) {
-      description = 'Contributors: ' + contributingStudents.join(', ');
+      description = this.translationService.translate('COLLECTIONS.CONTRIBUTORS_LIST', { list: contributingStudents.join(', ') });
     }
 
     const confirmed = await this.uiService.showConfirm({
-      header: 'Pay Out Collection',
-      message: `Do you want to create an expense for the remaining collected amount of ${this.formatService.formatMoney(availableToPayOutGr)} ${this.currency()}?`,
-      confirmText: 'Confirm'
+      header: this.translationService.translate('COLLECTIONS.PAY_OUT_CONFIRM_TITLE'),
+      message: this.translationService.translate('COLLECTIONS.PAY_OUT_CONFIRM_TEXT', {
+        amount: this.formatService.formatMoney(availableToPayOutGr),
+        currency: this.currency()
+      }),
+      confirmText: this.translationService.translate('COMMON.CONFIRM')
     });
 
     if (confirmed) {
       if (!this.collection) return;
 
       await this.expenseService.addExpense(
-        `Payout: ${this.collection.title}`,
+        this.translationService.translate('COLLECTIONS.PAYOUT_EXPENSE_TITLE', { name: this.collection.title }),
         availableToPayOutPLN,
         this.collection.id!,
         [],
         description
       );
 
-      this.uiService.showToast('Collection paid out (Expense created)', 'success');
+      this.uiService.showToast(this.translationService.translate('COLLECTIONS.PAY_OUT_SUCCESS'), 'success');
       // Reload to update expenses list
       await this.load(this.collection.id!);
     }

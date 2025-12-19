@@ -1,9 +1,4 @@
-<app-header title="Collections" [isRoot]="true">
-  <ion-buttons slot="end">
-    <!-- <ion-button (click)="presentAddModal()">
-        <ion-icon slot="icon-only" name="add-outline"></ion-icon>
-      </ion-button> -->
-  </ion-buttons>
+<app-header [title]="'COLLECTIONS.TITLE' | translate" [isRoot]="true">
 </app-header>
 
 <ion-content [fullscreen]="true">
@@ -14,12 +9,12 @@
   <app-search></app-search>
 
   @if (filteredCollections().length === 0) {
-  <app-empty-state icon="wallet-outline" title="No collections found"
-    description="Create a new collection to start tracking payments.">
+  <app-empty-state icon="wallet-outline" [title]="'COLLECTIONS.NO_COLLECTIONS_TITLE' | translate"
+    [description]="'COLLECTIONS.NO_COLLECTIONS_DESC' | translate">
   </app-empty-state>
   } @else {
   <div class="page-header">
-    <h2>Active Collections</h2>
+    <h2>{{ 'COLLECTIONS.ACTIVE_COLLECTIONS' | translate }}</h2>
   </div>
 
   <ion-list lines="none" class="section-margin" style="background: transparent; padding: 0 var(--app-side-padding);">
@@ -42,15 +37,13 @@
                 <ion-icon name="time-outline"></ion-icon>
                 {{ col.deadline * 1000 | date:'mediumDate' }}
               </span>
-              <span class="deadline" *ngIf="!col.deadline">No deadline</span>
+              <span class="deadline" *ngIf="!col.deadline">{{ 'COLLECTIONS.NO_DEADLINE' | translate }}</span>
 
               <span class="amount">{{ col.targetAmount | money }}</span>
             </ion-card-subtitle>
           </ion-card-header>
           <ion-card-content>
-            <p>{{ col.description || 'No description' }}</p>
-            <!-- Placeholder for progress, logic to calculate collected vs target needed later -->
-            <!-- <ion-progress-bar value="0.5" color="primary"></ion-progress-bar> -->
+            <p>{{ col.description || ('COLLECTIONS.NO_DESCRIPTION' | translate) }}</p>
           </ion-card-content>
         </ion-card>
       </ion-item>

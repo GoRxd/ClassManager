@@ -22,6 +22,8 @@ import { AppHeaderComponent } from '../../../../core/components/app-header/app-h
 import { AppSearchComponent } from '../../../../core/components/app-search/app-search.component';
 import { EmptyStateComponent } from '../../../../core/components/empty-state/empty-state.component';
 import { SearchService } from '../../../../core/services/search.service';
+import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
+import { TranslationService } from '../../../../core/services/translation.service';
 
 @Component({
   selector: 'app-student-list',
@@ -36,7 +38,8 @@ import { SearchService } from '../../../../core/services/search.service';
     IonFab, IonFabButton,
     AppHeaderComponent,
     AppSearchComponent,
-    EmptyStateComponent
+    EmptyStateComponent,
+    TranslatePipe
   ]
 })
 export class StudentListPage implements OnDestroy {
@@ -47,6 +50,7 @@ export class StudentListPage implements OnDestroy {
   modalCtrl = inject(ModalController);
   router = inject(Router);
   itemAction = inject(ItemActionService);
+  translationService = inject(TranslationService);
 
   filteredStudents = computed(() => {
     return this.searchService.filter(
@@ -69,9 +73,9 @@ export class StudentListPage implements OnDestroy {
       async () => {
         await this.service.remove(id);
       },
-      'Confirm Delete',
-      'Are you sure you want to delete this student?',
-      'Student deleted'
+      this.translationService.translate('COMMON.DELETE_CONFIRM_TITLE'),
+      this.translationService.translate('STUDENTS.DELETE_CONFIRM_MSG'),
+      this.translationService.translate('COMMON.ITEM_DELETED')
     );
   }
 
@@ -87,9 +91,9 @@ export class StudentListPage implements OnDestroy {
       if (res.role === 'confirm' && res.data) {
         try {
           await this.service.add(res.data.firstName, res.data.lastName, res.data.phone);
-          this.uiService.showToast('Student added successfully!', 'success');
+          this.uiService.showToast(this.translationService.translate('COMMON.ITEM_ADDED'), 'success');
         } catch (error) {
-          this.uiService.showToast('Failed to add student', 'danger');
+          this.uiService.showToast(this.translationService.translate('COMMON.ERROR_ADD'), 'danger');
         }
       }
     });
@@ -110,9 +114,9 @@ export class StudentListPage implements OnDestroy {
         if (res.role === 'confirm' && res.data) {
           try {
             await this.service.update(res.data as Student);
-            this.uiService.showToast('Student updated successfully', 'success');
+            this.uiService.showToast(this.translationService.translate('COMMON.ITEM_UPDATED'), 'success');
           } catch (error) {
-            this.uiService.showToast('Failed to update student', 'danger');
+            this.uiService.showToast(this.translationService.translate('COMMON.ERROR_UPDATE'), 'danger');
           }
         }
       });

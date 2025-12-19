@@ -1,12 +1,13 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>{{ expense ? 'Edit Expense' : 'Add Expense' }}</ion-title>
+    <ion-title>{{ (expense ? 'EXPENSES.EDIT_EXPENSE' : 'EXPENSES.ADD_EXPENSE') | translate }}</ion-title>
     <ion-buttons slot="start">
-      <ion-button (click)="cancel()">Cancel</ion-button>
+      <ion-button (click)="cancel()">{{ 'COMMON.CANCEL' | translate }}</ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button (click)="confirm()" [strong]="true"
-        [disabled]="!selectedCollectionId || !title || !amount || amount <= 0">Save</ion-button>
+        [disabled]="!selectedCollectionId || !title || !amount || amount <= 0">{{ 'COMMON.SAVE' | translate
+        }}</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -14,8 +15,9 @@
 <ion-content class="ion-padding">
   <div class="form-inputs">
     <div class="input-group">
-      <ion-select label="Collection" label-placement="floating" fill="outline" [(ngModel)]="selectedCollectionId"
-        placeholder="Select Collection">
+      <ion-select [label]=" 'EXPENSES.SELECT_COLLECTION' | translate " label-placement="floating" fill="outline"
+        [(ngModel)]="selectedCollectionId" [placeholder]=" 'EXPENSES.SELECT_COLLECTION' | translate "
+        [cancelText]=" 'COMMON.CANCEL' | translate " [okText]=" 'COMMON.CONFIRM' | translate ">
         @for (coll of collectionService.collections(); track coll.id) {
         <ion-select-option [value]="coll.id">{{ coll.title }}</ion-select-option>
         }
@@ -23,27 +25,28 @@
     </div>
 
     <div class="input-group">
-      <ion-input label="Title" label-placement="floating" fill="outline" [(ngModel)]="title"
-        placeholder="e.g. Bus Tickets"></ion-input>
+      <ion-input [label]=" 'EXPENSES.EXPENSE_TITLE' | translate " label-placement="floating" fill="outline"
+        [(ngModel)]="title" [placeholder]=" 'EXPENSES.TITLE_PLACEHOLDER' | translate "></ion-input>
     </div>
 
     <div class="input-group">
-      <ion-textarea label="Description" label-placement="floating" fill="outline" [(ngModel)]="description"
-        placeholder="Optional details..." auto-grow="true" rows="2"></ion-textarea>
+      <ion-textarea [label]=" 'EXPENSES.DESCRIPTION' | translate " label-placement="floating" fill="outline"
+        [(ngModel)]="description" [placeholder]=" 'COMMON.NO_DATA' | translate " auto-grow="true"
+        rows="2"></ion-textarea>
     </div>
 
     <div class="input-group">
-      <ion-input [label]="'Amount (' + currency() + ')'" label-placement="floating" fill="outline" type="number"
-        [(ngModel)]="amount" placeholder="0.00"></ion-input>
+      <ion-input [label]=" 'EXPENSES.AMOUNT' | translate:{ currency: currency() } " label-placement="floating"
+        fill="outline" type="number" [(ngModel)]="amount" placeholder="0.00"></ion-input>
     </div>
   </div>
 
   <div class="products-section">
     <div class="section-header">
-      <ion-label class="ion-text-uppercase font-bold">Products (Optional)</ion-label>
+      <ion-label class="ion-text-uppercase font-bold">{{ 'EXPENSES.PRODUCTS' | translate }}</ion-label>
       <ion-button (click)="addProduct()" size="small" fill="solid">
         <ion-icon name="add" slot="start"></ion-icon>
-        Add Item
+        {{ 'EXPENSES.ADD_ITEM' | translate }}
       </ion-button>
     </div>
 
@@ -53,16 +56,16 @@
         <ion-grid class="ion-no-padding">
           <ion-row class="ion-align-items-center">
             <ion-col size="5">
-              <ion-input label="Name" label-placement="stacked" fill="outline" [(ngModel)]="p.name"
-                placeholder="Item"></ion-input>
+              <ion-input [label]=" 'EXPENSES.ITEM_NAME' | translate " label-placement="stacked" fill="outline"
+                [(ngModel)]="p.name" [placeholder]=" 'EXPENSES.ITEM_NAME' | translate "></ion-input>
             </ion-col>
             <ion-col size="2">
-              <ion-input label="Qty" label-placement="stacked" fill="outline" type="number" [(ngModel)]="p.quantity"
-                (ionInput)="updateTotal()"></ion-input>
+              <ion-input [label]=" 'EXPENSES.QTY' | translate " label-placement="stacked" fill="outline" type="number"
+                [(ngModel)]="p.quantity" (ionInput)="updateTotal()"></ion-input>
             </ion-col>
             <ion-col size="3">
-              <ion-input label="Price" label-placement="stacked" fill="outline" type="number" [(ngModel)]="p.unitPrice"
-                (ionInput)="updateTotal()"></ion-input>
+              <ion-input [label]=" 'EXPENSES.PRICE' | translate " label-placement="stacked" fill="outline" type="number"
+                [(ngModel)]="p.unitPrice" (ionInput)="updateTotal()"></ion-input>
             </ion-col>
             <ion-col size="2" class="ion-text-end">
               <ion-button fill="clear" color="danger" (click)="removeProduct($index)">
@@ -76,7 +79,7 @@
 
       @if (products.length === 0) {
       <div class="empty-products ion-padding ion-text-center">
-        <ion-note color="medium">No products added. Enter total manually.</ion-note>
+        <ion-note color="medium">{{ 'EXPENSES.NO_PRODUCTS' | translate }}</ion-note>
       </div>
       }
     </div>

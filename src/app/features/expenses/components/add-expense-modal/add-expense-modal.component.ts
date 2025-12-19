@@ -9,6 +9,9 @@ import { Expense } from '../../data/expense.repository';
 import { SettingsService } from '../../../../core/settings/settings.service';
 import { FormatService } from '../../../../core/services/format.service';
 
+import { TranslationService } from '../../../../core/services/translation.service';
+import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
+
 @Component({
   selector: 'app-add-expense-modal',
   standalone: true,
@@ -17,7 +20,7 @@ import { FormatService } from '../../../../core/services/format.service';
     FormsModule,
     IonHeader, IonToolbar, IonTitle, IonButtons, IonButton,
     IonContent, IonList, IonItem, IonSelect, IonSelectOption, IonInput,
-    IonIcon, IonLabel, IonGrid, IonRow, IonCol, IonTextarea, IonNote
+    IonIcon, IonLabel, IonGrid, IonRow, IonCol, IonTextarea, IonNote, TranslatePipe
   ],
   templateUrl: './add-expense-modal.component.html',
   styleUrls: ['./add-expense-modal.component.scss']
@@ -25,10 +28,10 @@ import { FormatService } from '../../../../core/services/format.service';
 export class AddExpenseModalComponent implements OnInit {
   private modalCtrl = inject(ModalController);
   public collectionService = inject(CollectionService);
-  private settingsService = inject(SettingsService);
+  private translationService = inject(TranslationService);
   private formatService = inject(FormatService);
 
-  currency = this.settingsService.currency;
+  currency = this.translationService.currency;
 
   @Input() preselectedCollectionId?: number;
   @Input() expense?: Expense;

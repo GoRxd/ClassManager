@@ -1,12 +1,14 @@
 import { Injectable, inject } from '@angular/core';
 import { IonItemSliding } from '@ionic/angular/standalone';
 import { UiService } from './ui.service';
+import { TranslationService } from './translation.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ItemActionService {
   private uiService = inject(UiService);
+  private translationService = inject(TranslationService);
 
   /**
    * Handles a generic delete action with confirmation.
@@ -21,16 +23,19 @@ export class ItemActionService {
   async handleDelete(
     slidingItem: IonItemSliding | undefined,
     deleteFn: () => Promise<void>,
-    title: string = 'Confirm Delete',
-    message: string = 'Are you sure you want to delete this item?',
-    successMessage: string = 'Item deleted'
+    title?: string,
+    message?: string,
+    successMessage?: string
   ): Promise<void> {
+    const tTitle = title || this.translationService.translate('COMMON.DELETE_CONFIRM_TITLE');
+    const tMessage = message || 'Are you sure?'; // Specific message should ideally be provided
+    const tSuccess = successMessage || this.translationService.translate('COMMON.ITEM_DELETED');
 
     const confirmed = await this.uiService.showConfirm({
-      header: title,
-      message,
-      confirmText: title.toLowerCase().includes('delete') ? 'Delete' : 'Confirm',
-      role: title.toLowerCase().includes('delete') ? 'destructive' : 'confirm'
+      header: tTitle,
+      message: tMessage,
+      confirmText: this.translationService.translate('COMMON.DELETE'),
+      role: 'destructive'
     });
 
     // Close the slide regardless of choice
@@ -41,34 +46,24 @@ export class ItemActionService {
     if (confirmed) {
       try {
         await deleteFn();
-        if (successMessage) {
-          this.uiService.showToast(successMessage, 'medium');
+        if (tSuccess) {
+          this.uiService.showToast(tSuccess, 'medium');
         }
       } catch (error) {
-        // Error handling acts as a fallback if the deleteFn doesn't handle it
         console.error('Delete action failed', error);
-        this.uiService.showToast('Failed to delete item', 'danger');
+        this.uiService.showToast(this.translationService.translate('COMMON.ERROR_DELETE'), 'danger');
       }
     }
   }
 
   /**
    * Handles a generic edit action.
-   * Executes the edit function (usually opening a modal) and closes the slide.
-   * 
-   * @param slidingItem The IonItemSliding component instance.
-   * @param editFn A function that performs the edit action (e.g., opens a modal).
    */
   async handleEdit(
     slidingItem: IonItemSliding | undefined,
     editFn: () => Promise<void> | void
   ): Promise<void> {
-    // We execute the action
     await editFn();
-
-    // And close the slide. 
-    // Note: If editFn opens a modal, the slide closing might happen while modal is opening.
-    // This is usually desired so when modal closes, the list is back to normal state.
     if (slidingItem) {
       await slidingItem.close();
     }

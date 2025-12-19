@@ -22,6 +22,8 @@ import { SettingsService } from '../core/settings/settings.service';
 import { AppHeaderComponent } from '../core/components/app-header/app-header.component';
 import { EmptyStateComponent } from '../core/components/empty-state/empty-state.component';
 import { MoneyPipe } from '../core/pipes/money.pipe';
+import { TranslatePipe } from '../core/pipes/translate.pipe';
+import { TranslationService } from '../core/services/translation.service';
 
 @Component({
   selector: 'app-home',
@@ -34,7 +36,7 @@ import { MoneyPipe } from '../core/pipes/money.pipe';
     IonCardTitle, IonCardContent, IonList, IonItem, IonLabel, IonNote,
     IonIcon, IonRefresher, IonRefresherContent,
     IonItemSliding, IonItemOptions, IonItemOption, IonButton,
-    AppHeaderComponent, EmptyStateComponent, MoneyPipe
+    AppHeaderComponent, EmptyStateComponent, MoneyPipe, TranslatePipe
   ],
 })
 export class HomePage {
@@ -45,6 +47,7 @@ export class HomePage {
   private uiService = inject(UiService);
   private modalCtrl = inject(ModalController);
   private itemAction = inject(ItemActionService);
+  private translationService = inject(TranslationService);
 
   public settingsService = inject(SettingsService); // Public so template can access methods if needed, but safer to expose signal
 
@@ -104,7 +107,7 @@ export class HomePage {
             res.data.products || []
           );
 
-          await this.uiService.showToast('Expense updated successfully', 'success');
+          await this.uiService.showToast(this.translationService.translate('EXPENSES.UPDATE_SUCCESS'), 'success');
           await this.loadData();
         }
       });
@@ -120,9 +123,9 @@ export class HomePage {
         await this.expenseService.removeExpense(id);
         await this.loadData();
       },
-      'Confirm Delete',
-      'Are you sure you want to delete this expense?',
-      'Expense deleted'
+      this.translationService.translate('EXPENSES.DELETE_CONFIRM_TITLE'),
+      this.translationService.translate('EXPENSES.DELETE_CONFIRM_TEXT'),
+      this.translationService.translate('EXPENSES.DELETE_SUCCESS')
     );
   }
 }

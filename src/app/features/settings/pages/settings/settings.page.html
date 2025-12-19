@@ -1,34 +1,43 @@
-<app-header title="Settings" backDefaultHref="/home"></app-header>
+<app-header [title]="'SETTINGS.TITLE' | translate" backDefaultHref="/home"></app-header>
 
 <ion-content [fullscreen]="true">
-
-
   <ion-list inset="true">
     <ion-item-group>
       <ion-item-divider>
-        <ion-label>Appearance</ion-label>
+        <ion-label>{{ 'SETTINGS.APPEARANCE' | translate }}</ion-label>
       </ion-item-divider>
-      
-      <ion-item lines="none">
-        <ion-icon slot="start" name="moon-outline" ></ion-icon>
-        <ion-label>Theme</ion-label>
+
+      <ion-item lines="full">
+        <ion-icon slot="start" name="moon-outline"></ion-icon>
+        <ion-label>{{ 'SETTINGS.THEME' | translate }}</ion-label>
         <ion-select slot="end" [value]="theme()" (ionChange)="updateTheme($event)" interface="popover">
-          <ion-select-option value="dark">Dark</ion-select-option>
-          <ion-select-option value="light">Light</ion-select-option>
-          <ion-select-option value="auto">System (Auto)</ion-select-option>
+          <ion-select-option value="dark">{{ 'SETTINGS.THEME_DARK' | translate }}</ion-select-option>
+          <ion-select-option value="light">{{ 'SETTINGS.THEME_LIGHT' | translate }}</ion-select-option>
+          <ion-select-option value="auto">{{ 'SETTINGS.THEME_AUTO' | translate }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-icon slot="start" name="globe-outline"></ion-icon>
+        <ion-label>{{ 'SETTINGS.LANGUAGE' | translate }}</ion-label>
+        <ion-select slot="end" [value]="language()" (ionChange)="changeLanguage($event)" interface="popover">
+          <ion-select-option value="pl">{{ 'SETTINGS.LANGUAGE_PL' | translate }}</ion-select-option>
+          <ion-select-option value="en">{{ 'SETTINGS.LANGUAGE_EN' | translate }}</ion-select-option>
         </ion-select>
       </ion-item>
     </ion-item-group>
 
     <ion-item-group>
       <ion-item-divider>
-        <ion-label>Regional</ion-label>
+        <ion-label>{{ 'SETTINGS.REGIONAL' | translate }}</ion-label>
       </ion-item-divider>
 
       <ion-item lines="none">
         <ion-icon slot="start" name="cash-outline"></ion-icon>
-        <ion-label>Currency</ion-label>
-        <ion-select slot="end" [value]="currency()" (ionChange)="changeCurrency($event)" placeholder="Select Currency">
+        <ion-label>{{ 'SETTINGS.CURRENCY' | translate }}</ion-label>
+        <ion-select slot="end" [value]="currency()" (ionChange)="changeCurrency($event)" placeholder="Select Currency"
+          [cancelText]=" 'COMMON.CANCEL' | translate " [okText]=" 'COMMON.CONFIRM' | translate ">
+          <ion-select-option value="">{{ 'SETTINGS.CURRENCY_AUTO' | translate }}</ion-select-option>
           <ion-select-option *ngFor="let curr of availableCurrencies" [value]="curr">
             {{ curr }}
           </ion-select-option>
@@ -38,12 +47,13 @@
 
     <ion-item-group>
       <ion-item-divider>
-        <ion-label>About</ion-label>
+        <ion-label>{{ 'SETTINGS.ABOUT' | translate }}</ion-label>
       </ion-item-divider>
-      
+
       <ion-item button detail="false" lines="none">
+        <ion-icon slot="start" name="information-circle-outline" color="medium"></ion-icon>
         <ion-label>
-          <h3>App Version</h3>
+          <h3>{{ 'SETTINGS.APP_VERSION' | translate }}</h3>
           <p>0.0.1 (Alpha)</p>
         </ion-label>
       </ion-item>

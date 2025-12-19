@@ -1,10 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 import { ToastController, AlertController } from '@ionic/angular/standalone';
+import { TranslationService } from './translation.service';
 
 @Injectable({ providedIn: 'root' })
 export class UiService {
   private toastCtrl = inject(ToastController);
   private alertCtrl = inject(AlertController);
+  private translationService = inject(TranslationService);
 
   async showToast(msg: string, color: string = 'success') {
     const toast = await this.toastCtrl.create({
@@ -20,7 +22,7 @@ export class UiService {
     const alert = await this.alertCtrl.create({
       header,
       message,
-      buttons: ['OK']
+      buttons: [this.translationService.translate('COMMON.CONFIRM')]
     });
     await alert.present();
   }
@@ -40,7 +42,7 @@ export class UiService {
         backdropDismiss: false,
         buttons: [
           {
-            text: options.cancelText || 'Cancel',
+            text: options.cancelText || this.translationService.translate('COMMON.CANCEL'),
             role: 'cancel',
             handler: () => {
               if (!isResolved) {
@@ -50,7 +52,7 @@ export class UiService {
             }
           },
           {
-            text: options.confirmText || 'Confirm',
+            text: options.confirmText || this.translationService.translate('COMMON.CONFIRM'),
             role: options.role || 'confirm',
             handler: () => {
               if (!isResolved) {
