@@ -51,6 +51,11 @@
       <ion-button fill="clear" color="primary" size="small" (click)="equalizePayments()">
         {{ 'STUDENT_INFO.EQUALIZE' | translate }}
       </ion-button>
+      @if (studentBalance() > 0) {
+      <ion-button fill="clear" color="success" size="small" (click)="returnMoney()">
+        {{ 'STUDENT_INFO.REFUND_BUTTON' | translate }}
+      </ion-button>
+      }
     </div>
   </div>
 

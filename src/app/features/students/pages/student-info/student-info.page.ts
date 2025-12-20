@@ -131,6 +131,23 @@ export class StudentInfoPage implements OnInit {
     }
   }
 
+  async returnMoney() {
+    const s = this.student();
+    if (!s || !s.id) return;
+
+    const confirmed = await this.uiService.showConfirm({
+      header: this.translationService.translate('STUDENT_INFO.REFUND_TITLE'),
+      message: this.translationService.translate('STUDENT_INFO.REFUND_CONFIRM_MSG', { amount: this.formatService.formatMoney(this.studentBalance()) }),
+      confirmText: this.translationService.translate('STUDENT_INFO.REFUND_BUTTON')
+    });
+
+    if (confirmed) {
+      const studentName = `${s.firstName} ${s.lastName}`;
+      await this.paymentManagement.returnSurplus(s.id, studentName, this.collections(), this.activeStudentCount());
+      await this.loadData(s.id);
+    }
+  }
+
   async handleCollectionClick(collection: StudentCollectionSummary) {
     if (collection.status === 'PAID') {
       await this.markAsUnpaid(collection);

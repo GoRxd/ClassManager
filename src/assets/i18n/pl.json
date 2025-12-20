@@ -73,8 +73,13 @@
         "YOU_OWE_STUDENT": "Jesteś winny studentowi: {{amount}} {{currency}}",
         "EQUALIZE": "Wyrównaj",
         "EQUALIZE_CONFIRM_HEADER": "Wyrównaj opłaty",
-        "EQUALIZE_CONFIRM_MSG": "Czy na pewno chcesz wyrównać wszystkie opłaty do zalecanych kwot?",
-        "EQUALIZE_SUCCESS": "Wszystkie opłaty zostały wyrównane",
+        "EQUALIZE_CONFIRM_MSG": "Czy na pewno chcesz wyrównać wpłaty dla tego studenta? Spowoduje to automatyczne przesunięcie nadwyżek na pokrycie braków. Wymagana całkowita kwota nie ulegnie zmianie.",
+        "EQUALIZE_PAY_CONFIRM_HEADER": "Ureguluj niedopłatę",
+        "EQUALIZE_PAY_CONFIRM_MSG": "Student posiada niedopłatę w wysokości {{amount}}. Czy chcesz przyjąć wpłatę i oznaczyć wszystkie zbiórki jako opłacone?",
+        "EQUALIZE_SUCCESS": "Pomyślnie zbalansowano wpłaty studenta",
+        "REFUND_TITLE": "Zwrot nadpłaty",
+        "REFUND_CONFIRM_MSG": "Czy chcesz zwrócić nadpłatę w wysokości {{amount}}? Spowoduje to zmniejszenie wpłat w nadpłaconych zbiórkach.",
+        "REFUND_BUTTON": "Zwróć pieniądze",
         "NO_COLLECTIONS": "Brak aktywnych zbiórek dla tego studenta."
     },
     "COLLECTIONS": {
@@ -173,6 +178,7 @@
         "EXPENSES_AFFECTED_NOTE": "Uwaga: Cała zapłacona kwota studenta ({{amount}}) zostanie potrącona z tych wydatków.",
         "REVERT_SUCCESS": "Wpłata została cofnięta",
         "REVERT_WITH_EXPENSES_SUCCESS": "Wpłata cofnięta i wydatki zaktualizowane",
-        "REVERT_BUTTON": "Cofnij i aktualizuj wydatki"
+        "REVERT_BUTTON": "Cofnij i aktualizuj wydatki",
+        "REFUND_SUCCESS": "Pomyślnie zwrócono nadpłatę: {{amount}}"
     }
 }

@@ -73,8 +73,13 @@
         "YOU_OWE_STUDENT": "You owe student: {{amount}} {{currency}}",
         "EQUALIZE": "Equalize",
         "EQUALIZE_CONFIRM_HEADER": "Equalize Payments",
-        "EQUALIZE_CONFIRM_MSG": "Are you sure you want to equalize all payments to local suggested amounts?",
-        "EQUALIZE_SUCCESS": "All payments have been equalized",
+        "EQUALIZE_CONFIRM_MSG": "Are you sure you want to equalize payments? This will redistribute excess funds to cover debts. The total required amount will not change.",
+        "EQUALIZE_PAY_CONFIRM_HEADER": "Settle Deficit",
+        "EQUALIZE_PAY_CONFIRM_MSG": "Student owes {{amount}}. Do you want to collect payment and mark all collections as paid?",
+        "EQUALIZE_SUCCESS": "Successfully balanced student payments",
+        "REFUND_TITLE": "Refund Surplus",
+        "REFUND_CONFIRM_MSG": "Do you want to refund the surplus of {{amount}}? This will reduce payments in overpaid collections.",
+        "REFUND_BUTTON": "Return Money",
         "NO_COLLECTIONS": "No active collections for this student."
     },
     "COLLECTIONS": {
@@ -173,6 +178,7 @@
         "EXPENSES_AFFECTED_NOTE": "Note: We will deduct the student's entire paid amount ({{amount}}) distributed across these expenses.",
         "REVERT_SUCCESS": "Payment reverted to pending",
         "REVERT_WITH_EXPENSES_SUCCESS": "Payment reverted & expenses updated",
-        "REVERT_BUTTON": "Revert & Update Expenses"
+        "REVERT_BUTTON": "Revert & Update Expenses",
+        "REFUND_SUCCESS": "Successfully refunded surplus: {{amount}}"
     }
 }

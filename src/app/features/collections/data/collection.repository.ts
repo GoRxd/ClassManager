@@ -173,9 +173,9 @@ export class CollectionRepository {
     return res.map(row => ({
       collectionId: row.collection_id,
       title: row.title,
-      targetAmount: row.target_amount_gr,
+      targetAmount: Number(row.target_amount_gr),
       deadline: row.deadline_at,
-      paidAmount: row.paid_amount_gr || 0,
+      paidAmount: Number(row.paid_amount_gr || 0),
       status: (row.status || 'PENDING') as 'PENDING' | 'PAID',
       paidAt: row.paid_at
     }));
