@@ -154,7 +154,10 @@
         "LANGUAGE_PL": "Polish",
         "LANGUAGE_EN": "English",
         "ABOUT": "About",
-        "APP_VERSION": "App Version"
+        "APP_VERSION": "App Version",
+        "DATA_MANAGEMENT": "Data Management",
+        "BACKUP_DATA": "Backup Data",
+        "RESTORE_DATA": "Restore Data"
     },
     "PAYMENT_MODAL": {
         "HEADER": "Payment: {{name}}",

@@ -48,7 +48,7 @@ export class CollectionAddModalComponent implements OnInit {
       this.description = this.collection.description;
       this.amount = this.formatService.toPLN(this.collection.targetAmount);
       if (this.collection.deadline) {
-        this.deadline = new Date(this.collection.deadline * 1000).toISOString();
+        this.deadline = new Date(this.collection.deadline * 1000).toISOString().split('T')[0];
       }
     }
   }

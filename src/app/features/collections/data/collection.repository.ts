@@ -34,14 +34,14 @@ export interface StudentCollectionRow {
 }
 
 export interface StudentCollectionSummary {
-    collectionId: number;
-    title: string;
-    targetAmount: number;
-    deadline: number | null;
-    paidAmount: number;
-    status: 'PENDING' | 'PAID';
-    paidAt: number | null;
-    perStudentCost?: number; // Calculated field
+  collectionId: number;
+  title: string;
+  targetAmount: number;
+  deadline: number | null;
+  paidAmount: number;
+  status: 'PENDING' | 'PAID';
+  paidAt: number | null;
+  perStudentCost?: number; // Calculated field
 }
 
 @Injectable({ providedIn: 'root' })
@@ -49,14 +49,22 @@ export class CollectionRepository {
   private db = inject(DatabaseService);
 
   async countActive(): Promise<number> {
-    const res = await this.db.query<{count: number}>('SELECT COUNT(*) as count FROM collections WHERE is_archived = 0');
+    const res = await this.db.query<{ count: number }>('SELECT COUNT(*) as count FROM collections WHERE is_archived = 0');
     return res[0]?.count || 0;
+  }
+
+  async getAllRaw(): Promise<any[]> {
+    return this.db.query('SELECT * FROM collections');
+  }
+
+  async getAllPaymentsRaw(): Promise<any[]> {
+    return this.db.query('SELECT * FROM payments');
   }
 
   async getAll(): Promise<Collection[]> {
     const sql = `SELECT * FROM collections WHERE is_archived = 0 ORDER BY CASE WHEN deadline_at IS NULL THEN 1 ELSE 0 END, deadline_at ASC, created_at DESC`;
     const res = await this.db.query<CollectionRow>(sql);
-    
+
     return res.map(row => ({
       id: row.id,
       title: row.title,
@@ -71,9 +79,9 @@ export class CollectionRepository {
   async create(collection: Collection): Promise<void> {
     const sql = `INSERT INTO collections (title, description, target_amount_gr, deadline_at) VALUES (?, ?, ?, ?)`;
     await this.db.run(sql, [
-      collection.title, 
-      collection.description, 
-      collection.targetAmount, 
+      collection.title,
+      collection.description,
+      collection.targetAmount,
       collection.deadline || null
     ]);
   }
@@ -82,7 +90,7 @@ export class CollectionRepository {
     const sql = `SELECT * FROM collections WHERE id = ?`;
     const res = await this.db.query<CollectionRow>(sql, [id]);
     if (!res.length) return undefined;
-    
+
     const row = res[0];
     return {
       id: row.id,
@@ -107,31 +115,31 @@ export class CollectionRepository {
     `;
     const res = await this.db.query<PaymentRow>(sql, [collectionId]);
     return res.map(row => ({
-        studentId: row.student_id,
-        firstName: row.first_name,
-        lastName: row.last_name,
-        paidAmount: row.paid_amount_gr || 0,
-        paidAt: row.paid_at || null,
-        status: (row.status || 'PENDING') as any
+      studentId: row.student_id,
+      firstName: row.first_name,
+      lastName: row.last_name,
+      paidAmount: row.paid_amount_gr || 0,
+      paidAt: row.paid_at || null,
+      status: (row.status || 'PENDING') as any
     }));
   }
 
   async upsertPayment(collectionId: number, studentId: number, amount: number) {
     // Check if exists
     const check = await this.db.query('SELECT id FROM payments WHERE collection_id = ? AND student_id = ?', [collectionId, studentId]);
-    
+
     if (check.length > 0) {
-        // Update
-        await this.db.run(
-            `UPDATE payments SET paid_amount_gr = ?, paid_at = strftime('%s', 'now'), status = ? WHERE collection_id = ? AND student_id = ?`,
-            [amount, amount > 0 ? 'PAID' : 'PENDING', collectionId, studentId]
-        );
+      // Update
+      await this.db.run(
+        `UPDATE payments SET paid_amount_gr = ?, paid_at = strftime('%s', 'now'), status = ? WHERE collection_id = ? AND student_id = ?`,
+        [amount, amount > 0 ? 'PAID' : 'PENDING', collectionId, studentId]
+      );
     } else {
-        // Insert
-        await this.db.run(
-            `INSERT INTO payments (collection_id, student_id, paid_amount_gr, paid_at, status) VALUES (?, ?, ?, strftime('%s', 'now'), ?)`,
-            [collectionId, studentId, amount, amount > 0 ? 'PAID' : 'PENDING']
-        );
+      // Insert
+      await this.db.run(
+        `INSERT INTO payments (collection_id, student_id, paid_amount_gr, paid_at, status) VALUES (?, ?, ?, strftime('%s', 'now'), ?)`,
+        [collectionId, studentId, amount, amount > 0 ? 'PAID' : 'PENDING']
+      );
     }
   }
 
@@ -163,13 +171,13 @@ export class CollectionRepository {
     `;
     const res = await this.db.query<StudentCollectionRow>(sql, [studentId]);
     return res.map(row => ({
-        collectionId: row.collection_id,
-        title: row.title,
-        targetAmount: row.target_amount_gr,
-        deadline: row.deadline_at,
-        paidAmount: row.paid_amount_gr || 0,
-        status: (row.status || 'PENDING') as 'PENDING' | 'PAID',
-        paidAt: row.paid_at
+      collectionId: row.collection_id,
+      title: row.title,
+      targetAmount: row.target_amount_gr,
+      deadline: row.deadline_at,
+      paidAmount: row.paid_amount_gr || 0,
+      status: (row.status || 'PENDING') as 'PENDING' | 'PAID',
+      paidAt: row.paid_at
     }));
   }
 }

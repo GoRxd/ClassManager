@@ -23,6 +23,14 @@ export interface Expense {
 export class ExpenseRepository {
   private db = inject(DatabaseService);
 
+  async getAllRaw(): Promise<any[]> {
+    return this.db.query('SELECT * FROM expenses');
+  }
+
+  async getAllProductsRaw(): Promise<any[]> {
+    return this.db.query('SELECT * FROM expense_products');
+  }
+
   async getRecent(limit: number = 5): Promise<Expense[]> {
     const sql = `SELECT * FROM expenses ORDER BY created_at DESC LIMIT ?`;
     const expenses = await this.db.query<Expense>(sql, [limit]);

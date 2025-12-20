@@ -154,7 +154,10 @@
         "LANGUAGE_PL": "Polski",
         "LANGUAGE_EN": "Angielski",
         "ABOUT": "O aplikacji",
-        "APP_VERSION": "Wersja aplikacji"
+        "APP_VERSION": "Wersja aplikacji",
+        "DATA_MANAGEMENT": "Zarządzanie Danymi",
+        "BACKUP_DATA": "Kopia zapasowa",
+        "RESTORE_DATA": "Przywróć dane"
     },
     "PAYMENT_MODAL": {
         "HEADER": "Wpłata: {{name}}",

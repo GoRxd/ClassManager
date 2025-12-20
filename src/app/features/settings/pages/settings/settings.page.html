@@ -47,6 +47,24 @@
 
     <ion-item-group>
       <ion-item-divider>
+        <ion-label>{{ 'SETTINGS.DATA_MANAGEMENT' | translate }}</ion-label>
+      </ion-item-divider>
+
+      <ion-item button (click)="backup()" detail="true">
+        <ion-icon slot="start" name="cloud-download-outline"></ion-icon>
+        <ion-label>{{ 'SETTINGS.BACKUP_DATA' | translate }}</ion-label>
+      </ion-item>
+
+      <ion-item button (click)="triggerRestore()" detail="true">
+        <ion-icon slot="start" name="cloud-upload-outline"></ion-icon>
+        <ion-label>{{ 'SETTINGS.RESTORE_DATA' | translate }}</ion-label>
+        <!-- Hidden file input for restore -->
+        <input type="file" id="file-upload" (change)="onFileSelected($event)" accept=".json" style="display: none;" />
+      </ion-item>
+    </ion-item-group>
+
+    <ion-item-group>
+      <ion-item-divider>
         <ion-label>{{ 'SETTINGS.ABOUT' | translate }}</ion-label>
       </ion-item-divider>
 

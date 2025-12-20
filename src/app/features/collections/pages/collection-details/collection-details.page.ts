@@ -33,8 +33,8 @@ import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
   styleUrls: ['./collection-details.page.scss'],
   imports: [
     CommonModule, FormsModule,
-    IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton,
-    IonList, IonLabel, IonItem, IonNote, IonBadge, IonButton, IonIcon, IonSegment, IonSegmentButton,
+    IonContent,
+    IonList, IonLabel, IonItem, IonNote, IonButton, IonIcon, IonSegment, IonSegmentButton,
     IonItemSliding, IonItemOptions, IonItemOption, IonProgressBar,
     AppHeaderComponent, MoneyPipe, TranslatePipe
   ]

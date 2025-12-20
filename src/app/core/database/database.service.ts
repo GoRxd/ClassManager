@@ -113,4 +113,14 @@ export class DatabaseService {
     }
     return result;
   }
+
+  async executeBatch(statements: string) {
+    if (!this.dbReady()) throw new Error('Database not ready!');
+    const result = await this.db.execute(statements);
+
+    if (Capacitor.getPlatform() === 'web') {
+      await this.sqlite.saveToStore('class_manager_db');
+    }
+    return result;
+  }
 }

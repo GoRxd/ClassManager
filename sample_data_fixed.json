@@ -1,0 +1,104 @@
+{
+    "version": 1,
+    "timestamp": 1703068800000,
+    "data": {
+        "students": [
+            {
+                "id": 1,
+                "first_name": "Jan",
+                "last_name": "Kowalski",
+                "phone": "123456789",
+                "is_active": 1
+            },
+            {
+                "id": 2,
+                "first_name": "Anna",
+                "last_name": "Nowak",
+                "phone": "987654321",
+                "is_active": 1
+            },
+            {
+                "id": 3,
+                "first_name": "Piotr",
+                "last_name": "Wiśniewski",
+                "phone": null,
+                "is_active": 1
+            },
+            {
+                "id": 4,
+                "first_name": "Maria",
+                "last_name": "Wójcik",
+                "phone": "555666777",
+                "is_active": 1
+            },
+            {
+                "id": 5,
+                "first_name": "Krzysztof",
+                "last_name": "Krawczyk",
+                "phone": "111222333",
+                "is_active": 1
+            }
+        ],
+        "collections": [
+            {
+                "id": 1,
+                "title": "Wycieczka do Zoo",
+                "description": "Zbiórka na bilety i przejazd autokarem",
+                "target_amount_gr": 5000,
+                "deadline_at": 1735689600,
+                "is_archived": 0,
+                "created_at": 1703060000
+            },
+            {
+                "id": 2,
+                "title": "Papier ksero",
+                "description": "Składka na artykuły biurowe",
+                "target_amount_gr": 2000,
+                "deadline_at": null,
+                "is_archived": 0,
+                "created_at": 1703061000
+            }
+        ],
+        "payments": [
+            {
+                "collection_id": 1,
+                "student_id": 1,
+                "paid_amount_gr": 5000,
+                "status": "PAID",
+                "paid_at": 1703065000
+            },
+            {
+                "collection_id": 1,
+                "student_id": 2,
+                "paid_amount_gr": 2000,
+                "status": "PAID",
+                "paid_at": 1703066000
+            },
+            {
+                "collection_id": 1,
+                "student_id": 3,
+                "paid_amount_gr": 0,
+                "status": "PENDING",
+                "paid_at": null
+            },
+            {
+                "collection_id": 2,
+                "student_id": 1,
+                "paid_amount_gr": 2000,
+                "status": "PAID",
+                "paid_at": 1703067000
+            }
+        ],
+        "expenses": [
+            {
+                "id": 1,
+                "title": "Zaliczka przewoźnik",
+                "description": "Rezerwacja autokaru",
+                "amount_gr": 15000,
+                "collection_id": 1,
+                "created_at": 1703068000
+            }
+        ],
+        "expense_products": []
+    }
+}
