@@ -1,12 +1,12 @@
 import { Component, inject, computed, OnDestroy } from '@angular/core';
 import { ModalController } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import {
-  IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonItem,
-  IonLabel, IonButton, IonIcon, IonButtons, IonGrid, IonRow, IonCol,
-  IonMenuButton, IonItemSliding,
+  IonContent, IonList, IonItem,
+  IonLabel, IonButton, IonIcon, IonButtons,
+  IonItemSliding,
   IonItemOptions, IonItemOption, IonFab, IonFabButton
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -31,10 +31,10 @@ import { TranslationService } from '../../../../core/services/translation.servic
   templateUrl: './student-list.page.html',
   styleUrls: ['./student-list.page.scss'],
   imports: [
-    CommonModule, FormsModule,
-    IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonItem,
-    IonLabel, IonButton, IonIcon, IonButtons, IonMenuButton,
-    IonGrid, IonRow, IonCol, IonItemSliding, IonItemOptions, IonItemOption,
+    FormsModule,
+    IonContent, IonList, IonItem,
+    IonLabel, IonButton, IonIcon, IonButtons,
+    IonItemSliding, IonItemOptions, IonItemOption,
     IonFab, IonFabButton,
     AppHeaderComponent,
     AppSearchComponent,

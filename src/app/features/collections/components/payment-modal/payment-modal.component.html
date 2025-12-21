@@ -18,12 +18,14 @@
     <ion-input [label]=" 'PAYMENT_MODAL.CURRENT_AMOUNT' | translate:{ currency: currency() } " labelPlacement="floating"
       fill="outline" type="number" inputmode="decimal" [(ngModel)]="amount" placeholder="0.00"></ion-input>
 
-    <div class="hints" *ngIf="suggestedAmount > 0">
+    @if (suggestedAmount > 0) {
+    <div class="hints">
       <ion-chip (click)="amount = suggestedAmount" color="secondary">
         <ion-label>{{ 'PAYMENT_MODAL.SUGGESTED' | translate:{ amount: (suggestedAmount | number:'1.2-2'), currency:
           currency() } }}</ion-label>
       </ion-chip>
     </div>
+    }
 
     <ion-button expand="block" (click)="confirm()" [disabled]="amount < 0">
       <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>

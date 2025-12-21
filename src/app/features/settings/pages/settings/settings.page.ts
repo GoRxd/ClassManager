@@ -1,7 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import {
+  IonContent, IonList, IonItem, IonLabel, IonIcon, IonSelect, IonSelectOption,
+  IonItemDivider
+} from '@ionic/angular/standalone';
 import { UiService } from '../../../../core/services/ui.service';
 import { BackupService } from '../../../../core/services/backup.service';
 import { SettingsService } from '../../../../core/settings/settings.service';
@@ -18,7 +21,13 @@ import { AppHeaderComponent } from '../../../../core/components/app-header/app-h
   templateUrl: './settings.page.html',
   styleUrls: ['./settings.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, AppHeaderComponent, TranslatePipe]
+  imports: [
+    FormsModule,
+    AppHeaderComponent,
+    TranslatePipe,
+    IonContent, IonList, IonItem, IonLabel, IonIcon, IonSelect, IonSelectOption,
+    IonItemDivider
+  ]
 })
 export class SettingsPage {
   private settingsService = inject(SettingsService);

@@ -1,9 +1,9 @@
 import { Component, inject, computed, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import {
-  IonContent, IonHeader, IonTitle, IonToolbar, IonList,
-  IonButton, IonIcon, IonButtons, IonMenuButton,
+  IonContent, IonList,
+  IonIcon,
   IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent,
   IonRefresher, IonRefresherContent, ModalController,
   IonFab, IonFabButton, IonItemSliding, IonItemOptions, IonItemOption, IonItem
@@ -30,9 +30,9 @@ import { SearchService } from '../../../../core/services/search.service';
   templateUrl: './collection-list.page.html',
   styleUrls: ['./collection-list.page.scss'],
   imports: [
-    CommonModule, RouterLink,
-    IonContent, IonHeader, IonTitle, IonToolbar, IonList,
-    IonButton, IonIcon, IonButtons, IonMenuButton,
+    DatePipe, RouterLink,
+    IonContent, IonList,
+    IonIcon,
     IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent,
     IonRefresher, IonRefresherContent,
     IonFab, IonFabButton, IonItemSliding, IonItemOptions, IonItemOption, IonItem,

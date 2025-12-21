@@ -1,11 +1,11 @@
 import { Component, inject, signal, WritableSignal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import {
-  IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonMenuButton,
+  IonHeader, IonToolbar, IonTitle, IonContent,
   IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardSubtitle,
   IonCardTitle, IonCardContent, IonList, IonItem, IonLabel, IonNote,
-  IonIcon, IonRefresher, IonRefresherContent, IonButton,
+  IonIcon, IonRefresher, IonRefresherContent,
   IonItemSliding, IonItemOptions, IonItemOption, ModalController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -30,12 +30,12 @@ import { TranslationService } from '../core/services/translation.service';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   imports: [
-    CommonModule, RouterLink,
-    IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonMenuButton,
+    DatePipe, RouterLink,
+    IonHeader, IonToolbar, IonTitle, IonContent,
     IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardSubtitle,
     IonCardTitle, IonCardContent, IonList, IonItem, IonLabel, IonNote,
     IonIcon, IonRefresher, IonRefresherContent,
-    IonItemSliding, IonItemOptions, IonItemOption, IonButton,
+    IonItemSliding, IonItemOptions, IonItemOption,
     AppHeaderComponent, EmptyStateComponent, MoneyPipe, TranslatePipe
   ],
 })

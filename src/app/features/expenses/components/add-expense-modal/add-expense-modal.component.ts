@@ -1,7 +1,7 @@
 import { Component, Input, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ModalController, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonList, IonItem, IonSelect, IonSelectOption, IonInput, IonIcon, IonLabel, IonGrid, IonRow, IonCol, IonTextarea, IonNote } from '@ionic/angular/standalone';
+import { ModalController, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonSelect, IonSelectOption, IonInput, IonIcon, IonLabel, IonGrid, IonRow, IonCol, IonTextarea, IonNote } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { add, trashOutline } from 'ionicons/icons';
 import { CollectionService } from '../../../collections/data/collection.service';
@@ -19,7 +19,7 @@ import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
     CommonModule,
     FormsModule,
     IonHeader, IonToolbar, IonTitle, IonButtons, IonButton,
-    IonContent, IonList, IonItem, IonSelect, IonSelectOption, IonInput,
+    IonContent, IonSelect, IonSelectOption, IonInput,
     IonIcon, IonLabel, IonGrid, IonRow, IonCol, IonTextarea, IonNote, TranslatePipe
   ],
   templateUrl: './add-expense-modal.component.html',

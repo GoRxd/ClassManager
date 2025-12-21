@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { PercentPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -32,7 +32,7 @@ import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
   templateUrl: './collection-details.page.html',
   styleUrls: ['./collection-details.page.scss'],
   imports: [
-    CommonModule, FormsModule,
+    PercentPipe, FormsModule,
     IonContent,
     IonList, IonLabel, IonItem, IonNote, IonButton, IonIcon, IonSegment, IonSegmentButton,
     IonItemSliding, IonItemOptions, IonItemOption, IonProgressBar,

@@ -2,8 +2,8 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import {
-  IonContent, IonHeader, IonToolbar, IonButtons, IonBackButton,
-  IonTitle, IonList, IonItem, IonLabel, IonNote, IonIcon, IonButton, IonBadge, IonSkeletonText
+  IonContent,
+  IonList, IonItem, IonLabel, IonNote, IonIcon, IonButton, IonBadge, IonSkeletonText
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { arrowBackOutline, checkmarkCircle, checkmarkCircleOutline, walletOutline, timeOutline, alertCircleOutline } from 'ionicons/icons';
@@ -24,8 +24,7 @@ import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
   standalone: true,
   imports: [
     CommonModule,
-    IonContent, IonHeader, IonToolbar, IonButtons, IonBackButton,
-    IonTitle,
+    IonContent,
     IonList, IonItem, IonLabel, IonNote, IonIcon, IonButton, IonBadge, IonSkeletonText,
     AppHeaderComponent, TranslatePipe
   ],

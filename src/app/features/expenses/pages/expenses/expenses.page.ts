@@ -1,10 +1,10 @@
 import { Component, inject, signal, OnInit, computed, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Expense } from '../../data/expense.repository';
 import { ExpenseService } from '../../services/expense.service';
 import { UiService } from '../../../../core/services/ui.service';
 import {
-  IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton,
+  IonContent, IonButtons, IonMenuButton,
   IonList, IonItem, IonLabel, IonNote, IonIcon, IonButton, IonGrid, IonRow, IonCol,
   IonFab, IonFabButton, ModalController,
   IonItemSliding, IonItemOptions, IonItemOption
@@ -27,8 +27,8 @@ import { TranslationService } from '../../../../core/services/translation.servic
   selector: 'app-expenses',
   standalone: true,
   imports: [
-    CommonModule,
-    IonContent, IonHeader, IonTitle, IonToolbar,
+    DatePipe,
+    IonContent,
     IonList, IonItem, IonLabel, IonNote, IonIcon, IonButton,
     IonFab, IonFabButton, IonItemSliding, IonItemOptions, IonItemOption,
     AppHeaderComponent, AppSearchComponent, EmptyStateComponent, MoneyPipe, TranslatePipe

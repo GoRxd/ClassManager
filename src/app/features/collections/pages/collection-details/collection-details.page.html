@@ -6,10 +6,12 @@
         <div class="header-content ion-text-center">
             <h1>{{ collection.title }}</h1>
             <p class="description">{{ collection.description || ('COLLECTIONS.NO_DESCRIPTION' | translate) }}</p>
-            <div class="per-student-box" *ngIf="suggestedAmount > 0">
+            @if (suggestedAmount > 0) {
+            <div class="per-student-box">
                 <span class="label">{{ 'COLLECTIONS.SUGGESTED_PER_PERSON' | translate }}</span>
                 <span class="value">{{ suggestedAmount | money }}</span>
             </div>
+            }
         </div>
 
         <div class="progress-container">

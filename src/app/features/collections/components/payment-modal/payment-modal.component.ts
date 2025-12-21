@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SettingsService } from '../../../../core/settings/settings.service';
 import {
@@ -18,7 +18,7 @@ import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
   templateUrl: './payment-modal.component.html',
   styleUrls: ['./payment-modal.component.scss'],
   imports: [
-    CommonModule, FormsModule,
+    DecimalPipe, FormsModule,
     IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton,
     IonIcon, IonInput, IonNote, IonChip, IonLabel, TranslatePipe
   ]
