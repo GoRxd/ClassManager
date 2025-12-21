@@ -10,6 +10,7 @@ import { addIcons } from 'ionicons';
 import { closeOutline, saveOutline, addCircleOutline } from 'ionicons/icons';
 import { Collection } from '../../data/collection.model';
 import { FormatService } from '../../../../core/services/format.service';
+import { StudentService } from '../../../students/data/student.service';
 
 import { TranslationService } from '../../../../core/services/translation.service';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
@@ -28,6 +29,7 @@ import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 export class CollectionAddModalComponent implements OnInit {
   private translationService = inject(TranslationService);
   private formatService = inject(FormatService);
+  private studentService = inject(StudentService);
   private modalCtrl = inject(ModalController);
   currency = this.translationService.currency;
 
@@ -36,7 +38,10 @@ export class CollectionAddModalComponent implements OnInit {
   title = '';
   description = '';
   amount: number | null = null;
+  costPerStudent: number | null = null;
   deadline: string = ''; // ISO string from ion-datetime
+  
+  activeStudentCount = 0;
 
   constructor() {
     addIcons({ closeOutline, saveOutline, addCircleOutline });
@@ -79,6 +84,14 @@ export class CollectionAddModalComponent implements OnInit {
       this.modalCtrl.dismiss({ ...this.collection, ...data }, 'confirm');
     } else {
       this.modalCtrl.dismiss(data, 'confirm');
+    }
+  }
+
+  onCostPerStudentChange() {
+    if (this.costPerStudent && this.activeStudentCount > 0) {
+      // Calculate total: cost * students. 
+      // costPerStudent is in PLN (user input), amount is in PLN (user input).
+      this.amount = parseFloat((this.costPerStudent * this.activeStudentCount).toFixed(2));
     }
   }
 }

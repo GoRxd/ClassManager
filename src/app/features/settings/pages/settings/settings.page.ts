@@ -52,9 +52,9 @@ export class SettingsPage {
       await this.backupService.createBackupFile();
       // On Web, the download handles the success, on Mobile, the Share dialog does.
       // We can still show a toast.
-      this.uiService.showToast('Backup prepared successfully', 'success');
+      this.uiService.showToast(this.translationService.translate('SETTINGS.BACKUP_SUCCESS'), 'success');
     } catch (e) {
-      this.uiService.showToast('Backup failed', 'danger');
+      this.uiService.showToast(this.translationService.translate('SETTINGS.BACKUP_ERROR'), 'danger');
     }
   }
 
@@ -71,7 +71,7 @@ export class SettingsPage {
       const json = e.target.result;
       try {
         await this.backupService.restoreData(json);
-        this.uiService.showToast('Data restored successfully. Please restart app to see changes.', 'success');
+        this.uiService.showToast(this.translationService.translate('SETTINGS.RESTORE_SUCCESS'), 'success');
         // Ideally we should reload data in services, but a restart is safer for now or we trigger a global reload.
         // For now, let's just show success. 
         setTimeout(() => {
@@ -79,7 +79,7 @@ export class SettingsPage {
         }, 2000);
       } catch (err) {
         console.error(err);
-        this.uiService.showToast('Restore updated failed. Invalid file.', 'danger');
+        this.uiService.showToast(this.translationService.translate('SETTINGS.RESTORE_ERROR'), 'danger');
       }
     };
     reader.readAsText(file);

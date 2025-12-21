@@ -20,6 +20,13 @@
       [(ngModel)]="description" [placeholder]=" 'COMMON.NO_DATA' | translate " rows="3">
     </ion-textarea>
 
+    <!-- Helper Input -->
+    <ion-input label="Koszt na osobę (Auto-oblicz)" labelPlacement="floating"
+      fill="outline" type="number" inputmode="decimal" 
+      [(ngModel)]="costPerStudent" (ionInput)="onCostPerStudentChange()" placeholder="0.00">
+      <div slot="helper">{{ 'COLLECTIONS.ACTIVE_STUDENTS_COUNT' | translate:{ count: activeStudentCount } }}</div>
+    </ion-input>
+
     <ion-input [label]=" 'COLLECTIONS.TOTAL_AMOUNT' | translate:{ currency: currency() } " labelPlacement="floating"
       fill="outline" type="number" inputmode="decimal" [(ngModel)]="amount" placeholder="0.00">
     </ion-input>

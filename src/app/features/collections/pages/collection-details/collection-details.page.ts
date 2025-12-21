@@ -168,9 +168,15 @@ export class CollectionDetailsPage implements OnInit {
     if (!this.collection || this.totalCollected <= 0) return;
 
     // Calculate how much has already been paid out
-    const totalExpensedGr = this.expenses.reduce((sum, e) => sum + e.amount_gr, 0);
     const totalCollectedGr = this.totalCollected; // This is already in gr (sum of payments)
 
+    // User Requirement: Must have full amount (exact match) to pay out
+    if (totalCollectedGr !== this.collection.targetAmount) {
+       this.uiService.showToast(this.translationService.translate('COLLECTIONS.PAY_OUT_EXACT_AMOUNT_WARNING'), 'warning');
+       return;
+    }
+
+    const totalExpensedGr = this.expenses.reduce((sum, e) => sum + e.amount_gr, 0);
     const availableToPayOutGr = totalCollectedGr - totalExpensedGr;
 
     if (availableToPayOutGr <= 0) {

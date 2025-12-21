@@ -28,6 +28,12 @@
         "DELETE_CONFIRM_TITLE": "Confirm Delete",
         "E_G": "e.g."
     },
+    "STATISTICS": {
+        "CASH_FLOW_TITLE": "Cash Flow (Last 6 Months)",
+        "EXPENSES_BY_COLLECTION_TITLE": "Expenses by Collection",
+        "INCOME": "Income",
+        "EXPENSES": "Expenses"
+    },
     "SIDE_MENU": {
         "DASHBOARD": "Dashboard",
         "STUDENTS": "Students",
@@ -80,6 +86,8 @@
         "REFUND_TITLE": "Refund Surplus",
         "REFUND_CONFIRM_MSG": "Do you want to refund the surplus of {{amount}}? This will reduce payments in overpaid collections.",
         "REFUND_BUTTON": "Return Money",
+        "REMIND_BUTTON": "Remind payment",
+        "REMINDER_MESSAGE": "Hi {{name}}, friendly reminder about your class fund balance. To pay: {{amount}} {{currency}}. Thanks!",
         "NO_COLLECTIONS": "No active collections for this student."
     },
     "COLLECTIONS": {
@@ -105,6 +113,7 @@
         "NO_PAYMENTS_YET": "No payments recorded yet.",
         "ADD_COLLECTION": "Add Collection",
         "EDIT_COLLECTION": "Edit Collection",
+        "ACTIVE_STUDENTS_COUNT": "Active students: {{count}}",
         "COLLECTION_NAME": "Collection Name",
         "TITLE_PLACEHOLDER": "e.g. Class Trip",
         "TOTAL_AMOUNT": "Total Amount",
@@ -112,6 +121,7 @@
         "PAY_OUT_CONFIRM_TITLE": "Pay Out Collection",
         "PAY_OUT_CONFIRM_TEXT": "Do you want to create an expense for the remaining collected amount of {{amount}} {{currency}}?",
         "PAY_OUT_NO_FUNDS": "No funds available to pay out (Total collected already expensed)",
+        "PAY_OUT_EXACT_AMOUNT_WARNING": "You must collect the exact target amount to pay out.",
         "PAY_OUT_SUCCESS": "Collection paid out (Expense created)",
         "PAYOUT_EXPENSE_TITLE": "Payout: {{name}}",
         "CONTRIBUTORS_LIST": "Contributors: {{list}}",
@@ -162,7 +172,11 @@
         "APP_VERSION": "App Version",
         "DATA_MANAGEMENT": "Data Management",
         "BACKUP_DATA": "Backup Data",
-        "RESTORE_DATA": "Restore Data"
+        "BACKUP_SUCCESS": "Backup prepared successfully",
+        "BACKUP_ERROR": "Backup failed",
+        "RESTORE_DATA": "Restore Data",
+        "RESTORE_SUCCESS": "Data restored successfully. Please restart app to see changes.",
+        "RESTORE_ERROR": "Restore updated failed. Invalid file."
     },
     "PAYMENT_MODAL": {
         "HEADER": "Payment: {{name}}",

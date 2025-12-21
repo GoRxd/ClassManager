@@ -1,0 +1,26 @@
+.charts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.chart-card {
+  background: var(--ion-card-background);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+
+  h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ion-text-color);
+  }
+
+  .chart-wrapper {
+    position: relative;
+    height: 300px;
+    width: 100%;
+  }
+}

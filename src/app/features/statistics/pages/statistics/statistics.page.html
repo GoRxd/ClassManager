@@ -1,0 +1,23 @@
+<app-header [title]="'SIDE_MENU.STATISTICS' | translate"></app-header>
+
+<ion-content [fullscreen]="true">
+  <div class="charts-container ion-padding">
+    
+    <!-- Cash Flow -->
+    <div class="chart-card">
+      <h3>{{ 'STATISTICS.CASH_FLOW_TITLE' | translate }}</h3>
+      <div class="chart-wrapper">
+        <canvas #lineCanvas></canvas>
+      </div>
+    </div>
+
+    <!-- Expense Structure -->
+    <div class="chart-card">
+      <h3>{{ 'STATISTICS.EXPENSES_BY_COLLECTION_TITLE' | translate }}</h3>
+      <div class="chart-wrapper">
+        <canvas #pieCanvas></canvas>
+      </div>
+    </div>
+
+  </div>
+</ion-content>

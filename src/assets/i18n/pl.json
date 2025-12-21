@@ -28,6 +28,12 @@
         "DELETE_CONFIRM_TITLE": "Potwierdź usunięcie",
         "E_G": "np."
     },
+    "STATISTICS": {
+        "CASH_FLOW_TITLE": "Przepływy pieniężne (Ostatnie 6 miesięcy)",
+        "EXPENSES_BY_COLLECTION_TITLE": "Wydatki według zbiórek",
+        "INCOME": "Wpływy",
+        "EXPENSES": "Wydatki"
+    },
     "SIDE_MENU": {
         "DASHBOARD": "Pulpit",
         "STUDENTS": "Lista Klasy",
@@ -80,6 +86,8 @@
         "REFUND_TITLE": "Zwrot nadpłaty",
         "REFUND_CONFIRM_MSG": "Czy chcesz zwrócić nadpłatę w wysokości {{amount}}? Spowoduje to zmniejszenie wpłat w nadpłaconych zbiórkach.",
         "REFUND_BUTTON": "Zwróć pieniądze",
+        "REMIND_BUTTON": "Przypomnij o płatności",
+        "REMINDER_MESSAGE": "Cześć {{name}}, przypominam o zaległości w klasowej skarbonce. Do zapłaty: {{amount}} {{currency}}. Dzięki!",
         "NO_COLLECTIONS": "Brak aktywnych zbiórek dla tego studenta."
     },
     "COLLECTIONS": {
@@ -105,6 +113,7 @@
         "NO_PAYMENTS_YET": "Brak zarejestrowanych wpłat.",
         "ADD_COLLECTION": "Dodaj zbiórkę",
         "EDIT_COLLECTION": "Edytuj zbiórkę",
+        "ACTIVE_STUDENTS_COUNT": "Aktywnych studentów: {{count}}",
         "COLLECTION_NAME": "Nazwa zbiórki",
         "TITLE_PLACEHOLDER": "np. Wycieczka klasowa",
         "TOTAL_AMOUNT": "Całkowita kwota",
@@ -112,6 +121,7 @@
         "PAY_OUT_CONFIRM_TITLE": "Wypłać zbiórkę",
         "PAY_OUT_CONFIRM_TEXT": "Czy chcesz utworzyć wydatek dla pozostałej zebranej kwoty {{amount}} {{currency}}?",
         "PAY_OUT_NO_FUNDS": "Brak dostępnych środków do wypłaty (Całość już rozliczona)",
+        "PAY_OUT_EXACT_AMOUNT_WARNING": "Musisz zebrać dokładnie pełną kwotę, aby móc wypłacić.",
         "PAY_OUT_SUCCESS": "Zbiórka została wypłacona (Utworzono wydatek)",
         "PAYOUT_EXPENSE_TITLE": "Wypłata: {{name}}",
         "CONTRIBUTORS_LIST": "Wpłacający: {{list}}",
@@ -162,7 +172,11 @@
         "APP_VERSION": "Wersja aplikacji",
         "DATA_MANAGEMENT": "Zarządzanie Danymi",
         "BACKUP_DATA": "Kopia zapasowa",
-        "RESTORE_DATA": "Przywróć dane"
+        "BACKUP_SUCCESS": "Kopia zapasowa przygotowana pomyślnie",
+        "BACKUP_ERROR": "Tworzenie kopi zapasowej nie powiodło się",
+        "RESTORE_DATA": "Przywróć dane",
+        "RESTORE_SUCCESS": "Dane przywrócone pomyślnie. Zrestartuj aplikację, aby zobaczyć zmiany.",
+        "RESTORE_ERROR": "Przywracanie nie powiodło się. Nieprawidłowy plik."
     },
     "PAYMENT_MODAL": {
         "HEADER": "Wpłata: {{name}}",

@@ -6,7 +6,7 @@ import {
   IonList, IonItem, IonLabel, IonNote, IonIcon, IonButton, IonBadge, IonSkeletonText
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { arrowBackOutline, checkmarkCircle, checkmarkCircleOutline, walletOutline, timeOutline, alertCircleOutline } from 'ionicons/icons';
+import { arrowBackOutline, checkmarkCircle, checkmarkCircleOutline, walletOutline, timeOutline, alertCircleOutline, shareSocialOutline } from 'ionicons/icons';
 import { StudentService } from '../../data/student.service';
 import { CollectionService } from '../../../collections/data/collection.service';
 import { Student } from '../../data/student.model';
@@ -51,7 +51,7 @@ export class StudentInfoPage implements OnInit {
   loading = signal<boolean>(true);
 
   constructor() {
-    addIcons({ arrowBackOutline, checkmarkCircleOutline, walletOutline, timeOutline, alertCircleOutline, checkmarkCircle });
+    addIcons({ arrowBackOutline, checkmarkCircleOutline, walletOutline, timeOutline, alertCircleOutline, checkmarkCircle, shareSocialOutline });
   }
 
   async ngOnInit() {
@@ -145,6 +145,19 @@ export class StudentInfoPage implements OnInit {
       await this.paymentManagement.returnSurplus(s.id, studentName, this.collections(), this.activeStudentCount());
       await this.loadData(s.id);
     }
+  }
+
+  async sendReminder() {
+    const s = this.student();
+    const balance = this.studentBalance();
+    
+    if (!s || balance >= 0) return;
+
+    await this.studentService.sendPaymentReminder(
+      s, 
+      Math.abs(balance), 
+      this.currency()
+    );
   }
 
   async handleCollectionClick(collection: StudentCollectionSummary) {
