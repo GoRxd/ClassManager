@@ -1,3 +1,35 @@
+
+// Visual Polish for Island Items
+ion-item {
+  --padding-top: 4px;
+  --padding-bottom: 4px;
+
+  ion-label {
+    h2 {
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: 0.2px;
+      
+      // Highlight First Name if possible, or just the whole name
+      // Since we can't target first name text node easily in CSS without span, 
+      // we stylize the whole H2 nicely.
+      color: var(--ion-text-color);
+      
+      strong {
+        color: var(--ion-color-dark);
+        font-weight: 700;
+      }
+    }
+    
+    p {
+      margin-top: 4px;
+      font-size: 13px;
+      color: var(--ion-color-medium);
+    }
+  }
+}
+
+
 .no-phone {
   font-style: italic;
   color: var(--ion-color-medium-tint);

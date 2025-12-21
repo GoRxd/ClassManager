@@ -5,7 +5,7 @@ import { DatabaseService } from './core/database/database.service';
 import { SettingsService } from './core/settings/settings.service';
 import { addIcons } from 'ionicons';
 import { homeOutline, peopleOutline, walletOutline, statsChartOutline, settingsOutline, receiptOutline } from 'ionicons/icons';
-
+import { StatusBar } from '@capacitor/status-bar';
 import { TranslatePipe } from './core/pipes/translate.pipe';
 
 @Component({
@@ -22,6 +22,8 @@ export class AppComponent {
   constructor() {
     addIcons({ homeOutline, peopleOutline, walletOutline, statsChartOutline, settingsOutline, receiptOutline });
 
+    StatusBar.show();
+    
     // HACK DO DEBUGOWANIA: (USUNAC W WERSJI FINALNEJ)
     // Przypisujemy serwis do obiektu window, żeby był dostępny w konsoli F12
     (window as any).db = this.dbService;

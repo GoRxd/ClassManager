@@ -31,7 +31,7 @@ ion-list {
 }
 
 ion-item {
-  --color: #555;
+  --color: var(--ion-text-color);
   --min-height: 50px;
   font-weight: 500;
   
@@ -40,14 +40,14 @@ ion-item {
   }
 
   ion-icon {
-    color: #888;
+    color: var(--ion-color-medium);
     margin-right: 16px;
   }
 }
 
-.tbd-item {
-  // opacity: 0.5; // Removed to make it consistent
-}
+// .tbd-item {
+//   opacity: 0.5; 
+// }
 
 .menu-footer {
     position: absolute;

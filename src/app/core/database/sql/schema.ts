@@ -52,10 +52,20 @@ export const CREATE_TABLES_SQL = `
     DROP VIEW IF EXISTS v_treasury_status;
     CREATE VIEW v_treasury_status AS
     SELECT 
-        IFNULL((SELECT SUM(paid_amount_gr) FROM payments), 0) as total_income,
+        IFNULL((
+            SELECT SUM(p.paid_amount_gr) 
+            FROM payments p
+            JOIN students s ON p.student_id = s.id 
+            WHERE s.is_active = 1
+        ), 0) as total_income,
         IFNULL((SELECT SUM(amount_gr) FROM expenses), 0) as total_expenses,
         (
-            IFNULL((SELECT SUM(paid_amount_gr) FROM payments), 0) - 
+            IFNULL((
+                SELECT SUM(p.paid_amount_gr) 
+                FROM payments p
+                JOIN students s ON p.student_id = s.id 
+                WHERE s.is_active = 1
+            ), 0) - 
             IFNULL((SELECT SUM(amount_gr) FROM expenses), 0)
         ) as current_balance;
 

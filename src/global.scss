@@ -42,8 +42,8 @@
   --app-header-margin-top: 12px;
   --app-section-margin-bottom: 20px;
   --app-list-header-margin: 12px 20px 8px 20px;
-  --app-border-radius: 18px;
-  --app-card-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --app-border-radius: 22px;
+  --app-card-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
 }
 
 /* Dark mode specific overrides */
@@ -131,7 +131,7 @@ ion-list[inset="true"] {
   >ion-item,
   >ion-item-sliding,
   >.island-item {
-    margin-bottom: 12px !important;
+    margin-bottom: 16px !important;
     --border-radius: var(--app-border-radius) !important;
     border-radius: var(--app-border-radius) !important;
     box-shadow: var(--app-card-shadow) !important;

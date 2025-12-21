@@ -15,11 +15,10 @@ ion-toolbar {
 
 .balance-card {
   margin: 0;
-  background-color: rgb(12, 142, 142);
-  //background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
+  background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
   color: white;
   border-radius: var(--app-border-radius);
-  box-shadow: 0 10px 20px -5px rgba(var(--ion-color-primary-rgb), 0.4);
+  box-shadow: 0 10px 30px -5px rgba(var(--ion-color-primary-rgb), 0.4);
 
   ion-card-header {
     padding-top: 16px;
@@ -114,7 +113,7 @@ ion-toolbar {
     background: var(--ion-card-background);
     padding: 12px;
     border-radius: var(--app-border-radius);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--app-card-shadow);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -130,7 +129,7 @@ ion-toolbar {
       border-radius: 50%; // Keep icons circular as is common, or use 14px? Circular looks good here.
       margin-bottom: 12px;
       font-size: 24px;
-
+      
       &.students {
         background: rgba(var(--ion-color-secondary-rgb), 0.1);
         color: var(--ion-color-secondary);
@@ -163,14 +162,15 @@ ion-toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
-  margin-top: 8px;
+  margin-bottom: 16px;
+  margin-top: 24px;
 
   h3 {
     margin: 0;
-    font-size: 18px;
-    font-weight: 700;
+    font-size: 20px;
+    font-weight: 800; // Popping header
     color: var(--ion-text-color);
+    letter-spacing: -0.5px;
   }
 }
 

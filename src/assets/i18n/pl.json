@@ -30,7 +30,7 @@
     },
     "SIDE_MENU": {
         "DASHBOARD": "Pulpit",
-        "STUDENTS": "Studenci",
+        "STUDENTS": "Lista Klasy",
         "COLLECTIONS": "Zbiórki",
         "EXPENSES": "Wydatki",
         "STATISTICS": "Statystyki",
@@ -39,7 +39,7 @@
     },
     "DASHBOARD": {
         "TITLE": "Pulpit",
-        "TOTAL_BALANCE": "Suma środków",
+        "TOTAL_BALANCE": "Stan kasy",
         "COLLECTED": "Zebrano",
         "SPENT": "Wydano",
         "STUDENTS": "Studentów",
@@ -49,8 +49,8 @@
         "NO_EXPENSES_DESC": "Twoje ostatnie aktywności pojawią się tutaj."
     },
     "STUDENTS": {
-        "TITLE": "Lista obecności",
-        "MANAGE_CLASS": "Klasa",
+        "TITLE": "Lista studentów",
+        "MANAGE_CLASS": "Zarządzanie Klasą",
         "ADD_STUDENT": "Dodaj studenta",
         "EDIT_STUDENT": "Edytuj studenta",
         "FIRST_NAME": "Imię",
@@ -155,7 +155,7 @@
         "REGIONAL": "Regionalne",
         "CURRENCY": "Waluta",
         "LANGUAGE": "Język",
-        "CURRENCY_AUTO": "Zależnie od języka",
+        "CURRENCY_AUTO": "Systemowa",
         "LANGUAGE_PL": "Polski",
         "LANGUAGE_EN": "Angielski",
         "ABOUT": "O aplikacji",
