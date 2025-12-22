@@ -22,9 +22,7 @@ export class StatisticsService {
   private formatService = inject(FormatService);
 
   async getCashFlowData(): Promise<CashFlowData> {
-    // 1. Get all expenses
     const expenses = await this.expRepo.getAll();
-    // 2. Get all payments (we need to fetch payments from collections)
     const collections = await this.colRepo.getAll();
     
     // We need to fetch payments for each collection. 
@@ -34,7 +32,6 @@ export class StatisticsService {
     for (const c of collections) {
       if (c.id) {
         const payments = await this.colRepo.getPayments(c.id);
-        // Filter only paid
         const paid = payments.filter(p => p.status === 'PAID' && p.paidAt && p.paidAmount > 0);
         allPayments.push(...paid.map(p => ({ date: p.paidAt!, amount: p.paidAmount })));
       }
@@ -57,14 +54,6 @@ export class StatisticsService {
       // Start and end of this month
       const start = new Date(year, month, 1).getTime();
       const end = new Date(year, month + 1, 0, 23, 59, 59).getTime();
-
-      // Sum income
-      // payAt is usually in seconds or ms? Let's check formatService or assume ms if recent? 
-      // Actually Collection model says 'deadline' is timestamp (seconds usually in existing code based on * 1000 usage)
-      // I should assume timestamps in DB are consistent (seconds or ms).
-      // Let's check `collection.model.ts` -> `deadline: number | null; // timestamp`
-      // In `collection-details.page.ts`: `new Date(this.collection.deadline * 1000)` -> So DB is SECONDs.
-      // So I need to divide JS time by 1000 for comparison or multiply DB time.
 
       const incomeSum = allPayments
         .filter(p => (p.date * 1000) >= start && (p.date * 1000) <= end)
@@ -93,8 +82,6 @@ export class StatisticsService {
 
     for (const e of expenses) {
       const colName = colMap.get(e.collection_id) || 'Unknown'; 
-      // Or maybe "General" if collection_id is null/0?
-      // Expense model has `collection_id: number`.
       const val = structure.get(colName) || 0;
       structure.set(colName, val + e.amount_gr);
     }

@@ -6,6 +6,10 @@ import { provideHttpClient } from '@angular/common/http';
 
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
+import { register as registerSwiperElements } from 'swiper/element/bundle';
+
+registerSwiperElements();
+
 import { DatabaseService } from './app/core/database/database.service';
 
 import { defineCustomElements as jeepSqlite } from 'jeep-sqlite/loader';

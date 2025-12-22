@@ -1,0 +1,76 @@
+<ion-content [fullscreen]="true" class="ion-no-padding">
+  
+  <swiper-container #swiper [pagination]="true" class="full-height">
+    
+    <!-- SLIDE 1: INTRO -->
+    <swiper-slide>
+      <div class="slide-content">
+        <div class="image-placeholder intro-bg">
+          <img src="assets/icon/icon-512.png" alt="App Icon" class="app-icon" onerror="this.src='https://ionicframework.com/docs/img/demos/thumbnail.svg'" />
+        </div>
+        <h2>{{ 'ONBOARDING.SLIDE_1_TITLE' | translate }}</h2>
+        <p>{{ 'ONBOARDING.SLIDE_1_DESC' | translate }}</p>
+      </div>
+    </swiper-slide>
+
+    <!-- SLIDE 2: STUDENTS -->
+    <swiper-slide>
+      <div class="slide-content">
+        <div class="image-placeholder">
+          <!-- TODO: Add real screenshot later -->
+          <span>📸 {{ 'ONBOARDING.PLACEHOLDER_STUDENTS' | translate }}</span>
+        </div>
+        <h2>{{ 'ONBOARDING.SLIDE_2_TITLE' | translate }}</h2>
+        <p>{{ 'ONBOARDING.SLIDE_2_DESC' | translate }}</p>
+      </div>
+    </swiper-slide>
+
+    <!-- SLIDE 3: COLLECTIONS -->
+    <swiper-slide>
+      <div class="slide-content">
+        <div class="image-placeholder">
+          <!-- TODO: Add real screenshot later -->
+          <span>📸 {{ 'ONBOARDING.PLACEHOLDER_COLLECTIONS' | translate }}</span>
+        </div>
+        <h2>{{ 'ONBOARDING.SLIDE_3_TITLE' | translate }}</h2>
+        <p>{{ 'ONBOARDING.SLIDE_3_DESC' | translate }}</p>
+      </div>
+    </swiper-slide>
+
+    <!-- SLIDE 4: EXPENSES -->
+    <swiper-slide>
+      <div class="slide-content">
+        <div class="image-placeholder">
+          <!-- TODO: Add real screenshot later -->
+          <span>📸 {{ 'ONBOARDING.PLACEHOLDER_EXPENSES' | translate }}</span>
+        </div>
+        <h2>{{ 'ONBOARDING.SLIDE_4_TITLE' | translate }}</h2>
+        <p>{{ 'ONBOARDING.SLIDE_4_DESC' | translate }}</p>
+      </div>
+    </swiper-slide>
+
+  </swiper-container>
+
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar class="transparent-toolbar">
+    <ion-buttons slot="start">
+      <ion-button (click)="close()" color="medium" *ngIf="isFirstLaunch">
+        {{ 'ONBOARDING.SKIP' | translate }}
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="next()" *ngIf="!isEnd">
+        {{ 'ONBOARDING.NEXT' | translate }}
+        <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+      </ion-button>
+      
+      <ion-button (click)="close()" color="primary" fill="solid" *ngIf="isEnd">
+        {{ 'ONBOARDING.FINISH' | translate }}
+        <ion-icon name="checkmark-outline" slot="end"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

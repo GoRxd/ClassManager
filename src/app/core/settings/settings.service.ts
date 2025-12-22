@@ -60,6 +60,15 @@ export class SettingsService {
     this.saveSettings();
   }
 
+  async checkOnboardingStatus(): Promise<boolean> {
+    const { value } = await Preferences.get({ key: 'hasSeenOnboarding' });
+    return value === 'true';
+  }
+
+  async completeOnboarding() {
+    await Preferences.set({ key: 'hasSeenOnboarding', value: 'true' });
+  }
+
   private saveSettings() {
     const data = JSON.stringify(this.state());
     localStorage.setItem(SETTINGS_KEY, data);

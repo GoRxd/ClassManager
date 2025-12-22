@@ -176,7 +176,24 @@
         "BACKUP_ERROR": "Tworzenie kopi zapasowej nie powiodło się",
         "RESTORE_DATA": "Przywróć dane",
         "RESTORE_SUCCESS": "Dane przywrócone pomyślnie. Zrestartuj aplikację, aby zobaczyć zmiany.",
-        "RESTORE_ERROR": "Przywracanie nie powiodło się. Nieprawidłowy plik."
+        "RESTORE_ERROR": "Przywracanie nie powiodło się. Nieprawidłowy plik.",
+        "HELP": "Pomoc / Samouczek"
+    },
+    "ONBOARDING": {
+        "SKIP": "Pomiń",
+        "NEXT": "Dalej",
+        "FINISH": "Zakończ",
+        "SLIDE_1_TITLE": "Witaj w Class Manager!",
+        "SLIDE_1_DESC": "Twoje centrum dowodzenia finansami klasowymi. Śledź wpłaty, wydatki i bądź na bieżąco.",
+        "SLIDE_2_TITLE": "Dodawaj Studentów",
+        "SLIDE_2_DESC": "Zarządzaj listą klasy. Dodawaj studentów, edytuj ich dane i sprawdzaj salda.",
+        "SLIDE_3_TITLE": "Twórz Zbiórki",
+        "SLIDE_3_DESC": "Organizujesz wycieczkę lub składkę na prezent? Utwórz zbiórkę i łatwo oznaczaj wpłaty.",
+        "SLIDE_4_TITLE": "Kontroluj Wydatki",
+        "SLIDE_4_DESC": "Dodawaj wydatki powiązane ze zbiórkami. Aplikacja automatycznie obliczy, ile pieniędzy zostało w kasie.",
+        "PLACEHOLDER_STUDENTS": "Widok listy studentów",
+        "PLACEHOLDER_COLLECTIONS": "Widok szczegółów zbiórki",
+        "PLACEHOLDER_EXPENSES": "Widok dodawania wydatku"
     },
     "PAYMENT_MODAL": {
         "HEADER": "Wpłata: {{name}}",

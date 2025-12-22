@@ -47,7 +47,9 @@ export class CollectionAddModalComponent implements OnInit {
     addIcons({ closeOutline, saveOutline, addCircleOutline });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.activeStudentCount = await this.studentService.getActiveCount();
+
     if (this.collection) {
       this.title = this.collection.title;
       this.description = this.collection.description;
@@ -89,8 +91,7 @@ export class CollectionAddModalComponent implements OnInit {
 
   onCostPerStudentChange() {
     if (this.costPerStudent && this.activeStudentCount > 0) {
-      // Calculate total: cost * students. 
-      // costPerStudent is in PLN (user input), amount is in PLN (user input).
+      // Calculate total based on user inputs (cost * students)
       this.amount = parseFloat((this.costPerStudent * this.activeStudentCount).toFixed(2));
     }
   }

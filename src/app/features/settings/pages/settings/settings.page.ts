@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-
+import { ModalController } from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
 import {
   IonContent, IonList, IonItem, IonLabel, IonIcon, IonSelect, IonSelectOption,
@@ -13,8 +13,9 @@ import { TranslationService } from '../../../../core/services/translation.servic
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 
 import { addIcons } from 'ionicons';
-import { moonOutline, cashOutline, globeOutline, informationCircleOutline, cloudDownloadOutline, cloudUploadOutline } from 'ionicons/icons';
+import { moonOutline, cashOutline, globeOutline, informationCircleOutline, cloudDownloadOutline, cloudUploadOutline, helpCircleOutline } from 'ionicons/icons';
 import { AppHeaderComponent } from '../../../../core/components/app-header/app-header.component';
+import { OnboardingModalComponent } from '../../../../features/onboarding/onboarding-modal/onboarding-modal.component';
 
 @Component({
   selector: 'app-settings',
@@ -34,10 +35,9 @@ export class SettingsPage {
   private translationService = inject(TranslationService);
 
   constructor() {
-    addIcons({ moonOutline, cashOutline, globeOutline, informationCircleOutline, cloudDownloadOutline, cloudUploadOutline });
+    addIcons({ moonOutline, cashOutline, globeOutline, informationCircleOutline, cloudDownloadOutline, cloudUploadOutline, helpCircleOutline });
   }
 
-  // Expose signals for template
   theme = this.settingsService.theme;
   currency = this.settingsService.currency;
   language = this.translationService.currentLang;
@@ -46,12 +46,21 @@ export class SettingsPage {
 
   private backupService = inject(BackupService);
   private uiService = inject(UiService);
+  private modalCtrl = inject(ModalController);
+
+  async openHelp() {
+    const modal = await this.modalCtrl.create({
+      component: OnboardingModalComponent,
+      componentProps: { isFirstLaunch: false }
+    });
+    await modal.present();
+  }
 
   async backup() {
     try {
       await this.backupService.createBackupFile();
+      await this.backupService.createBackupFile();
       // On Web, the download handles the success, on Mobile, the Share dialog does.
-      // We can still show a toast.
       this.uiService.showToast(this.translationService.translate('SETTINGS.BACKUP_SUCCESS'), 'success');
     } catch (e) {
       this.uiService.showToast(this.translationService.translate('SETTINGS.BACKUP_ERROR'), 'danger');
@@ -71,9 +80,10 @@ export class SettingsPage {
       const json = e.target.result;
       try {
         await this.backupService.restoreData(json);
+        await this.backupService.restoreData(json);
         this.uiService.showToast(this.translationService.translate('SETTINGS.RESTORE_SUCCESS'), 'success');
-        // Ideally we should reload data in services, but a restart is safer for now or we trigger a global reload.
-        // For now, let's just show success. 
+        
+        // Ideally we should reload data in services, but a restart is safer for now.
         setTimeout(() => {
           window.location.reload();
         }, 2000);

@@ -69,7 +69,6 @@ export class StudentInfoPage implements OnInit {
       const s = await this.studentService.getById(id);
       this.student.set(s);
 
-      // Fetch active student count for calculation
       const count = await this.studentService.getActiveCount();
       this.activeStudentCount.set(count);
 
@@ -97,7 +96,6 @@ export class StudentInfoPage implements OnInit {
 
     for (const c of cols) {
       const perStudentCost = Math.round(c.targetAmount / studentCount);
-      // Store the calculated cost on the object for easy access in template/logic
       c.perStudentCost = perStudentCost;
 
       balance += (c.paidAmount - perStudentCost);
@@ -172,7 +170,8 @@ export class StudentInfoPage implements OnInit {
     const s = this.student();
     if (!s || !s.id) return;
 
-    // Use the calculated per-student cost
+    if (!s || !s.id) return;
+
     const amountToPay = collection.perStudentCost || collection.targetAmount;
 
     await this.collectionService.updatePayment(collection.collectionId, s.id, amountToPay);

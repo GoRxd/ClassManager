@@ -69,6 +69,11 @@
       <ion-label>{{ 'SETTINGS.ABOUT' | translate }}</ion-label>
     </ion-item-divider>
 
+    <ion-item button (click)="openHelp()" detail="true">
+      <ion-icon slot="start" name="help-circle-outline"></ion-icon>
+      <ion-label>{{ 'SETTINGS.HELP' | translate }}</ion-label>
+    </ion-item>
+
     <ion-item button detail="false" lines="none">
       <ion-icon slot="start" name="information-circle-outline" color="medium"></ion-icon>
       <ion-label>

@@ -88,7 +88,6 @@ export class ExpensesPage implements OnInit, OnDestroy {
 
     modal.onWillDismiss().then(async (res) => {
       if (res.role === 'confirm' && res.data) {
-        // Service handles conversion
         await this.expenseService.addExpense(
           res.data.title,
           res.data.amount,

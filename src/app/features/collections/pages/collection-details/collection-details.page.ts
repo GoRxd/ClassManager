@@ -83,8 +83,6 @@ export class CollectionDetailsPage implements OnInit {
     return this.collection.targetAmount / this.payments.length;
   }
 
-  // Removed duplicate currency getter
-
   async ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
@@ -168,9 +166,8 @@ export class CollectionDetailsPage implements OnInit {
     if (!this.collection || this.totalCollected <= 0) return;
 
     // Calculate how much has already been paid out
-    const totalCollectedGr = this.totalCollected; // This is already in gr (sum of payments)
+    const totalCollectedGr = this.totalCollected; 
 
-    // User Requirement: Must have full amount (exact match) to pay out
     if (totalCollectedGr !== this.collection.targetAmount) {
        this.uiService.showToast(this.translationService.translate('COLLECTIONS.PAY_OUT_EXACT_AMOUNT_WARNING'), 'warning');
        return;
@@ -186,9 +183,7 @@ export class CollectionDetailsPage implements OnInit {
 
     const availableToPayOutPLN = this.formatService.toPLN(availableToPayOutGr);
 
-    // Calculate contributing students
     let description = '';
-    // Sort payments by time. If paidAt is null (shouldn't be for PAID), treat as 0.
     const sortedPayments = [...this.payments]
       .filter(p => p.status === 'PAID' && (p.paidAmount || 0) > 0)
       .sort((a, b) => (a.paidAt || 0) - (b.paidAt || 0));

@@ -176,7 +176,24 @@
         "BACKUP_ERROR": "Backup failed",
         "RESTORE_DATA": "Restore Data",
         "RESTORE_SUCCESS": "Data restored successfully. Please restart app to see changes.",
-        "RESTORE_ERROR": "Restore updated failed. Invalid file."
+        "RESTORE_ERROR": "Restore updated failed. Invalid file.",
+        "HELP": "Help / Tutorial"
+    },
+    "ONBOARDING": {
+        "SKIP": "Skip",
+        "NEXT": "Next",
+        "FINISH": "Finish",
+        "SLIDE_1_TITLE": "Welcome to Class Manager!",
+        "SLIDE_1_DESC": "Your command center for class finances. Track payments, expenses, and stay organized.",
+        "SLIDE_2_TITLE": "Manage Students",
+        "SLIDE_2_DESC": "Keep your class list up to date. Add students, edit details, and check balances instantly.",
+        "SLIDE_3_TITLE": "Create Collections",
+        "SLIDE_3_DESC": "Organizing a trip or a gift fund? Create collections and mark payments with ease.",
+        "SLIDE_4_TITLE": "Track Expenses",
+        "SLIDE_4_DESC": "Log expenses linked to collections. The app automatically calculates remaining funds.",
+        "PLACEHOLDER_STUDENTS": "Student List View",
+        "PLACEHOLDER_COLLECTIONS": "Collection Details View",
+        "PLACEHOLDER_EXPENSES": "Add Expense View"
     },
     "PAYMENT_MODAL": {
         "HEADER": "Payment: {{name}}",

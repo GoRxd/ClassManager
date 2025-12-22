@@ -24,10 +24,8 @@ export class PaymentManagementService {
         paidAmount: number,
         onComplete: () => Promise<void>
     ) {
-        // 1. Fetch expenses for this collection
         const expenses = await this.expenseService.getExpensesByCollectionId(collectionId);
 
-        // 2. Identify affected expenses
         // We look for the student name in the description. 
         // Format: "Contributors: Name 1, Name 2, ..."
 
@@ -41,10 +39,8 @@ export class PaymentManagementService {
         });
 
         if (affectedExpenses.length === 0) {
-            // Standard confirmation
             await this.showStandardConfirm(collectionId, studentId, onComplete);
         } else {
-            // Advanced confirmation with expense updates
             await this.showAdvancedConfirm(collectionId, studentId, studentName, paidAmount, affectedExpenses, onComplete);
         }
     }
@@ -144,7 +140,8 @@ export class PaymentManagementService {
             return;
         }
 
-        // 2. Distribute Surplus to Deficits
+
+
         let surplusPoolGr = state.surplusPoolGr;
 
         for (const deficitItem of state.deficits) {
@@ -160,7 +157,8 @@ export class PaymentManagementService {
             surplusPoolGr -= canCover;
             let amountToDeductFromSurpluses = canCover;
 
-            // Reduce surplus items payments
+
+
             for (const surplusItem of state.surpluses) {
                 if (amountToDeductFromSurpluses <= 0) break;
 
@@ -267,7 +265,8 @@ export class PaymentManagementService {
         let totalPaid = 0;
         let totalRequired = 0;
         let surplusPoolGr = 0;
-        // Extend collection type locally
+
+        
         interface CalculationResult extends StudentCollectionSummary {
             surplus?: number;
             deficit?: number;

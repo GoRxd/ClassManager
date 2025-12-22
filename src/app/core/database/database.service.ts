@@ -19,7 +19,6 @@ export class DatabaseService {
     try {
       const platform = Capacitor.getPlatform();
 
-      // === WEB CONFIGURATION ===
       if (platform === 'web') {
         console.log('🌐 Web platform detected, initializing jeep-sqlite...');
 
@@ -50,7 +49,8 @@ export class DatabaseService {
         await new Promise(resolve => setTimeout(resolve, 200));
       }
 
-      // === CREATE CONNECTION ===
+
+
       this.db = await this.sqlite.createConnection(
         'class_manager_db',
         false,
@@ -61,7 +61,6 @@ export class DatabaseService {
 
 
       await this.db.open();
-      // === WEB CHECK: IS STORE OPEN ===
       // createConnection can be faster than initWebStore sometimes.
       if (platform === 'web') {
         // Handle "WebStore is not open yet" error
