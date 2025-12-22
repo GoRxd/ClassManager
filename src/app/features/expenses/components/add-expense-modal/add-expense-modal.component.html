@@ -13,11 +13,16 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  @if (isDisabled) {
+    <ion-note color="warning" class="ion-margin-bottom ion-display-block">
+      {{ 'EXPENSES.PAYOUT_LOCKED_MSG' | translate }}
+    </ion-note>
+  }
   <div class="form-inputs">
     <div class="input-group">
       <ion-select [label]=" 'EXPENSES.SELECT_COLLECTION' | translate " label-placement="floating" fill="outline"
         [(ngModel)]="selectedCollectionId" [placeholder]=" 'EXPENSES.SELECT_COLLECTION' | translate "
-        [cancelText]=" 'COMMON.CANCEL' | translate " [okText]=" 'COMMON.CONFIRM' | translate ">
+        [cancelText]=" 'COMMON.CANCEL' | translate " [okText]=" 'COMMON.CONFIRM' | translate " [disabled]="isDisabled">
         @for (coll of collectionService.collections(); track coll.id) {
         <ion-select-option [value]="coll.id">{{ coll.title }}</ion-select-option>
         }
@@ -26,25 +31,25 @@
 
     <div class="input-group">
       <ion-input [label]=" 'EXPENSES.EXPENSE_TITLE' | translate " label-placement="floating" fill="outline"
-        [(ngModel)]="title" [placeholder]=" 'EXPENSES.TITLE_PLACEHOLDER' | translate "></ion-input>
+        [(ngModel)]="title" [placeholder]=" 'EXPENSES.TITLE_PLACEHOLDER' | translate " [disabled]="isDisabled"></ion-input>
     </div>
 
     <div class="input-group">
       <ion-textarea [label]=" 'EXPENSES.DESCRIPTION' | translate " label-placement="floating" fill="outline"
         [(ngModel)]="description" [placeholder]=" 'COMMON.NO_DATA' | translate " auto-grow="true"
-        rows="2"></ion-textarea>
+        rows="2" [disabled]="isDisabled"></ion-textarea>
     </div>
 
     <div class="input-group">
       <ion-input [label]=" 'EXPENSES.AMOUNT' | translate:{ currency: currency() } " label-placement="floating"
-        fill="outline" type="number" [(ngModel)]="amount" placeholder="0.00"></ion-input>
+        fill="outline" type="number" [(ngModel)]="amount" placeholder="0.00" [disabled]="isDisabled"></ion-input>
     </div>
   </div>
 
   <div class="products-section">
     <div class="section-header">
       <ion-label class="ion-text-uppercase font-bold">{{ 'EXPENSES.PRODUCTS' | translate }}</ion-label>
-      <ion-button (click)="addProduct()" size="small" fill="solid">
+      <ion-button (click)="addProduct()" size="small" fill="solid" [disabled]="isDisabled">
         <ion-icon name="add" slot="start"></ion-icon>
         {{ 'EXPENSES.ADD_ITEM' | translate }}
       </ion-button>
@@ -57,15 +62,15 @@
           <ion-row class="ion-align-items-center">
             <ion-col size="5">
               <ion-input [label]=" 'EXPENSES.ITEM_NAME' | translate " label-placement="stacked" fill="outline"
-                [(ngModel)]="p.name" [placeholder]=" 'EXPENSES.ITEM_NAME' | translate "></ion-input>
+                [(ngModel)]="p.name" [placeholder]=" 'EXPENSES.ITEM_NAME' | translate " [disabled]="isDisabled"></ion-input>
             </ion-col>
             <ion-col size="2">
               <ion-input [label]=" 'EXPENSES.QTY' | translate " label-placement="stacked" fill="outline" type="number"
-                [(ngModel)]="p.quantity" (ionInput)="updateTotal()"></ion-input>
+                [(ngModel)]="p.quantity" (ionInput)="updateTotal()" [disabled]="isDisabled"></ion-input>
             </ion-col>
             <ion-col size="3">
               <ion-input [label]=" 'EXPENSES.PRICE' | translate " label-placement="stacked" fill="outline" type="number"
-                [(ngModel)]="p.unitPrice" (ionInput)="updateTotal()"></ion-input>
+                [(ngModel)]="p.unitPrice" (ionInput)="updateTotal()" [disabled]="isDisabled"></ion-input>
             </ion-col>
             <ion-col size="2" class="ion-text-end">
               <ion-button fill="clear" color="danger" (click)="removeProduct($index)">

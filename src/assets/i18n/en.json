@@ -104,7 +104,7 @@
         "SUGGESTED_PER_PERSON": "Suggested per person:",
         "COLLECTED": "Collected",
         "TARGET": "Target",
-        "PAY_OUT_REMAINING": "Pay Out Remaining",
+        "PAY_OUT_REMAINING": "Pay Out",
         "PENDING_SEGMENT": "Pending",
         "PAID_SEGMENT": "Paid",
         "NOT_PAID_YET": "Not paid yet",
@@ -153,7 +153,8 @@
         "DELETE_CONFIRM_TEXT": "Are you sure you want to delete this expense?",
         "DELETE_SUCCESS": "Expense deleted",
         "ADD_SUCCESS": "Expense added successfully",
-        "UPDATE_SUCCESS": "Expense updated successfully"
+        "UPDATE_SUCCESS": "Expense updated successfully",
+        "PAYOUT_LOCKED_MSG": "Auto-generated payout expenses cannot be edited."
     },
     "SETTINGS": {
         "TITLE": "Settings",

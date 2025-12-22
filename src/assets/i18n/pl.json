@@ -104,7 +104,7 @@
         "SUGGESTED_PER_PERSON": "Sugerowane na osobę:",
         "COLLECTED": "Zebrano",
         "TARGET": "Cel",
-        "PAY_OUT_REMAINING": "Wypłać pozostałe",
+        "PAY_OUT_REMAINING": "Wypłać",
         "PENDING_SEGMENT": "Oczekujące",
         "PAID_SEGMENT": "Opłacone",
         "NOT_PAID_YET": "Jeszcze nie opłacone",
@@ -153,7 +153,8 @@
         "DELETE_CONFIRM_TEXT": "Czy na pewno chcesz usunąć ten wydatek?",
         "DELETE_SUCCESS": "Wydatek został usunięty",
         "ADD_SUCCESS": "Wydatek został dodany",
-        "UPDATE_SUCCESS": "Wydatek został zaktualizowany"
+        "UPDATE_SUCCESS": "Wydatek został zaktualizowany",
+        "PAYOUT_LOCKED_MSG": "Automatycznie wygenerowane wypłaty nie mogą być edytowane."
     },
     "SETTINGS": {
         "TITLE": "Ustawienia",

@@ -15,6 +15,7 @@ export interface Expense {
   description?: string;
   amount_gr: number;
   collection_id: number;
+  type?: 'MANUAL' | 'PAYOUT';
   created_at: number;
   products?: ExpenseProduct[];
 }
@@ -37,10 +38,10 @@ export class ExpenseRepository {
     return this.attachProducts(expenses);
   }
 
-  async addExpense(title: string, amountGr: number, collectionId: number, products: { name: string, quantity: number, unit_price_gr: number }[] = [], description?: string): Promise<void> {
-    const sql = `INSERT INTO expenses (title, amount_gr, collection_id, description) VALUES (?, ?, ?, ?)`;
+  async addExpense(title: string, amountGr: number, collectionId: number, products: { name: string, quantity: number, unit_price_gr: number }[] = [], description?: string, type: 'MANUAL' | 'PAYOUT' = 'MANUAL'): Promise<void> {
+    const sql = `INSERT INTO expenses (title, amount_gr, collection_id, description, type) VALUES (?, ?, ?, ?, ?)`;
 
-    const result = await this.db.run(sql, [title, amountGr, collectionId, description || null]);
+    const result = await this.db.run(sql, [title, amountGr, collectionId, description || null, type]);
 
     // In capacitor-sqlite, result.changes.lastId contains the ID of inserted row
     const expenseId = result.changes?.lastId;

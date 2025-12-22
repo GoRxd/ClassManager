@@ -40,6 +40,7 @@ export class AddExpenseModalComponent implements OnInit {
   title: string = '';
   description: string = '';
   amount: number | null = null;
+  isDisabled: boolean = false;
 
   products: { name: string; quantity: number; unitPrice: number }[] = [];
 
@@ -63,6 +64,11 @@ export class AddExpenseModalComponent implements OnInit {
       }
     } else if (this.preselectedCollectionId) {
       this.selectedCollectionId = this.preselectedCollectionId;
+    }
+    
+    // Check if we should disable editing
+    if (this.expense?.type === 'PAYOUT') {
+      this.isDisabled = true;
     }
   }
 

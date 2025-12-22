@@ -229,7 +229,8 @@ export class CollectionDetailsPage implements OnInit {
         availableToPayOutPLN,
         this.collection.id!,
         [],
-        description
+        description,
+        'PAYOUT'
       );
 
       this.uiService.showToast(this.translationService.translate('COLLECTIONS.PAY_OUT_SUCCESS'), 'success');

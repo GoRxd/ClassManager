@@ -105,6 +105,12 @@ export class ExpensesPage implements OnInit, OnDestroy {
   }
 
   async edit(expense: Expense, slidingItem?: IonItemSliding) {
+    if (expense.type === 'PAYOUT') {
+      await this.uiService.showToast(this.translationService.translate('EXPENSES.PAYOUT_LOCKED_MSG'), 'warning');
+      slidingItem?.close();
+      return;
+    }
+
     await this.itemAction.handleEdit(slidingItem, async () => {
       const modal = await this.modalCtrl.create({
         component: AddExpenseModalComponent,

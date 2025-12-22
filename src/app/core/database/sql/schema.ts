@@ -36,6 +36,7 @@ export const CREATE_TABLES_SQL = `
         description TEXT,
         amount_gr INTEGER NOT NULL,
         collection_id INTEGER,
+        type TEXT DEFAULT 'MANUAL',
         created_at INTEGER DEFAULT (strftime('%s', 'now')),
         FOREIGN KEY (collection_id) REFERENCES collections(id) ON DELETE SET NULL
     );

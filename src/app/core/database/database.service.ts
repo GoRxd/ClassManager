@@ -82,6 +82,16 @@ export class DatabaseService {
         }
       }
 
+      // MIGRATION: Ensure 'type' column exists in 'expenses'
+      const hasType = tableInfo.values?.some((col: any) => col.name === 'type');
+      if (!hasType) {
+        try {
+          await this.db.run("ALTER TABLE expenses ADD COLUMN type TEXT DEFAULT 'MANUAL'");
+        } catch (e) {
+          console.log('Column type might already exist, ignoring.');
+        }
+      }
+
 
       if (platform === 'web') {
         await this.sqlite.saveToStore('class_manager_db');

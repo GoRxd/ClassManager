@@ -31,7 +31,7 @@
             <div class="progress-footer">
                 <div class="percentage">{{ progress | percent:'1.0-0' }}</div>
                 <ion-button size="small" shape="round" color="primary" (click)="payOut()"
-                    [disabled]="totalCollected <= 0">
+                    [disabled]="totalCollected !== collection.targetAmount">
                     <ion-icon slot="start" name="card-outline"></ion-icon>
                     {{ 'COLLECTIONS.PAY_OUT_REMAINING' | translate }}
                 </ion-button>
