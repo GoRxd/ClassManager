@@ -7,6 +7,12 @@ import { addIcons } from 'ionicons';
 import { arrowForwardOutline, checkmarkOutline, closeOutline } from 'ionicons/icons';
 import { CommonModule } from '@angular/common';
 
+export interface OnboardingSlide {
+  title: string;
+  desc: string;
+  images: string[];
+}
+
 @Component({
   selector: 'app-onboarding-modal',
   templateUrl: './onboarding-modal.component.html',
@@ -28,8 +34,58 @@ export class OnboardingModalComponent implements OnInit {
 
   isEnd = false;
 
+  // Define the slides data
+  slides: OnboardingSlide[] = [
+    {
+      title: 'ONBOARDING.SLIDE_1_TITLE',
+      desc: 'ONBOARDING.SLIDE_1_DESC',
+      images: ['assets/icon/icon-512.png'] 
+    },
+    {
+      title: 'ONBOARDING.SLIDE_GESTURES_TITLE',
+      desc: 'ONBOARDING.SLIDE_GESTURES_DESC',
+      images: [
+        'assets/onboarding/slide_swipe_edit.png',
+        'assets/onboarding/slide_swipe_delete.png'
+      ]
+    },
+    {
+      title: 'ONBOARDING.SLIDE_2_TITLE',
+      desc: 'ONBOARDING.SLIDE_2_DESC',
+      images: [
+        'assets/onboarding/slide_students_list.png',
+        'assets/onboarding/slide_students_add.png',
+        'assets/onboarding/slide_student_details.png'
+      ]
+    },
+    {
+      title: 'ONBOARDING.SLIDE_3_TITLE',
+      desc: 'ONBOARDING.SLIDE_3_DESC',
+      images: [
+        'assets/onboarding/slide_collections_list.png',
+        'assets/onboarding/slide_collections_add.png'
+      ]
+    },
+    {
+      title: 'ONBOARDING.SLIDE_4_TITLE',
+      desc: 'ONBOARDING.SLIDE_4_DESC',
+      images: [
+        'assets/onboarding/slide_expenses_list.png',
+        'assets/onboarding/slide_expenses_add.png'
+      ]
+    }
+  ];
+
+  // Track the current internal image index for each slide
+  // key: slide index, value: image index
+  internalSlideState: { [key: number]: number } = {};
+
   constructor() {
     addIcons({ arrowForwardOutline, checkmarkOutline, closeOutline });
+    // Initialize state
+    this.slides.forEach((_, index) => {
+      this.internalSlideState[index] = 0;
+    });
   }
 
   ngOnInit() {}
@@ -54,5 +110,14 @@ export class OnboardingModalComponent implements OnInit {
 
   next() {
     this.swiperRef?.nativeElement.swiper.slideNext();
+  }
+
+  nextInternalImage(slideIndex: number) {
+    if (this.internalSlideState[slideIndex] < this.slides[slideIndex].images.length - 1) {
+      this.internalSlideState[slideIndex]++;
+    } else {
+      // Loop back or do nothing? Loop back is friendly.
+      this.internalSlideState[slideIndex] = 0;
+    }
   }
 }

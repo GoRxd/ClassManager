@@ -2,52 +2,39 @@
   
   <swiper-container #swiper [pagination]="true" class="full-height">
     
-    <!-- SLIDE 1: INTRO -->
+    @for (slide of slides; track i; let i = $index) {
     <swiper-slide>
       <div class="slide-content">
-        <div class="image-placeholder intro-bg">
-          <img src="assets/icon/icon-512.png" alt="App Icon" class="app-icon" onerror="this.src='https://ionicframework.com/docs/img/demos/thumbnail.svg'" />
-        </div>
-        <h2>{{ 'ONBOARDING.SLIDE_1_TITLE' | translate }}</h2>
-        <p>{{ 'ONBOARDING.SLIDE_1_DESC' | translate }}</p>
-      </div>
-    </swiper-slide>
+        <div class="image-placeholder" [class.intro-bg]="i === 0" (click)="nextInternalImage(i)">
+          
+          <img [src]="slide.images[internalSlideState[i]]" 
+               [alt]="slide.title | translate"
+               [class.app-icon]="i === 0"
+               class="slide-image" 
+               style="max-width: 100%; max-height: 100%; object-fit: contain; transition: opacity 0.3s ease;">
 
-    <!-- SLIDE 2: STUDENTS -->
-    <swiper-slide>
-      <div class="slide-content">
-        <div class="image-placeholder">
-          <!-- TODO: Add real screenshot later -->
-          <span>📸 {{ 'ONBOARDING.PLACEHOLDER_STUDENTS' | translate }}</span>
+          <!-- Internal Pagination Dots -->
+          @if (slide.images.length > 1) {
+            <div class="internal-pagination">
+              @for (img of slide.images; track j; let j = $index) {
+                <span class="dot" [class.active]="j === internalSlideState[i]"></span>
+              }
+            </div>
+          }
         </div>
-        <h2>{{ 'ONBOARDING.SLIDE_2_TITLE' | translate }}</h2>
-        <p>{{ 'ONBOARDING.SLIDE_2_DESC' | translate }}</p>
+        
+        <h2>{{ slide.title | translate }}</h2>
+        <p>{{ slide.desc | translate }}</p>
+        
+        <!-- Hint for multiple images -->
+        @if (slide.images.length > 1) {
+        <p class="hint-text" style="font-size: 0.8em; opacity: 0.7; margin-top: 5px;">
+            {{ 'ONBOARDING.TAP_NEXT' | translate }}
+          </p>
+        }
       </div>
     </swiper-slide>
-
-    <!-- SLIDE 3: COLLECTIONS -->
-    <swiper-slide>
-      <div class="slide-content">
-        <div class="image-placeholder">
-          <!-- TODO: Add real screenshot later -->
-          <span>📸 {{ 'ONBOARDING.PLACEHOLDER_COLLECTIONS' | translate }}</span>
-        </div>
-        <h2>{{ 'ONBOARDING.SLIDE_3_TITLE' | translate }}</h2>
-        <p>{{ 'ONBOARDING.SLIDE_3_DESC' | translate }}</p>
-      </div>
-    </swiper-slide>
-
-    <!-- SLIDE 4: EXPENSES -->
-    <swiper-slide>
-      <div class="slide-content">
-        <div class="image-placeholder">
-          <!-- TODO: Add real screenshot later -->
-          <span>📸 {{ 'ONBOARDING.PLACEHOLDER_EXPENSES' | translate }}</span>
-        </div>
-        <h2>{{ 'ONBOARDING.SLIDE_4_TITLE' | translate }}</h2>
-        <p>{{ 'ONBOARDING.SLIDE_4_DESC' | translate }}</p>
-      </div>
-    </swiper-slide>
+    }
 
   </swiper-container>
 

@@ -1,0 +1,10 @@
+ion-item[lines="full"] {
+    --inner-border-width: 0;
+    --border-width: 0 0 1px 0;
+    --border-color: var(--ion-color-step-150, #e0e0e0); // Fallback color
+}
+
+ion-item[lines="none"] {
+    --inner-border-width: 0;
+    --border-width: 0;
+}

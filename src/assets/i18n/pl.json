@@ -186,15 +186,18 @@
         "FINISH": "Zakończ",
         "SLIDE_1_TITLE": "Witaj w Class Manager!",
         "SLIDE_1_DESC": "Twoje centrum dowodzenia finansami klasowymi. Śledź wpłaty, wydatki i bądź na bieżąco.",
+        "SLIDE_GESTURES_TITLE": "Gesty i Akcje",
+        "SLIDE_GESTURES_DESC": "Przesuń element w prawo, aby go edytować. Przesuń w lewo, aby usunąć lub zobaczyć więcej opcji.",
         "SLIDE_2_TITLE": "Dodawaj Studentów",
-        "SLIDE_2_DESC": "Zarządzaj listą klasy. Dodawaj studentów, edytuj ich dane i sprawdzaj salda.",
+        "SLIDE_2_DESC": "Zarządzaj listą klasy. Dodawaj studentów, PRZESUWAJ, aby edytować dane i sprawdzaj salda.",
         "SLIDE_3_TITLE": "Twórz Zbiórki",
-        "SLIDE_3_DESC": "Organizujesz wycieczkę lub składkę na prezent? Utwórz zbiórkę i łatwo oznaczaj wpłaty.",
+        "SLIDE_3_DESC": "Organizujesz wycieczkę? Twórz zbiórki i oznaczaj wpłaty. Przesuń zbiórkę, aby edytować.",
         "SLIDE_4_TITLE": "Kontroluj Wydatki",
-        "SLIDE_4_DESC": "Dodawaj wydatki powiązane ze zbiórkami. Aplikacja automatycznie obliczy, ile pieniędzy zostało w kasie.",
+        "SLIDE_4_DESC": "Dodawaj wydatki. Przesuń element, aby edytować lub usunąć. Aplikacja obliczy resztę.",
         "PLACEHOLDER_STUDENTS": "Widok listy studentów",
         "PLACEHOLDER_COLLECTIONS": "Widok szczegółów zbiórki",
-        "PLACEHOLDER_EXPENSES": "Widok dodawania wydatku"
+        "PLACEHOLDER_EXPENSES": "Widok dodawania wydatku",
+        "TAP_NEXT": "Dotknij zdjęcia, aby zobaczyć kolejny krok"
     },
     "PAYMENT_MODAL": {
         "HEADER": "Wpłata: {{name}}",

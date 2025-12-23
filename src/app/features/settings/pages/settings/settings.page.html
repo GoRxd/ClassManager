@@ -9,7 +9,8 @@
     <ion-item lines="full">
       <ion-icon slot="start" name="moon-outline"></ion-icon>
       <ion-label>{{ 'SETTINGS.THEME' | translate }}</ion-label>
-      <ion-select slot="end" [value]="theme()" (ionChange)="updateTheme($event)" interface="popover">
+      <ion-select slot="end" [value]="theme()" (ionChange)="updateTheme($event)" interface="popover"
+        [selectedText]="'SETTINGS.THEME_' + theme().toUpperCase() | translate">
         <ion-select-option value="dark">{{ 'SETTINGS.THEME_DARK' | translate }}</ion-select-option>
         <ion-select-option value="light">{{ 'SETTINGS.THEME_LIGHT' | translate }}</ion-select-option>
         <ion-select-option value="auto">{{ 'SETTINGS.THEME_AUTO' | translate }}</ion-select-option>
@@ -19,7 +20,8 @@
     <ion-item lines="none">
       <ion-icon slot="start" name="globe-outline"></ion-icon>
       <ion-label>{{ 'SETTINGS.LANGUAGE' | translate }}</ion-label>
-      <ion-select slot="end" [value]="language()" (ionChange)="changeLanguage($event)" interface="popover">
+      <ion-select slot="end" [value]="language()" (ionChange)="changeLanguage($event)" interface="popover"
+        [selectedText]="'SETTINGS.LANGUAGE_' + language().toUpperCase() | translate">
         <ion-select-option value="pl">{{ 'SETTINGS.LANGUAGE_PL' | translate }}</ion-select-option>
         <ion-select-option value="en">{{ 'SETTINGS.LANGUAGE_EN' | translate }}</ion-select-option>
       </ion-select>
@@ -35,7 +37,8 @@
       <ion-icon slot="start" name="cash-outline"></ion-icon>
       <ion-label>{{ 'SETTINGS.CURRENCY' | translate }}</ion-label>
       <ion-select slot="end" [value]="currency()" (ionChange)="changeCurrency($event)" placeholder="Select Currency"
-        [cancelText]=" 'COMMON.CANCEL' | translate " [okText]=" 'COMMON.CONFIRM' | translate ">
+        [cancelText]=" 'COMMON.CANCEL' | translate " [okText]=" 'COMMON.CONFIRM' | translate "
+        [selectedText]="currency() ? currency() : ('SETTINGS.CURRENCY_AUTO' | translate)">
         <ion-select-option value="">{{ 'SETTINGS.CURRENCY_AUTO' | translate }}</ion-select-option>
         @for (curr of availableCurrencies; track curr) {
         <ion-select-option [value]="curr">
@@ -51,12 +54,12 @@
       <ion-label>{{ 'SETTINGS.DATA_MANAGEMENT' | translate }}</ion-label>
     </ion-item-divider>
 
-    <ion-item button (click)="backup()" detail="true">
+    <ion-item button (click)="backup()" detail="true" lines="full">
       <ion-icon slot="start" name="cloud-download-outline"></ion-icon>
       <ion-label>{{ 'SETTINGS.BACKUP_DATA' | translate }}</ion-label>
     </ion-item>
 
-    <ion-item button (click)="triggerRestore()" detail="true">
+    <ion-item button (click)="triggerRestore()" detail="true" lines="none">
       <ion-icon slot="start" name="cloud-upload-outline"></ion-icon>
       <ion-label>{{ 'SETTINGS.RESTORE_DATA' | translate }}</ion-label>
       <!-- Hidden file input for restore -->
@@ -69,7 +72,7 @@
       <ion-label>{{ 'SETTINGS.ABOUT' | translate }}</ion-label>
     </ion-item-divider>
 
-    <ion-item button (click)="openHelp()" detail="true">
+    <ion-item button (click)="openHelp()" detail="true" lines="full">
       <ion-icon slot="start" name="help-circle-outline"></ion-icon>
       <ion-label>{{ 'SETTINGS.HELP' | translate }}</ion-label>
     </ion-item>
